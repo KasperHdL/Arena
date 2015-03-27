@@ -19,7 +19,7 @@ public class Enemy extends Agent {
     public Entity target;
 
     public Enemy(Vector2f position){
-        System.out.println("Player created");
+        System.out.println("Enemy created");
 
 
         curHealth = 10;
