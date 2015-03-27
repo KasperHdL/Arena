@@ -30,7 +30,7 @@ public class EntityHandler {
         enemies = new ArrayList<Enemy>(20);
         players = new ArrayList<Player>(4);
 
-        Player p = new Player(new Vector2f(0,0),50,51,52,53);
+        Player p = new Player(new Vector2f(0,0), Input.KEY_W, Input.KEY_S, Input.KEY_A, Input.KEY_D);
         players.add(p);
 
         enemies.add(new Enemy(new Vector2f(0,0)));

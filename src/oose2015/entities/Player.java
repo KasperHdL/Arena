@@ -53,6 +53,16 @@ public class Player extends Agent implements KeyListener{
     }
     
     @Override
+    protected void attack(){
+    	for(Enemy enemy : EntityHandler.enemies){
+    		Vector2f delta = position.sub(enemy.position);
+    		if(delta.length() < weapon.attackRadius){
+    			enemy.takeDamage(weapon.damage);
+    		}
+    	}
+    }
+    
+    @Override
     protected void move(int dt){
 
     	input = new Vector2f(0,0);
