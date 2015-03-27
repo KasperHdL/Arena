@@ -1,5 +1,7 @@
 package oose2015.entities;
 
+import org.newdawn.slick.geom.Vector2f;
+
 /**
  * Created by @Kasper on 26/03/2015
  * <p/>
@@ -16,6 +18,7 @@ public class Agent extends MovableEntity {
 
     public boolean isAlive = true;
 
+
     public void takeDamage(float damage){
         curHealth -= damage;
         if(curHealth <= 0)
@@ -24,7 +27,7 @@ public class Agent extends MovableEntity {
 
     public float getDamage(){return 0;}
 
-    public void attack(){
+    protected void attack(){
 
     }
 

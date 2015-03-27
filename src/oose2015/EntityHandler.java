@@ -26,11 +26,12 @@ public class EntityHandler {
     public static ArrayList<Enemy> enemies;
 
 
-    public EntityHandler(){
+    public EntityHandler(Input input){
         enemies = new ArrayList<Enemy>(20);
         players = new ArrayList<Player>(4);
 
-        Player p = new Player(new Vector2f(0,0), Input.KEY_W, Input.KEY_S, Input.KEY_A, Input.KEY_D);
+        Player p = new Player(new Vector2f(10,10), Input.KEY_UP, Input.KEY_DOWN, Input.KEY_LEFT, Input.KEY_RIGHT);
+        input.addKeyListener(p);
         players.add(p);
 
         enemies.add(new Enemy(new Vector2f(0,0)));
@@ -42,14 +43,14 @@ public class EntityHandler {
         for (Entity player : players) {
             player.update(dt);
         }
-        for (Entity entity : enemies) {
-            entity.update(dt);
+        for (Entity enemy : enemies) {
+            enemy.update(dt);
         }
     }
 
     public void render(Graphics graphics){
-        for (Entity entity : enemies) {
-            entity.render(graphics);
+        for (Entity enemy : enemies) {
+            enemy.render(graphics);
         }
 
         for (Entity player : players) {

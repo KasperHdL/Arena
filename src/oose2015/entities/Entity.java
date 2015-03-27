@@ -23,6 +23,10 @@ public class Entity {
     public Vector2f scale;
     public Texture texture;
 
+    public Entity(){
+        scale = new Vector2f(1f,1f);
+    }
+
     public void update(int dt){
 
     }

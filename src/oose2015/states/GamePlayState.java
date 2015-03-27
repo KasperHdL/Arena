@@ -41,7 +41,7 @@ public class GamePlayState implements GameState {
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         System.out.println("gameplay entered");
-        entityHandler = new EntityHandler();
+        entityHandler = new EntityHandler(gameContainer.getInput());
 
 
     }
