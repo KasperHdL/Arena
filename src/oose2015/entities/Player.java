@@ -23,7 +23,7 @@ public class Player extends Agent implements KeyListener{
     
     public Vector2f input;
 
-    public Player(Vector2f position, int upKey, int leftKey, int rightKey, int downKey){
+    public Player(Vector2f position, int upKey, int downKey, int leftKey, int rightKey){
         this.position = position;
         System.out.println("Player created");
         health = 100;
