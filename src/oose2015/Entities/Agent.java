@@ -10,6 +10,8 @@ package oose2015.entities;
  * ---
  */
 
-public class Agent extends MoveableEntity {
+public class Agent extends MovableEntity {
+
+
 
 }

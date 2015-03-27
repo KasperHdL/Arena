@@ -10,5 +10,5 @@ package oose2015.entities;
  * ---
  */
 
-public class Projectile extends MoveableEntity {
+public class Projectile extends MovableEntity {
 }
