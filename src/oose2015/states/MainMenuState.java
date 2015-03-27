@@ -33,7 +33,7 @@ public class MainMenuState implements GameState{
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-
+        graphics.drawString("Press Space to Play",10,100);
     }
 
     @Override

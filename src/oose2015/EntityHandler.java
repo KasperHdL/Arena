@@ -19,11 +19,20 @@ import java.util.ArrayList;
  */
 
 public class EntityHandler {
+
+    public static ArrayList<Player> players;
+
     ArrayList<Entity> entities;
 
+
     public EntityHandler(){
-        entities = new ArrayList<Entity>();
-        entities.add(new Player(new Vector2f(0,0)));
+        entities = new ArrayList<Entity>(2);
+        players = new ArrayList<Player>(4);
+
+        Player p = new Player(new Vector2f(0,0));
+        entities.add(p);
+        players.add(p);
+
         entities.add(new Enemy(new Vector2f(0,0)));
 
 
