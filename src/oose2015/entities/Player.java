@@ -62,13 +62,12 @@ public class Player extends Agent implements KeyListener{
 
     @Override
     public void render(Graphics graphics){
-    	graphics.fillOval(position.x, position.y, size.x, size.y);
+        graphics.fillOval(position.x, position.y, size.x, size.y);
     }
 
 	@Override
 	public void inputEnded() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -79,20 +78,17 @@ public class Player extends Agent implements KeyListener{
 
 	@Override
 	public boolean isAcceptingInput() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public void setInput(Input arg0) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void keyPressed(int key, char arg1) {
-		// TODO Auto-generated method stub
-		
+	public void keyPressed(int key, char c) {
+
 		if(upKey == key)
 			upKeyDown = true;
 		
@@ -107,10 +103,18 @@ public class Player extends Agent implements KeyListener{
 	}
 
 	@Override
-	public void keyReleased(int key, char arg1) {
-		// TODO Auto-generated method stub
-		if(leftKey == key)
-			leftKeyDown = false;
+	public void keyReleased(int key, char c) {
+        if(upKey == key)
+            upKeyDown = false;
+
+        if(downKey == key)
+            downKeyDown = false;
+
+        if(leftKey == key)
+            leftKeyDown = false;
+
+        if(rightKey == key)
+            rightKeyDown = false;
 	}
     
     
