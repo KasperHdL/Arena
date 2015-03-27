@@ -72,8 +72,6 @@ public class Player extends Agent implements KeyListener{
 
 	@Override
 	public void inputStarted() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
