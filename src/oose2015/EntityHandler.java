@@ -3,7 +3,9 @@ package oose2015;
 import oose2015.entities.Enemy;
 import oose2015.entities.Entity;
 import oose2015.entities.Player;
+
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class EntityHandler {
         entities = new ArrayList<Entity>(2);
         players = new ArrayList<Player>(4);
 
-        Player p = new Player(new Vector2f(0,0));
+        Player p = new Player(new Vector2f(0,0), Input.KEY_W, Input.KEY_S, Input.KEY_A, Input.KEY_D);
         entities.add(p);
         players.add(p);
 

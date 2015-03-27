@@ -1,5 +1,8 @@
 package oose2015.entities;
 
+import items.Weapon;
+import oose2015.EntityHandler;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
@@ -17,6 +20,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Player extends Agent implements KeyListener{
 
+	public Weapon weapon;
     public float health, speedForce;
     public int upKey, leftKey, rightKey, downKey;
     public boolean upKeyDown, leftKeyDown, rightKeyDown, downKeyDown;
@@ -53,6 +57,15 @@ public class Player extends Agent implements KeyListener{
     	acceleration.add(input);
     	
     	super.move(dt);
+    }
+    
+    @Override
+    protected void attack(){
+    	for(int i = 0; i < EntityHandler.enemies.size(); i++){
+    		if(this.position - EntityHandler.enemies[i] > weapon.attackRange){
+    			EntityHandler.enemies[i].takeDamage(weapon.damage);
+    		}
+    	}
     }
     
     @Override
