@@ -1,8 +1,6 @@
 package oose2015.entities;
 
-import items.Weapon;
-import oose2015.EntityHandler;
-
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
@@ -20,26 +18,44 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Player extends Agent implements KeyListener{
 
-	public Weapon weapon;
-    public float health, speedForce;
+    public float speedForce;
     public int upKey, leftKey, rightKey, downKey;
     public boolean upKeyDown, leftKeyDown, rightKeyDown, downKeyDown;
     
     public Vector2f input;
 
     public Player(Vector2f position, int upKey, int downKey, int leftKey, int rightKey){
-        this.position = position;
         System.out.println("Player created");
-        health = 100;
-        speedForce = 5;
+
+        curHealth = 100;
+        maxHealth = curHealth;
+
         size = new Vector2f(5.0f, 5.0f);
+        scale = new Vector2f(1f,1f);
+
+        this.position = position;
+        velocity = new Vector2f(0,0);
+        acceleration = new Vector2f(0,0);
+
+        speedForce = 5;
+        mass = 1f;
+        friction = 0.9f;
+
+        this.upKey = upKey;
+        this.downKey = downKey;
+        this.leftKey = leftKey;
+        this.rightKey = rightKey;
+
+        upKeyDown = false;
+        downKeyDown = false;
+        leftKeyDown = false;
+        rightKeyDown = false;
     }
     
     @Override
     protected void move(int dt){
 
-    	input.x = 0;
-    	input.y = 0;
+    	input = new Vector2f(0,0);
     	
     	if(upKeyDown)
     		input.y = 1;
@@ -60,21 +76,13 @@ public class Player extends Agent implements KeyListener{
     }
     
     @Override
-    protected void attack(){
-    	for(int i = 0; i < EntityHandler.enemies.size(); i++){
-    		if(this.position - EntityHandler.enemies[i] > weapon.attackRange){
-    			EntityHandler.enemies[i].takeDamage(weapon.damage);
-    		}
-    	}
-    }
-    
-    @Override
     public void update(int dt){
     	move(dt);
     }
 
     @Override
     public void render(Graphics graphics){
+        graphics.setColor(Color.red);
         graphics.fillOval(position.x, position.y, size.x, size.y);
     }
 
@@ -85,8 +93,6 @@ public class Player extends Agent implements KeyListener{
 
 	@Override
 	public void inputStarted() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

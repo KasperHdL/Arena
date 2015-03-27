@@ -23,32 +23,37 @@ import java.util.ArrayList;
 public class EntityHandler {
 
     public static ArrayList<Player> players;
-
-    ArrayList<Entity> entities;
+    public static ArrayList<Enemy> enemies;
 
 
     public EntityHandler(){
-        entities = new ArrayList<Entity>(2);
+        enemies = new ArrayList<Enemy>(20);
         players = new ArrayList<Player>(4);
 
-        Player p = new Player(new Vector2f(0,0), Input.KEY_W, Input.KEY_S, Input.KEY_A, Input.KEY_D);
-        entities.add(p);
+        Player p = new Player(new Vector2f(0,0),50,51,52,53);
         players.add(p);
 
-        entities.add(new Enemy(new Vector2f(0,0)));
+        enemies.add(new Enemy(new Vector2f(0,0)));
 
 
     }
 
     public void update(int dt){
-        for (Entity entity : entities) {
+        for (Entity player : players) {
+            player.update(dt);
+        }
+        for (Entity entity : enemies) {
             entity.update(dt);
         }
     }
 
     public void render(Graphics graphics){
-        for (Entity entity : entities) {
+        for (Entity entity : enemies) {
             entity.render(graphics);
+        }
+
+        for (Entity player : players) {
+            player.render(graphics);
         }
     }
 
