@@ -1,5 +1,6 @@
 package oose2015.entities;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.geom.Vector2f;
@@ -22,9 +23,12 @@ public class Player extends Agent implements KeyListener{
     
     public Vector2f input;
 
-    public Player(Vector2f position){
+    public Player(Vector2f position, int upKey, int leftKey, int rightKey, int downKey){
         this.position = position;
         System.out.println("Player created");
+        health = 100;
+        speedForce = 5;
+        size = new Vector2f(5.0f, 5.0f);
     }
     
     @Override
@@ -49,6 +53,16 @@ public class Player extends Agent implements KeyListener{
     	acceleration.add(input);
     	
     	super.move(dt);
+    }
+    
+    @Override
+    public void update(int dt){
+    	move(dt);
+    }
+
+    @Override
+    public void render(Graphics graphics){
+    	graphics.fillOval(position.x, position.y, size.x, size.y);
     }
 
 	@Override
