@@ -25,12 +25,22 @@ public class Player extends Agent implements KeyListener{
     public Armor armor;
 
     public float speedForce;
-    public int upKey, leftKey, rightKey, downKey;
+    public int upKey, leftKey, rightKey, downKey,attackKey;
     public boolean upKeyDown, leftKeyDown, rightKeyDown, downKeyDown;
     
     public Vector2f input;
 
-    public Player(Vector2f position, int upKey, int downKey, int leftKey, int rightKey){
+
+    /**
+     * Constructor for player [use Input.KEY_X as arguments]
+     * @param position Position
+     * @param upKey up key
+     * @param downKey down key
+     * @param leftKey left key
+     * @param rightKey right key
+     * @param attackKey attack key
+     */
+    public Player(Vector2f position, int upKey, int downKey, int leftKey, int rightKey, int attackKey){
         System.out.println("Player created");
 
         curHealth = 100;
@@ -51,11 +61,14 @@ public class Player extends Agent implements KeyListener{
         this.downKey = downKey;
         this.leftKey = leftKey;
         this.rightKey = rightKey;
+        this.attackKey = attackKey;
 
         upKeyDown = false;
         downKeyDown = false;
         leftKeyDown = false;
         rightKeyDown = false;
+
+        weapon = new Weapon(1f, 5f);
     }
     
     @Override
@@ -137,6 +150,9 @@ public class Player extends Agent implements KeyListener{
 		
 		if(rightKey == key)
 			rightKeyDown = true;
+
+        if(attackKey == key)
+            attack();
 	}
 
 	@Override

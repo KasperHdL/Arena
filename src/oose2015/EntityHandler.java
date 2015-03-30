@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by @Kasper on 26/03/2015
  * <p/>
  * Description:
- * ---
+ * EntityHandler update and renders all entities, currently also spawns entities(which might change in the future)
  * <p/>
  * Usage:
  * ---
@@ -25,12 +25,15 @@ public class EntityHandler {
     public static ArrayList<Player> players;
     public static ArrayList<Enemy> enemies;
 
-
+    /**
+     * Constructor for the EntityHandler
+     * @param input send Input from the main class
+     */
     public EntityHandler(Input input){
         enemies = new ArrayList<Enemy>(20);
         players = new ArrayList<Player>(4);
 
-        Player p = new Player(new Vector2f(10,10), Input.KEY_UP, Input.KEY_DOWN, Input.KEY_LEFT, Input.KEY_RIGHT);
+        Player p = new Player(new Vector2f(10,10), Input.KEY_UP, Input.KEY_DOWN, Input.KEY_LEFT, Input.KEY_RIGHT, Input.KEY_SPACE);
         input.addKeyListener(p);
         players.add(p);
 

@@ -34,7 +34,10 @@ public class MovableEntity extends Entity{
     //if solid then Entities will stop when collides
     public boolean isSolid = true;
 
-
+    /**
+     * Moves the Entity according to the correct physical forces of the Entity. applies friction, inertia and limits the velocity. then adds acceleration to velocity and then velocity to position
+     * @param dt delta time
+     */
     protected void move(int dt){
         acceleration.scale(inertia);
         velocity.scale(friction);

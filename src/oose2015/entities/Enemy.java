@@ -18,6 +18,10 @@ import org.newdawn.slick.geom.Vector2f;
 public class Enemy extends Agent {
     public Entity target;
 
+    /**
+     * Constructor for Enemy
+     * @param position spawn position
+     */
     public Enemy(Vector2f position){
         System.out.println("Enemy created");
 
@@ -39,6 +43,8 @@ public class Enemy extends Agent {
 
     @Override
     public void update(int dt){
+
+
 
     }
 
