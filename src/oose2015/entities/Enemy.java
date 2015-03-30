@@ -52,7 +52,7 @@ public class Enemy extends Agent {
     @Override
     public void render(Graphics graphics){
         graphics.setColor(Color.red);
-        graphics.fillOval(position.x, position.y, size.x, size.y);
+        graphics.fillOval(position.x - size.x/2, position.y - size.y/2, size.x, size.y);
 
     }
 }

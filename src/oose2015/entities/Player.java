@@ -26,7 +26,7 @@ public class Player extends Agent implements KeyListener{
 
     public float speedForce;
     public int upKey, leftKey, rightKey, downKey,attackKey;
-    public boolean upKeyDown, leftKeyDown, rightKeyDown, downKeyDown;
+    public boolean upKeyDown, leftKeyDown, rightKeyDown, downKeyDown, attackKeyDown;
     
     public Vector2f input;
 
@@ -67,8 +67,9 @@ public class Player extends Agent implements KeyListener{
         downKeyDown = false;
         leftKeyDown = false;
         rightKeyDown = false;
+        attackKeyDown = false;
 
-        weapon = new Weapon(1f, 5f);
+        weapon = new Weapon(1f, 50f);
     }
     
     @Override
@@ -114,7 +115,10 @@ public class Player extends Agent implements KeyListener{
     @Override
     public void render(Graphics graphics){
         graphics.setColor(Color.blue);
-        graphics.fillOval(position.x, position.y, size.x, size.y);
+        graphics.fillOval(position.x - size.x/2, position.y- size.x/2, size.x, size.y);
+
+        if(attackKeyDown)
+            graphics.drawOval(position.x- (weapon.attackRadius + size.x)/2, position.y- (weapon.attackRadius + size.y)/2, weapon.attackRadius + size.x, weapon.attackRadius + size.y);
     }
 
 	@Override
@@ -151,8 +155,10 @@ public class Player extends Agent implements KeyListener{
 		if(rightKey == key)
 			rightKeyDown = true;
 
-        if(attackKey == key)
+        if(attackKey == key) {
             attack();
+            attackKeyDown = true;
+        }
 	}
 
 	@Override
@@ -168,6 +174,9 @@ public class Player extends Agent implements KeyListener{
 
         if(rightKey == key)
             rightKeyDown = false;
+
+        if(attackKey == key)
+            attackKeyDown = false;
 	}
     
     
