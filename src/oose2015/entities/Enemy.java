@@ -21,7 +21,7 @@ public class Enemy extends Agent {
 	
 	 float golddrop;
      boolean isidle;
-     float attackRadious = 10f;
+     float attackRadius = 100f;
      float disengageradious;
      
 	
@@ -33,7 +33,6 @@ public class Enemy extends Agent {
      */
     public Enemy(Vector2f position){
         System.out.println("Enemy created");
-
 
         curHealth = 10;
         maxHealth = curHealth;
@@ -55,10 +54,10 @@ public class Enemy extends Agent {
     public void detection(int dt){
     	
     	Player player = EntityHandler.players.get(0);
-    	Vector2f delta = player.position.sub(position);
-    	
-    	float radious = delta.length(); 
-    	if(radious <= attackRadious){
+        Vector2f playerPosition = player.position.copy();
+    	Vector2f delta = playerPosition.sub(position);
+    	float radius = delta.length();
+    	if(radius <= attackRadius){
     		delta.normalise();
     		delta.scale(speedForce/mass);
         	acceleration.add(delta);

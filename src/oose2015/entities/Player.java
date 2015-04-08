@@ -32,7 +32,7 @@ public class Player extends Agent implements KeyListener{
 
 
     /**
-     * Constructor for player [use Input.KEY_X as arguments]
+     * Constructor for player [use Input.KEY_X as key arguments]
      * @param position Position
      * @param upKey up key
      * @param downKey down key

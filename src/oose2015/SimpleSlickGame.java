@@ -9,14 +9,12 @@ import org.newdawn.slick.state.StateBasedGame;
 public class SimpleSlickGame extends StateBasedGame
 {
 
-	public SimpleSlickGame(String gamename)
-	{
+	public SimpleSlickGame(String gamename){
 		super(gamename);
 	}
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
-
         addState(new MainMenuState());
         addState(new GamePlayState());
 

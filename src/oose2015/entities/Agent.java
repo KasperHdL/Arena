@@ -1,7 +1,5 @@
 package oose2015.entities;
 
-import org.newdawn.slick.geom.Vector2f;
-
 /**
  * Created by @Kasper on 26/03/2015
  * <p/>
