@@ -22,7 +22,7 @@ public class Enemy extends Agent {
 	 float golddrop;
      boolean isidle;
      float attackRadius = 100f;
-     float disengageradious;
+     float disengageradius;
      
 	
     public Entity target;
