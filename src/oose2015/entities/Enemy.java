@@ -1,4 +1,6 @@
-package oose2015.entities;
+	package oose2015.entities;
+
+import oose2015.EntityHandler;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -16,6 +18,13 @@ import org.newdawn.slick.geom.Vector2f;
  */
 
 public class Enemy extends Agent {
+	
+	 float golddrop;
+     boolean isidle;
+     float attackRadious = 10f;
+     float disengageradious;
+     
+	
     public Entity target;
 
     /**
@@ -39,13 +48,27 @@ public class Enemy extends Agent {
         mass = 100f;
         friction = .99f;
         inertia = .60f;
+
+      
+    }
+    
+    public void detection(int dt){
+    	
+    	Player player = EntityHandler.players.get(0);
+    	Vector2f delta = player.position.sub(position);
+    	
+    	float radious = delta.length(); 
+    	if(radious <= attackRadious){
+    		delta.normalise();
+    		delta.scale(speedForce/mass);
+        	acceleration.add(delta);
+        	super.move(dt);
+    	}
     }
 
     @Override
     public void update(int dt){
-
-
-
+    	detection(dt);
     }
 
 
