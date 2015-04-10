@@ -6,10 +6,10 @@ import oose2015.states.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class SimpleSlickGame extends StateBasedGame
+public class Game extends StateBasedGame
 {
 
-	public SimpleSlickGame(String gamename){
+	public Game(String gamename){
 		super(gamename);
 	}
 
@@ -25,13 +25,13 @@ public class SimpleSlickGame extends StateBasedGame
 		try
 		{
 			AppGameContainer appgc;
-			appgc = new AppGameContainer(new SimpleSlickGame("Simple Slick Game"));
+			appgc = new AppGameContainer(new Game("Simple Slick Game"));
 			appgc.setDisplayMode(640, 480, false);
 			appgc.start();
 		}
 		catch (SlickException ex)
 		{
-			Logger.getLogger(SimpleSlickGame.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 }
