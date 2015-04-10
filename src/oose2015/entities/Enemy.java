@@ -18,11 +18,17 @@ import org.newdawn.slick.geom.Vector2f;
  */
 
 public class Enemy extends Agent {
-	
-	 float golddrop;
-     boolean isidle;
-     float attackRadius = 100f;
-     float disengageradious;
+	public static boolean debug = true;
+
+
+    float goldDrop;
+    boolean isIdle;
+    
+    float engageRadius = 100f;
+    float disengageRadius = 150f;
+    float attackRadius = 10f;
+
+    boolean isChasing = false;
      
 	
     public Entity target;
@@ -50,31 +56,86 @@ public class Enemy extends Agent {
 
       
     }
-    
-    public void detection(int dt){
-    	
-    	Player player = EntityHandler.players.get(0);
-        Vector2f playerPosition = player.position.copy();
-    	Vector2f delta = playerPosition.sub(position);
-    	float radius = delta.length();
-    	if(radius <= attackRadius){
-    		delta.normalise();
-    		delta.scale(speedForce/mass);
-        	acceleration.add(delta);
-        	super.move(dt);
-    	}
-    }
 
     @Override
     public void update(int dt){
-    	detection(dt);
+        if(isChasing){
+            //get closest player
+            Player player = getClosestPlayer();
+
+            if(player != target){
+                target = player;
+            }
+
+            Vector2f delta = target.position.copy().sub(position);
+            float dist = delta.length();
+
+            if(dist < attackRadius){
+                //attack
+            }else if(dist > disengageRadius){
+                //disengage
+                target = null;
+                isChasing = false;
+            }else{
+                //move
+                delta.normalise();
+                delta.scale(speedForce/mass);
+                acceleration.add(delta);
+                super.move(dt);
+            }
+        }else{
+            //get closest player
+            Player player = getClosestPlayer();
+
+            Vector2f delta = player.position.copy().sub(position);
+            float dist = delta.length();
+            //check distance
+            if(dist < engageRadius){
+                isChasing = true;
+                target = player;
+            }else {
+                //TODO move a bit around randomly when not chasing any one
+            }
+        }
     }
 
 
     @Override
     public void render(Graphics graphics){
+        graphics.pushTransform();
         graphics.setColor(Color.red);
-        graphics.fillOval(position.x - size.x/2, position.y - size.y/2, size.x, size.y);
+        graphics.translate(position.x,position.y);
 
+        graphics.rotate(0,0,rotation);
+        graphics.fillOval(-size.x / 2,-size.y / 2, size.x, size.y);
+
+        if(debug){
+            if(isChasing){
+                graphics.drawOval(-attackRadius,-attackRadius, attackRadius * 2, attackRadius * 2);
+                graphics.setColor(Color.blue);
+                graphics.drawOval(-disengageRadius,-disengageRadius, disengageRadius * 2, disengageRadius * 2);
+            }else{
+                graphics.drawOval(-engageRadius,-engageRadius, engageRadius * 2, engageRadius * 2);
+            }
+        }
+        graphics.popTransform();
+    }
+
+
+    private Player getClosestPlayer(){
+        Vector2f delta = EntityHandler.players.get(0).position.copy();
+        float minDistance = delta.distance(position);
+        int minIndex = 0;
+        for (int i = 1; i < EntityHandler.players.size(); i++) {
+            delta = EntityHandler.players.get(i).position.copy().sub(position);
+            float dist = delta.length();
+
+            if(minDistance > dist){
+                minDistance = dist;
+                minIndex = i;
+            }
+        }
+
+        return EntityHandler.players.get(minIndex);
     }
 }
