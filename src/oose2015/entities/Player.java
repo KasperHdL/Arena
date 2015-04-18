@@ -48,6 +48,7 @@ public class Player extends Agent implements KeyListener{
      */
     public Player(Vector2f position, int upKey, int downKey, int leftKey, int rightKey, int attackKey){
         System.out.println("Player created");
+        EntityHandler.players.add(this);
 
         curHealth = 100;
         maxHealth = curHealth;
@@ -56,12 +57,10 @@ public class Player extends Agent implements KeyListener{
 
         this.position = position;
 
-        maxVelocity = 2f;
+        maxVelocity = 15f;
 
-        speedForce = .2f;
-        mass = 100f;
-        friction = .99f;
-        inertia = .60f;
+        speedForce = 6f;
+        mass = 1f;
 
         this.upKey = upKey;
         this.downKey = downKey;
@@ -94,7 +93,7 @@ public class Player extends Agent implements KeyListener{
     }
     
     @Override
-    protected void move(int dt){
+    protected void move(float dt){
 
     	input = new Vector2f(0,0);
     	
@@ -112,14 +111,15 @@ public class Player extends Agent implements KeyListener{
         else
             input.x = 0;
 
+        input.normalise();
+
     	input.scale(speedForce/mass);
-    	acceleration.add(input);
-    	
-    	super.move(dt);
+
+    	super.move(input,dt);
     }
     
     @Override
-    public void update(int dt){
+    public void update(float dt){
         if(isAlive)
     	    move(dt);
 

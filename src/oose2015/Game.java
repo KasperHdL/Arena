@@ -15,6 +15,7 @@ public class Game extends StateBasedGame
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
+		gameContainer.setTargetFrameRate(120);
         addState(new MainMenuState());
         addState(new GamePlayState());
 

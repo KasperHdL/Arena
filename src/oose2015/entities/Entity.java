@@ -1,5 +1,6 @@
 package oose2015.entities;
 
+import oose2015.EntityHandler;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.Texture;
@@ -24,10 +25,11 @@ public class Entity {
     public Texture texture;
 
     public Entity(){
+        EntityHandler.entities.add(this);
         scale = new Vector2f(1f,1f);
     }
 
-    public void update(int dt){
+    public void update(float dt){
 
     }
 

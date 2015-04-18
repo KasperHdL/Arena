@@ -38,7 +38,11 @@ public class GamePlayState implements GameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
         time += dt;
-        entityHandler.update(dt);
+        float delta = (float) dt/100;
+        System.out.println("time: " + time + " dt: " + dt + " delta " + delta);
+
+        entityHandler.update(delta);
+        entityHandler.updatePhysics(delta);
     }
 
     @Override

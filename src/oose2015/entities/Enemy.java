@@ -44,6 +44,7 @@ public class Enemy extends Agent {
      */
     public Enemy(Vector2f position){
         System.out.println("Enemy created");
+        EntityHandler.enemies.add(this);
 
         curHealth = 10;
         maxHealth = curHealth;
@@ -52,18 +53,16 @@ public class Enemy extends Agent {
 
         this.position = position;
 
-        maxVelocity = 2f;
+        maxVelocity = 12f;
 
-        speedForce = .1f;
-        mass = 100f;
-        friction = .99f;
-        inertia = .60f;
+        speedForce = 4f;
+        mass = 1f;
 
       
     }
 
     @Override
-    public void update(int dt){
+    public void update(float dt){
         if(isAlive){
             Player player = getClosestPlayer();
             if(isChasing){
@@ -92,7 +91,7 @@ public class Enemy extends Agent {
         }
     }
 
-    private void chasePlayer(Agent agent, int dt){
+    private void chasePlayer(Agent agent, float dt){
         Vector2f delta = target.position.copy().sub(position);
         float dist = VectorUtil.getDistanceToEntity(this, agent);
 
@@ -112,14 +111,13 @@ public class Enemy extends Agent {
         }
     }
 
-    protected void move(Vector2f delta, int dt){
-        delta.normalise();
-        delta.scale(speedForce / mass);
-        acceleration.add(delta);
+    protected void move(Vector2f input, float dt){
+        input.normalise();
+        input.scale(speedForce / mass);
 
         rotation = (float)acceleration.getTheta();
 
-        super.move(dt);
+        super.move(input,dt);
     }
 
 

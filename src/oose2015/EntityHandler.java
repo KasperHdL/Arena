@@ -22,48 +22,50 @@ import java.util.ArrayList;
 
 public class EntityHandler {
 
-    public static ArrayList<Player> players;
-    public static ArrayList<Enemy> enemies;
+    public static ArrayList<Player> players; //for reference
+    public static ArrayList<Enemy> enemies; //for reference
+
+    public static ArrayList<Entity> entities;//contains every entity player, enemy and all others
 
     /**
      * Constructor for the EntityHandler
      * @param input send Input from the main class
      */
     public EntityHandler(Input input){
-        enemies = new ArrayList<Enemy>(20);
-        players = new ArrayList<Player>(4);
+        entities = new ArrayList<Entity>(50);
+        enemies = new ArrayList<Enemy>();
+        players = new ArrayList<Player>();
 
         Player p = new Player(new Vector2f(10,10), Input.KEY_UP, Input.KEY_DOWN, Input.KEY_LEFT, Input.KEY_RIGHT, Input.KEY_SPACE);
         input.addKeyListener(p);
-        players.add(p);
 
-        enemies.add(new Enemy(new Vector2f(0,0)));
-
-
+        new Enemy(new Vector2f(0,0));
     }
 
-    public void update(int dt){
-        for (Entity player : players) {
-            player.update(dt);
-
-            //check collision
-            for(Entity enemy:enemies){
-                Vector2f coll = CollisionUtil.collides(player,enemy);
-                player.position.add(coll);
-            }
+    public void update(float dt){
+        for(Entity entity : entities){
+            entity.update(dt);
         }
-        for (Entity enemy : enemies) {
-            enemy.update(dt);
+    }
+
+    public void updatePhysics(float dt){
+
+        //Collision
+        for (int i = 0; i < entities.size(); i++) {
+            Entity entity = entities.get(i);
+            for (int j = i+1; j < entities.size(); j++) {
+                Entity other = entities.get(j);
+
+                Vector2f coll = CollisionUtil.collides(entity,other);
+                //TODO change to based mass based! (awesome)
+                entity.position.add(coll);
+            }
         }
     }
 
     public void render(Graphics graphics){
-        for (Entity enemy : enemies) {
-            enemy.render(graphics);
-        }
-
-        for (Entity player : players) {
-            player.render(graphics);
+        for(Entity entity : entities){
+            entity.render(graphics);
         }
     }
 
