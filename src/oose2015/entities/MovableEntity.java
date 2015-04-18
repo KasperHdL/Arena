@@ -40,9 +40,9 @@ public class MovableEntity extends Entity{
      */
 
     protected void move(float dt){
-        move(new Vector2f(0,0),dt);
+        move(dt,new Vector2f());
     }
-    protected void move(Vector2f input, float dt){
+    protected void move(float dt,Vector2f input){
         acceleration.scale(inertia);
         velocity.scale(friction);
 

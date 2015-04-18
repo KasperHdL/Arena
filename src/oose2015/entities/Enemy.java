@@ -117,7 +117,7 @@ public class Enemy extends Agent {
 
         rotation = (float)acceleration.getTheta();
 
-        super.move(input,dt);
+        super.move(dt,input);
     }
 
 

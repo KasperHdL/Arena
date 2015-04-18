@@ -113,9 +113,9 @@ public class Player extends Agent implements KeyListener{
 
         input.normalise();
 
-    	input.scale(speedForce/mass);
+    	input.scale(speedForce / mass);
 
-    	super.move(input,dt);
+    	super.move(dt,input);
     }
     
     @Override
