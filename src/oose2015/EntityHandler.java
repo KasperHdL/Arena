@@ -45,6 +45,12 @@ public class EntityHandler {
     public void update(int dt){
         for (Entity player : players) {
             player.update(dt);
+
+            //check collision
+            for(Entity enemy:enemies){
+                Vector2f coll = CollisionUtil.collides(player,enemy);
+                player.position.add(coll);
+            }
         }
         for (Entity enemy : enemies) {
             enemy.update(dt);
