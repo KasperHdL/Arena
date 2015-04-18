@@ -24,6 +24,9 @@ public class Entity {
     public Vector2f scale;
     public Texture texture;
 
+    //if solid then Entities will collide
+    public boolean isSolid = true;
+
     public Entity(){
         EntityHandler.entities.add(this);
         scale = new Vector2f(1f,1f);
@@ -34,6 +37,10 @@ public class Entity {
     }
 
     public void render(Graphics graphics){
+
+    }
+
+    public void collides(Entity other){
 
     }
 }

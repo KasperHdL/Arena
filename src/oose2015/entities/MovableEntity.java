@@ -31,9 +31,6 @@ public class MovableEntity extends Entity{
         acceleration = new Vector2f(0,0);
     }
 
-    //if solid then Entities will collide
-    public boolean isSolid = true;
-
     /**
      * Moves the Entity according to the correct physical forces of the Entity. applies friction, inertia and limits the velocity. then adds acceleration to velocity and then velocity to position
      * @param dt delta time

@@ -24,7 +24,7 @@ public class Enemy extends Agent {
 
     float damage = 1f;
 
-    float goldDrop;
+    int goldDrop;
 
     float engageRadius = 100f;
     float disengageRadius = 150f;
@@ -57,6 +57,7 @@ public class Enemy extends Agent {
 
         speedForce = 4f;
         mass = 1f;
+        goldDrop = 10;
 
       
     }
@@ -182,6 +183,8 @@ public class Enemy extends Agent {
     }
 
 
+
+
     private Player getClosestPlayer(){
         Vector2f delta = EntityHandler.players.get(0).position.copy().sub(position);
 
@@ -205,5 +208,11 @@ public class Enemy extends Agent {
 
     @Override
     public float getDamage(){return damage;}
+
+    @Override
+    public void die(){
+        new Gold(position,goldDrop);
+        super.die();
+    }
 
 }

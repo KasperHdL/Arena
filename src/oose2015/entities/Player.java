@@ -25,6 +25,8 @@ public class Player extends Agent implements KeyListener{
 
     public static boolean debug = true;
 
+    public int gold = 0;
+
     public Weapon weapon;
     public Armor armor;
 
@@ -74,7 +76,7 @@ public class Player extends Agent implements KeyListener{
         rightKeyDown = false;
         attackKeyDown = false;
 
-        weapon = new Weapon(1f, 50f, 300f);
+        weapon = new Weapon(10f, 50f, 300f);
 
         attacking = false;
         nextAttackTime = 0f;
@@ -159,10 +161,25 @@ public class Player extends Agent implements KeyListener{
         if(debug && isAlive) {
             graphics.setColor(Color.white);
             graphics.drawString(curHealth + " / " + maxHealth, position.x + 10, position.y + 10);
+            graphics.drawString("gold: " + gold, position.x + 10, position.y - 10);
         }
     }
 
-	@Override
+    @Override
+    public void collides(Entity other){
+        //if is gold then collect
+        if(other instanceof Gold){
+            System.out.println("found gold!");
+            Gold g = (Gold) other;
+            gold += g.value;
+
+            EntityHandler.entities.remove(other);
+
+        }
+    }
+
+
+    @Override
 	public void inputEnded() {
 
 	}

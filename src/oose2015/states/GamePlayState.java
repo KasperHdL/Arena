@@ -39,7 +39,7 @@ public class GamePlayState implements GameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
         time += dt;
         float delta = (float) dt/100;
-        System.out.println("time: " + time + " dt: " + dt + " delta " + delta);
+        //System.out.println("time: " + time + " dt: " + dt + " delta " + delta);
 
         entityHandler.update(delta);
         entityHandler.updatePhysics(delta);

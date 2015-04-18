@@ -43,8 +43,10 @@ public class EntityHandler {
     }
 
     public void update(float dt){
-        for(Entity entity : entities){
+        for (int i = 0; i < entities.size(); i++) {
+            Entity entity = entities.get(i);
             entity.update(dt);
+
         }
     }
 

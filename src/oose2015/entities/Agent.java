@@ -25,7 +25,12 @@ public class Agent extends MovableEntity {
 
         curHealth -= damage;
         if(curHealth <= 0)
-            isAlive = false;
+            die();
+    }
+
+    public void die(){
+        isAlive = false;
+        isSolid = false;
     }
 
     public float getDamage() {
