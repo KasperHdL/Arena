@@ -19,6 +19,8 @@ public class GamePlayState implements GameState {
 
     EntityHandler entityHandler;
 
+    public static int time = 0;
+
     @Override
     public int getID() {
         return 1;
@@ -35,6 +37,7 @@ public class GamePlayState implements GameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
+        time += dt;
         entityHandler.update(dt);
     }
 

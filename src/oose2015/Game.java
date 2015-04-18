@@ -34,4 +34,9 @@ public class Game extends StateBasedGame
 			Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
+
+	@Override
+	protected void preUpdateState(GameContainer container, int delta){
+
+	}
 }

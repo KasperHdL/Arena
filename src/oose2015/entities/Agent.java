@@ -21,12 +21,16 @@ public class Agent extends MovableEntity {
      * @param damage damage
      */
     public void takeDamage(float damage){
+        if(!isAlive) return;
+
         curHealth -= damage;
         if(curHealth <= 0)
             isAlive = false;
     }
 
-    public float getDamage(){return 0;}
+    public float getDamage() {
+        return 0;
+    }
 
     protected void attack(){
 

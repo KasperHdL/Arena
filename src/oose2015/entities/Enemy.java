@@ -2,6 +2,8 @@
 
 import oose2015.EntityHandler;
 
+import oose2015.VectorUtil;
+import oose2015.states.GamePlayState;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -20,18 +22,21 @@ import org.newdawn.slick.geom.Vector2f;
 public class Enemy extends Agent {
 	public static boolean debug = true;
 
+    float damage = 1f;
 
     float goldDrop;
-    boolean isIdle;
-    
+
     float engageRadius = 100f;
     float disengageRadius = 150f;
     float attackRadius = 10f;
 
+    float nextAttackTime = 0f;
+    float attackDelay = 200f;
+
     boolean isChasing = false;
      
 	
-    public Entity target;
+    public Agent target;
 
     /**
      * Constructor for Enemy
@@ -49,7 +54,7 @@ public class Enemy extends Agent {
 
         maxVelocity = 2f;
 
-        speedForce = .2f;
+        speedForce = .1f;
         mass = 100f;
         friction = .99f;
         inertia = .60f;
@@ -59,75 +64,136 @@ public class Enemy extends Agent {
 
     @Override
     public void update(int dt){
-        if(isChasing){
-            //get closest player
+        if(isAlive){
             Player player = getClosestPlayer();
+            if(isChasing){
 
-            if(player != target){
-                target = player;
-            }
+                if(player != target)
+                    target = player;
 
-            Vector2f delta = target.position.copy().sub(position);
-            float dist = delta.length();
+                if(target != null)
+                    chasePlayer(target,dt);
+            }else if(player != null){
 
-            if(dist < attackRadius){
-                //attack
-            }else if(dist > disengageRadius){
-                //disengage
-                target = null;
-                isChasing = false;
-            }else{
-                //move
-                delta.normalise();
-                delta.scale(speedForce/mass);
-                acceleration.add(delta);
-                super.move(dt);
+                float dist = VectorUtil.getDistanceToAgent(this, player);
+
+
+                //check distance
+                if(dist < engageRadius){
+                    isChasing = true;
+                    target = player;
+                }else {
+                    //idle
+                    //TODO move a bit around randomly when not chasing any one
+                }
             }
         }else{
-            //get closest player
-            Player player = getClosestPlayer();
-
-            Vector2f delta = player.position.copy().sub(position);
-            float dist = delta.length();
-            //check distance
-            if(dist < engageRadius){
-                isChasing = true;
-                target = player;
-            }else {
-                //TODO move a bit around randomly when not chasing any one
-            }
+            //dead
         }
+    }
+
+    private void chasePlayer(Agent agent, int dt){
+        Vector2f delta = target.position.copy().sub(position);
+        float dist = VectorUtil.getDistanceToAgent(this, agent);
+
+        if(dist < attackRadius){
+            //attack
+            if(nextAttackTime < GamePlayState.time) {
+                agent.takeDamage(damage);
+                nextAttackTime = GamePlayState.time + attackDelay;
+            }
+        }else if(dist > disengageRadius){
+            //disengage
+            target = null;
+            isChasing = false;
+        }else{
+            //move
+            move(delta,dt);
+        }
+    }
+
+    protected void move(Vector2f delta, int dt){
+        delta.normalise();
+        delta.scale(speedForce / mass);
+        acceleration.add(delta);
+
+        rotation = (float)acceleration.getTheta();
+
+        super.move(dt);
     }
 
 
     @Override
     public void render(Graphics graphics){
         graphics.pushTransform();
-        graphics.setColor(Color.red);
-        graphics.translate(position.x,position.y);
+        graphics.translate(position.x, position.y);
+        graphics.rotate(0, 0, rotation);
 
-        graphics.rotate(0,0,rotation);
-        graphics.fillOval(-size.x / 2,-size.y / 2, size.x, size.y);
+        if(isAlive){
+            graphics.setColor(Color.pink);
 
-        if(debug){
-            if(isChasing){
-                graphics.drawOval(-attackRadius,-attackRadius, attackRadius * 2, attackRadius * 2);
-                graphics.setColor(Color.blue);
-                graphics.drawOval(-disengageRadius,-disengageRadius, disengageRadius * 2, disengageRadius * 2);
-            }else{
-                graphics.drawOval(-engageRadius,-engageRadius, engageRadius * 2, engageRadius * 2);
+            graphics.fillOval(-size.x / 2, -size.y / 2, size.x, size.y);
+            graphics.setColor(Color.black);
+            graphics.drawLine(0,0,size.x/2,0);
+
+            if(debug){
+                float halfRadius;
+
+                if(isChasing){
+                    float dist = Float.MAX_VALUE;
+
+                    if(target != null)
+                        dist = VectorUtil.getDistanceToAgent(this, target);
+
+                    //attack radius
+                    halfRadius = attackRadius + size.x/2;
+                    if(nextAttackTime - 50 < GamePlayState.time && dist < attackRadius) {
+                        graphics.setColor(Color.red);
+                        graphics.fillOval(-halfRadius, -halfRadius, halfRadius*2, halfRadius*2);
+                    }else
+                        graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
+
+                    //disengage radius
+                    halfRadius = disengageRadius + size.x/2;
+                    graphics.setColor(Color.blue);
+                    graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
+                }else{
+                    graphics.setColor(Color.pink);
+                    //engage radius
+                    halfRadius = engageRadius + size.x/2;
+                    graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
+                }
             }
+        }else{
+
+            graphics.setColor(new Color(200,0,0,127));
+
+            graphics.fillOval(-size.x / 2, -size.y / 2, size.x, size.y);
+
         }
+
+
+
+
         graphics.popTransform();
+
+        if(debug && isAlive) {
+            graphics.setColor(Color.white);
+            graphics.drawString(curHealth + " / " + maxHealth, position.x + 10, position.y + 10);
+        }
     }
 
 
     private Player getClosestPlayer(){
-        Vector2f delta = EntityHandler.players.get(0).position.copy();
+        Vector2f delta = EntityHandler.players.get(0).position.copy().sub(position);
+
         float minDistance = delta.distance(position);
         int minIndex = 0;
+
         for (int i = 1; i < EntityHandler.players.size(); i++) {
-            delta = EntityHandler.players.get(i).position.copy().sub(position);
+            Player p = EntityHandler.players.get(i);
+            if(!p.isAlive)continue;
+            delta = p.position.copy().sub(position);
             float dist = delta.length();
 
             if(minDistance > dist){
@@ -138,4 +204,8 @@ public class Enemy extends Agent {
 
         return EntityHandler.players.get(minIndex);
     }
+
+    @Override
+    public float getDamage(){return damage;}
+
 }

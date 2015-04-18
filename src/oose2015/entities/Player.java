@@ -1,8 +1,10 @@
 package oose2015.entities;
 
 import oose2015.EntityHandler;
+import oose2015.VectorUtil;
 import oose2015.items.Armor;
 import oose2015.items.Weapon;
+import oose2015.states.GamePlayState;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -21,10 +23,14 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Player extends Agent implements KeyListener{
 
+    public static boolean debug = true;
+
     public Weapon weapon;
     public Armor armor;
 
-    public float speedForce;
+    private float nextAttackTime;
+    private boolean attacking;
+
     public int upKey, leftKey, rightKey, downKey,attackKey;
     public boolean upKeyDown, leftKeyDown, rightKeyDown, downKeyDown, attackKeyDown;
     
@@ -69,14 +75,19 @@ public class Player extends Agent implements KeyListener{
         rightKeyDown = false;
         attackKeyDown = false;
 
-        weapon = new Weapon(1f, 50f);
+        weapon = new Weapon(1f, 50f, 300f);
+
+        attacking = false;
+        nextAttackTime = 0f;
     }
     
     @Override
     protected void attack(){
+        nextAttackTime = GamePlayState.time + weapon.attackDelay;
+
     	for(Enemy enemy : EntityHandler.enemies){
-    		Vector2f delta = position.sub(enemy.position);
-    		if(delta.length() < weapon.attackRadius){
+    		float dist = VectorUtil.getDistanceToAgent(this,enemy);
+    		if(dist < weapon.attackRadius){
     			enemy.takeDamage(weapon.damage);
     		}
     	}
@@ -109,16 +120,46 @@ public class Player extends Agent implements KeyListener{
     
     @Override
     public void update(int dt){
-    	move(dt);
+        if(isAlive)
+    	    move(dt);
+
+        if(attackKeyDown && nextAttackTime < GamePlayState.time){
+            attacking = true;
+            attack();
+        }else if(nextAttackTime - weapon.attackDelay/2 < GamePlayState.time) //mini hack.. should be fixed with animation implementation
+            attacking = false;
     }
 
     @Override
     public void render(Graphics graphics){
-        graphics.setColor(Color.blue);
-        graphics.fillOval(position.x - size.x/2, position.y- size.x/2, size.x, size.y);
+        graphics.pushTransform();
+        graphics.translate(position.x, position.y);
+        graphics.rotate(0, 0, rotation);
 
-        if(attackKeyDown)
-            graphics.drawOval(position.x- (weapon.attackRadius + size.x)/2, position.y- (weapon.attackRadius + size.y)/2, weapon.attackRadius + size.x, weapon.attackRadius + size.y);
+
+        graphics.setColor(Color.red);
+
+        if(attacking)
+            graphics.fillOval(-(weapon.attackRadius + size.x) / 2, -(weapon.attackRadius + size.y) / 2, weapon.attackRadius + size.x, weapon.attackRadius + size.y);
+        else if(debug)
+            graphics.drawOval(-(weapon.attackRadius + size.x) / 2, -(weapon.attackRadius + size.y) / 2, weapon.attackRadius + size.x, weapon.attackRadius + size.y);
+
+
+        if(isAlive)
+            graphics.setColor(Color.blue);
+        else
+            graphics.setColor(Color.red);
+
+        graphics.fillOval(-size.x / 2, -size.x / 2, size.x, size.y);
+
+
+        graphics.popTransform();
+
+
+        if(debug && isAlive) {
+            graphics.setColor(Color.white);
+            graphics.drawString(curHealth + " / " + maxHealth, position.x + 10, position.y + 10);
+        }
     }
 
 	@Override
@@ -156,10 +197,9 @@ public class Player extends Agent implements KeyListener{
 			rightKeyDown = true;
 
         if(attackKey == key) {
-            attack();
             attackKeyDown = true;
         }
-	}
+    }
 
 	@Override
 	public void keyReleased(int key, char c) {
@@ -179,5 +219,6 @@ public class Player extends Agent implements KeyListener{
             attackKeyDown = false;
 	}
     
-    
+    @Override
+    public float getDamage(){return weapon.damage;}
 }
