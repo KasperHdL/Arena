@@ -168,14 +168,12 @@ public class Player extends Agent implements KeyListener{
 
     @Override
     public void collides(Entity other){
-        //if is gold then collect
+        //if is colliding with gold then collect
         if(other instanceof Gold){
-            System.out.println("found gold!");
             Gold g = (Gold) other;
             gold += g.value;
 
             EntityHandler.entities.remove(other);
-
         }
     }
 

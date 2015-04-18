@@ -1,5 +1,6 @@
 package oose2015.entities;
 
+import oose2015.World;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -27,11 +28,10 @@ public class Gold extends Entity {
 
         this.size = new Vector2f(10f,10f);
 
-        Random rnd = new Random();
 
-        this.rotation = rnd.nextFloat() * 360;
+        this.rotation = World.RANDOM.nextFloat() * 360;
 
-        float s = rnd.nextFloat() * 3 + 2;
+        float s = World.RANDOM.nextFloat() * 3 + 2;
         this.scale = new Vector2f(s,s);
 
         isSolid = false;

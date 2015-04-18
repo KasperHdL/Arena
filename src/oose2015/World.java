@@ -4,6 +4,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
+import java.util.Random;
+
 /**
  * Created by @Kasper on 18/04/2015
  * <p/>
@@ -20,6 +22,8 @@ public class World {
 
     EntityHandler entityHandler;
 
+    public static Random RANDOM;
+
     public static int time = 0;
 
     public World(GameContainer gameContainer, StateBasedGame stateBasedGame){
@@ -27,6 +31,8 @@ public class World {
         this.stateBasedGame = stateBasedGame;
 
         entityHandler = new EntityHandler(gameContainer.getInput());
+
+        RANDOM = new Random();
     }
 
     public void update(float dt){
