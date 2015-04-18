@@ -55,8 +55,8 @@ public class Enemy extends Agent {
 
         maxVelocity = 12f;
 
-        speedForce = 4f;
-        mass = 1f;
+        speedForce = 8f;
+        mass = 2f;
         goldDrop = 10;
 
       

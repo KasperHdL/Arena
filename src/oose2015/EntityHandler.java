@@ -2,6 +2,7 @@ package oose2015;
 
 import oose2015.entities.Enemy;
 import oose2015.entities.Entity;
+import oose2015.entities.MovableEntity;
 import oose2015.entities.Player;
 
 import org.newdawn.slick.Graphics;
@@ -58,9 +59,7 @@ public class EntityHandler {
             for (int j = i+1; j < entities.size(); j++) {
                 Entity other = entities.get(j);
 
-                Vector2f coll = CollisionUtil.collides(entity,other);
-                //TODO change to based mass based! (awesome)
-                entity.position.add(coll);
+                CollisionUtil.handleCollision(entity,other);
             }
         }
     }
