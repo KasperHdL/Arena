@@ -1,6 +1,7 @@
 package oose2015;
 
 import oose2015.entities.Agent;
+import oose2015.entities.Entity;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -16,8 +17,8 @@ import org.newdawn.slick.geom.Vector2f;
 public class VectorUtil {
 
 
-    public static float getDistanceToAgent(Agent agent, Agent other){
-        Vector2f delta = other.position.copy().sub(agent.position);
-        return delta.length() - agent.size.x/2 - other.size.x/2;
+    public static float getDistanceToEntity(Entity entity, Entity other){
+        Vector2f delta = other.position.copy().sub(entity.position);
+        return delta.length() - entity.size.x/2 - other.size.x/2;
     }
 }

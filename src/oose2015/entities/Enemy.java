@@ -75,7 +75,7 @@ public class Enemy extends Agent {
                     chasePlayer(target,dt);
             }else if(player != null){
 
-                float dist = VectorUtil.getDistanceToAgent(this, player);
+                float dist = VectorUtil.getDistanceToEntity(this, player);
 
 
                 //check distance
@@ -94,7 +94,7 @@ public class Enemy extends Agent {
 
     private void chasePlayer(Agent agent, int dt){
         Vector2f delta = target.position.copy().sub(position);
-        float dist = VectorUtil.getDistanceToAgent(this, agent);
+        float dist = VectorUtil.getDistanceToEntity(this, agent);
 
         if(dist < attackRadius){
             //attack
@@ -143,7 +143,7 @@ public class Enemy extends Agent {
                     float dist = Float.MAX_VALUE;
 
                     if(target != null)
-                        dist = VectorUtil.getDistanceToAgent(this, target);
+                        dist = VectorUtil.getDistanceToEntity(this, target);
 
                     //attack radius
                     halfRadius = attackRadius + size.x/2;

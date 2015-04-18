@@ -86,7 +86,7 @@ public class Player extends Agent implements KeyListener{
         nextAttackTime = GamePlayState.time + weapon.attackDelay;
 
     	for(Enemy enemy : EntityHandler.enemies){
-    		float dist = VectorUtil.getDistanceToAgent(this,enemy);
+    		float dist = VectorUtil.getDistanceToEntity(this, enemy);
     		if(dist < weapon.attackRadius){
     			enemy.takeDamage(weapon.damage);
     		}
