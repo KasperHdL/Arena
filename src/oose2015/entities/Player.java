@@ -2,6 +2,7 @@ package oose2015.entities;
 
 import oose2015.EntityHandler;
 import oose2015.VectorUtil;
+import oose2015.World;
 import oose2015.items.Armor;
 import oose2015.items.Weapon;
 import oose2015.states.GamePlayState;
@@ -76,7 +77,7 @@ public class Player extends Agent implements KeyListener{
         rightKeyDown = false;
         attackKeyDown = false;
 
-        weapon = new Weapon(10f, 50f, 300f);
+        weapon = new Weapon(1f, 50f, 300f);
 
         attacking = false;
         nextAttackTime = 0f;
@@ -84,7 +85,7 @@ public class Player extends Agent implements KeyListener{
     
     @Override
     protected void attack(){
-        nextAttackTime = GamePlayState.time + weapon.attackDelay;
+        nextAttackTime = World.time + weapon.attackDelay;
 
     	for(Enemy enemy : EntityHandler.enemies){
     		float dist = VectorUtil.getDistanceToEntity(this, enemy);
@@ -125,10 +126,10 @@ public class Player extends Agent implements KeyListener{
         if(isAlive)
     	    move(dt);
 
-        if(attackKeyDown && nextAttackTime < GamePlayState.time){
+        if(attackKeyDown && nextAttackTime < World.time){
             attacking = true;
             attack();
-        }else if(nextAttackTime - weapon.attackDelay/2 < GamePlayState.time) //mini hack.. should be fixed with animation implementation
+        }else if(nextAttackTime - weapon.attackDelay/2 < World.time) //mini hack.. should be fixed with animation implementation
             attacking = false;
     }
 

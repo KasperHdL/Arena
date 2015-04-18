@@ -3,6 +3,7 @@
 import oose2015.EntityHandler;
 
 import oose2015.VectorUtil;
+import oose2015.World;
 import oose2015.states.GamePlayState;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -98,9 +99,9 @@ public class Enemy extends Agent {
 
         if(dist < attackRadius){
             //attack
-            if(nextAttackTime < GamePlayState.time) {
+            if(nextAttackTime < World.time) {
                 agent.takeDamage(damage);
-                nextAttackTime = GamePlayState.time + attackDelay;
+                nextAttackTime = World.time + attackDelay;
             }
         }else if(dist > disengageRadius){
             //disengage
@@ -146,7 +147,7 @@ public class Enemy extends Agent {
 
                     //attack radius
                     halfRadius = attackRadius + size.x/2;
-                    if(nextAttackTime - 50 < GamePlayState.time && dist < attackRadius) {
+                    if(nextAttackTime - 50 < World.time && dist < attackRadius) {
                         graphics.setColor(Color.red);
                         graphics.fillOval(-halfRadius, -halfRadius, halfRadius*2, halfRadius*2);
                     }else

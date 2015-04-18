@@ -17,10 +17,9 @@ import org.newdawn.slick.geom.Vector2f;
 public class CollisionUtil {
 
     /**
-     * checks if two Entities is colliding, CURRENTLY ONLY CIRCLES! return zero vector if not colliding
+     * hanldes collision between two entities CURRENTLY ONLY CIRCLES
      * @param entity Entity
      * @param other Entity
-     * @return Vector2f that tell how much the entity has to be moved in order NOT to collide anymore
      */
     public static void handleCollision(Entity entity, Entity other){
 
