@@ -1,6 +1,7 @@
 package oose2015.states;
 
 import oose2015.EntityHandler;
+import oose2015.World;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -17,7 +18,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GamePlayState implements GameState {
 
-    EntityHandler entityHandler;
+    World world;
 
     @Override
     public int getID() {
@@ -26,24 +27,21 @@ public class GamePlayState implements GameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        world = new World(gameContainer, stateBasedGame);
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        entityHandler.render(graphics);
+        world.render(graphics);
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
-        entityHandler.update(dt);
+        world.update(dt);
     }
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        System.out.println("gameplay entered");
-        entityHandler = new EntityHandler(gameContainer.getInput());
-
-
     }
 
     @Override

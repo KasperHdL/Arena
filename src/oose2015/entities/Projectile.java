@@ -1,5 +1,7 @@
 package oose2015.entities;
 
+import oose2015.World;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
@@ -17,38 +19,52 @@ import org.newdawn.slick.Color;
 public class Projectile extends MovableEntity {
 	public Agent owner;
 	public Vector2f spawnPoint;
+	public float spawnTime;
 	public float range;
+	public Vector2f direction;
 
 	
 	public Projectile(Agent owner, float range){
-		System.out.println("Projectile Created");
+		name = "projectile";
 		this.owner = owner;
 		this.range = range;
 		rotation = owner.rotation;
-		spawnPoint = owner.position;
-		position = spawnPoint;
-		size = new Vector2f(2,2);
+		direction = new Vector2f(1,0).add(owner.rotation);
+		position = owner.position.copy().add(direction.copy().scale(owner.size.x/2));
+		spawnPoint = position;
+		size = new Vector2f(10,10);
+		spawnTime = World.time;
+		isSolid = false;
+		speedForce = 10f;
+		friction = 0.99f;
+		inertia = 0.999f;
 	}
 	
-	public void move(int dt){
-		Vector2f direction = new Vector2f(1,0);
-		
-		direction.add(rotation);
-		
+	@Override
+	protected void move(float dt){
     	direction.scale(speedForce/mass);
-    	acceleration.add(direction);
     	
-		super.move(dt);
+		super.move(dt,direction);
 		System.out.println(direction);
 	}
 	
-	public void update(int dt){
+
+	
+	@Override
+	public void update(float dt){
     	move(dt);
 	}
+
 	
+	@Override
 	public void render(Graphics graphics){
-		graphics.setColor(Color.yellow);
-		graphics.fillOval(position.x - size.x/2, position.y - size.x/2, size.x, size.y);
+		graphics.pushTransform();
+		graphics.translate(position.x, position.y);
+		graphics.rotate(0,0,rotation);
+		graphics.setColor(Color.red);
+	
+		graphics.fillOval(-size.x/2, -size.x/2, size.x, size.y);
+		graphics.popTransform();
 	}
 	
 }

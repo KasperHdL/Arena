@@ -23,18 +23,19 @@ import java.util.ArrayList;
 
 public class EntityHandler {
 
-    public static ArrayList<Player> players;
-    public static ArrayList<Enemy> enemies;
-    public static ArrayList<Projectile> projectiles;
+    public static ArrayList<Player> players; //for reference
+    public static ArrayList<Enemy> enemies; //for reference
+
+    public static ArrayList<Entity> entities;//contains every entity player, enemy and all others
 
     /**
      * Constructor for the EntityHandler
      * @param input send Input from the main class
      */
     public EntityHandler(Input input){
-        enemies = new ArrayList<Enemy>(20);
-        players = new ArrayList<Player>(4);
-        projectiles = new ArrayList<Projectile>();
+        entities = new ArrayList<Entity>(50);
+        enemies = new ArrayList<Enemy>();
+        players = new ArrayList<Player>();
 
         Player p = new Player(new Vector2f(10,10), Input.KEY_UP, Input.KEY_DOWN, Input.KEY_LEFT, Input.KEY_RIGHT, Input.KEY_SPACE, Input.KEY_LALT );
         input.addKeyListener(p);
