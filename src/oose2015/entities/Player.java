@@ -1,11 +1,10 @@
 package oose2015.entities;
 
 import oose2015.EntityHandler;
-import oose2015.VectorUtil;
+import oose2015.VectorUtility;
 import oose2015.World;
 import oose2015.items.Armor;
 import oose2015.items.Weapon;
-import oose2015.states.GamePlayState;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -92,7 +91,7 @@ public class Player extends Agent implements KeyListener{
         nextAttackTime = World.time + weapon.attackDelay;
 
     	for(Enemy enemy : EntityHandler.enemies){
-    		float dist = VectorUtil.getDistanceToEntity(this, enemy);
+    		float dist = VectorUtility.getDistanceToEntity(this, enemy);
     		if(dist < weapon.attackRadius){
     			enemy.takeDamage(weapon.damage);
     		}

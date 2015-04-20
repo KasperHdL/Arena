@@ -2,9 +2,8 @@
 
 import oose2015.EntityHandler;
 
-import oose2015.VectorUtil;
+import oose2015.VectorUtility;
 import oose2015.World;
-import oose2015.states.GamePlayState;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -76,7 +75,7 @@ public class Enemy extends Agent {
                     chasePlayer(target,dt);
             }else if(player != null){
 
-                float dist = VectorUtil.getDistanceToEntity(this, player);
+                float dist = VectorUtility.getDistanceToEntity(this, player);
 
 
                 //check distance
@@ -95,7 +94,7 @@ public class Enemy extends Agent {
 
     private void chasePlayer(Agent agent, float dt){
         Vector2f delta = target.position.copy().sub(position);
-        float dist = VectorUtil.getDistanceToEntity(this, agent);
+        float dist = VectorUtility.getDistanceToEntity(this, agent);
 
         if(dist < attackRadius){
             //attack
@@ -143,7 +142,7 @@ public class Enemy extends Agent {
                     float dist = Float.MAX_VALUE;
 
                     if(target != null)
-                        dist = VectorUtil.getDistanceToEntity(this, target);
+                        dist = VectorUtility.getDistanceToEntity(this, target);
 
                     //attack radius
                     halfRadius = attackRadius + size.x/2;

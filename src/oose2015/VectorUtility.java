@@ -13,7 +13,7 @@ import org.newdawn.slick.geom.Vector2f;
  * ---
  */
 
-public class VectorUtil {
+public class VectorUtility {
 
 
     /**
