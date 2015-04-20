@@ -25,8 +25,8 @@ public class Player extends Agent implements KeyListener{
     public Armor armor;
 
     public float speedForce;
-    public int upKey, leftKey, rightKey, downKey,attackKey;
-    public boolean upKeyDown, leftKeyDown, rightKeyDown, downKeyDown, attackKeyDown;
+    public int upKey, leftKey, rightKey, downKey,attackKey,rangedKey;
+    public boolean upKeyDown, leftKeyDown, rightKeyDown, downKeyDown, attackKeyDown, rangedKeyDown;
     
     public Vector2f input;
 
@@ -40,7 +40,7 @@ public class Player extends Agent implements KeyListener{
      * @param rightKey right key
      * @param attackKey attack key
      */
-    public Player(Vector2f position, int upKey, int downKey, int leftKey, int rightKey, int attackKey){
+    public Player(Vector2f position, int upKey, int downKey, int leftKey, int rightKey, int attackKey, int rangedKey){
         System.out.println("Player created");
 
         curHealth = 100;
@@ -62,12 +62,14 @@ public class Player extends Agent implements KeyListener{
         this.leftKey = leftKey;
         this.rightKey = rightKey;
         this.attackKey = attackKey;
-
+        this.rangedKey = rangedKey;
+        
         upKeyDown = false;
         downKeyDown = false;
         leftKeyDown = false;
         rightKeyDown = false;
         attackKeyDown = false;
+        rangedKeyDown = false;
 
         weapon = new Weapon(1f, 50f);
     }
@@ -80,6 +82,11 @@ public class Player extends Agent implements KeyListener{
     			enemy.takeDamage(weapon.damage);
     		}
     	}
+    }
+    
+    protected void rangedAttack(){
+    	Projectile p = new Projectile(this, weapon.attackRadius);
+    	EntityHandler.projectiles.add(p);
     }
     
     @Override
@@ -159,6 +166,11 @@ public class Player extends Agent implements KeyListener{
             attack();
             attackKeyDown = true;
         }
+        
+        if(rangedKey == key) {
+        	rangedAttack();
+        	rangedKeyDown = true;
+        }
 	}
 
 	@Override
@@ -177,6 +189,9 @@ public class Player extends Agent implements KeyListener{
 
         if(attackKey == key)
             attackKeyDown = false;
+        
+        if(rangedKey == key)
+        	rangedKeyDown = false;
 	}
     
     
