@@ -33,10 +33,8 @@ public class CollisionUtility {
         entity.collides(other);
         other.collides(entity);
 
-        if(!entity.isSolid || !other.isSolid){ 
-        	System.out.println(entity.name + other.name);
-        	return;
-        }
+        if(!entity.isSolid || !other.isSolid) return;
+
 
         delta.normalise();
         delta.scale(dist);

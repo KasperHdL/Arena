@@ -45,7 +45,6 @@ public class Projectile extends MovableEntity {
     	direction.scale(speedForce/mass);
     	
 		super.move(dt,direction);
-		System.out.println(direction);
 	}
 	
 
