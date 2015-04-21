@@ -29,17 +29,11 @@ public class EntityHandler {
 
     /**
      * Constructor for the EntityHandler
-     * @param input send Input from the main class
      */
-    public EntityHandler(Input input){
+    public EntityHandler(){
         entities = new ArrayList<Entity>(50);
         enemies = new ArrayList<Enemy>();
         players = new ArrayList<Player>();
-
-        Player p = new Player(new Vector2f(10,10), Input.KEY_UP, Input.KEY_DOWN, Input.KEY_LEFT, Input.KEY_RIGHT, Input.KEY_SPACE, Input.KEY_LCONTROL);
-        input.addKeyListener(p);
-
-        new Enemy(new Vector2f(0,0));
     }
 
     public void update(float dt){

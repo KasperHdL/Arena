@@ -25,6 +25,7 @@ public class Enemy extends Agent {
     float damage = 1f;
 
     int goldDrop;
+    int expDrop;
 
     float engageRadius = 100f;
     float disengageRadius = 150f;
@@ -42,22 +43,25 @@ public class Enemy extends Agent {
      * Constructor for Enemy
      * @param position spawn position
      */
-    public Enemy(Vector2f position){
+    public Enemy(Vector2f position,int level){
         System.out.println("Enemy created");
         EntityHandler.enemies.add(this);
 
         curHealth = 10;
         maxHealth = curHealth;
 
-        size = new Vector2f(25.0f, 25.0f);
-
+        this.level = level;
         this.position = position;
+
+        size = new Vector2f(level * 5f + 5f,level * 5f + 5f );
+
 
         maxVelocity = 12f;
 
         speedForce = 8f;
         mass = 2f;
-        goldDrop = 10;
+        goldDrop = level * 5;
+        expDrop = level * 10;
 
       
     }
@@ -179,6 +183,7 @@ public class Enemy extends Agent {
         if(debug && isAlive) {
             graphics.setColor(Color.white);
             graphics.drawString(curHealth + " / " + maxHealth, position.x + 10, position.y + 10);
+            graphics.drawString("level " + level, position.x + 10, position.y - 10);
         }
     }
 

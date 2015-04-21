@@ -9,6 +9,10 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Main extends StateBasedGame
 {
 
+	public static int SCREEN_WIDTH = 640;
+	public static int SCREEN_HEIGHT = 480;
+
+
 	public Main(String gamename){
 		super(gamename);
 	}
@@ -27,7 +31,7 @@ public class Main extends StateBasedGame
 		{
 			AppGameContainer appgc;
 			appgc = new AppGameContainer(new Main("Simple Slick Game"));
-			appgc.setDisplayMode(640, 480, false);
+			appgc.setDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, false);
 			appgc.start();
 		}
 		catch (SlickException ex)

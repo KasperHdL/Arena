@@ -25,7 +25,10 @@ public class Player extends Agent implements KeyListener{
 
     public static boolean debug = true;
 
-    public int gold = 0;
+    public int gold;
+    public int exp;
+    private int lastLevelExp;
+    private int nextLevelExp;
 
     public Weapon weapon;
     public Armor armor;
@@ -66,6 +69,13 @@ public class Player extends Agent implements KeyListener{
         speedForce = 6f;
         mass = 1f;
 
+        gold = 0;
+        exp = 0;
+
+        level = 1;
+        lastLevelExp = 0;
+        nextLevelExp = (level*level)*100;
+
         this.upKey = upKey;
         this.downKey = downKey;
         this.leftKey = leftKey;
@@ -93,7 +103,10 @@ public class Player extends Agent implements KeyListener{
     	for(Enemy enemy : EntityHandler.enemies){
     		float dist = VectorUtility.getDistanceToEntity(this, enemy);
     		if(dist < weapon.attackRadius){
-    			enemy.takeDamage(weapon.damage);
+    			if(enemy.takeDamage(weapon.damage)){
+                    //enemy killed
+                    addExp(enemy.expDrop);
+                }
     		}
     	}
     }
@@ -101,7 +114,19 @@ public class Player extends Agent implements KeyListener{
     protected void rangedAttack(){
     	new Projectile(this, weapon.attackRadius);
     }
-    
+
+    public void addExp(int value){
+        exp += value;
+
+        if(exp >= nextLevelExp){
+            level++;
+
+            lastLevelExp = nextLevelExp;
+            nextLevelExp = (level*level)*100;
+        }
+
+    }
+
     @Override
     protected void move(float dt){
 
@@ -170,6 +195,8 @@ public class Player extends Agent implements KeyListener{
             graphics.setColor(Color.white);
             graphics.drawString(curHealth + " / " + maxHealth, position.x + 10, position.y + 10);
             graphics.drawString("gold: " + gold, position.x + 10, position.y - 10);
+            graphics.drawString("exp: " + exp + " / " + nextLevelExp, position.x + 10, position.y - 30);
+            graphics.drawString("level " + level, position.x + 10, position.y - 50);
         }
     }
 
