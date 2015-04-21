@@ -1,9 +1,9 @@
 	package oose2015.entities;
 
 import oose2015.EntityHandler;
-
 import oose2015.VectorUtility;
 import oose2015.World;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -184,8 +184,6 @@ public class Enemy extends Agent {
             graphics.drawString("level " + level, position.x + 10, position.y - 10);
         }
     }
-
-
 
 
     private Player getClosestPlayer(){

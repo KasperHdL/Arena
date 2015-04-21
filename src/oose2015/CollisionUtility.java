@@ -17,7 +17,7 @@ import org.newdawn.slick.geom.Vector2f;
 public class CollisionUtility {
 
     /**
-     * hanldes collision between two entities CURRENTLY ONLY CIRCLES
+     * handles collision between two entities CURRENTLY ONLY CIRCLES
      * @param entity Entity
      * @param other Entity
      */

@@ -43,4 +43,8 @@ public class Entity {
     public void collides(Entity other){
 
     }
+
+	public boolean takeDamage(float damage) {
+		return false;
+	}
 }

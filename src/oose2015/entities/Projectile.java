@@ -1,5 +1,6 @@
 package oose2015.entities;
 
+import oose2015.EntityHandler;
 import oose2015.World;
 
 import org.newdawn.slick.Graphics;
@@ -18,16 +19,19 @@ import org.newdawn.slick.Color;
 
 public class Projectile extends MovableEntity {
 	public Agent owner;
+	public Enemy hitEnemy;
 	public Vector2f spawnPoint;
 	public float spawnTime;
 	public float range;
 	public Vector2f direction;
+	public float damage;
 
 	
-	public Projectile(Agent owner, float range){
+	public Projectile(Agent owner, float range, float damage){
 		name = "projectile";
 		this.owner = owner;
 		this.range = range;
+		this.damage = damage;
 		rotation = owner.rotation;
 		direction = new Vector2f(1,0).add(owner.rotation);
 		position = owner.position.copy().add(direction.copy().scale(owner.size.x/2));
@@ -47,7 +51,20 @@ public class Projectile extends MovableEntity {
 		super.move(dt,direction);
 	}
 	
-
+    @Override
+    public void collides(Entity other){
+        //if is colliding with gold then collect
+        boolean killCheck;
+    	if(other instanceof Enemy){
+    		hitEnemy = (Enemy) other;
+        	killCheck = other.takeDamage(damage);
+        	if(killCheck)
+        		if(owner instanceof Player){
+        			Player shooter = (Player) owner;
+        			shooter.addExp(hitEnemy.expDrop);
+        		}
+        }
+    }
 	
 	@Override
 	public void update(float dt){
