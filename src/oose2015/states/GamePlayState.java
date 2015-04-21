@@ -101,7 +101,10 @@ public class GamePlayState implements GameState {
 
     @Override
     public void keyPressed(int i, char c) {
-
+        if(i == Input.KEY_D){
+            //toggle debug mode
+            World.DEBUG_MODE = !World.DEBUG_MODE;
+        }
     }
 
     @Override

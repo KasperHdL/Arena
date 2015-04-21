@@ -21,6 +21,8 @@ import java.util.Random;
  */
 
 public class World {
+    public static boolean DEBUG_MODE = true;
+
     GameContainer gameContainer;
     StateBasedGame stateBasedGame;
 
@@ -31,7 +33,7 @@ public class World {
     public static int time = 0;
 
     private int nextWave = 0;
-    private int waveDelay = 10000;
+    private int waveDelay = 5000;
     private int waveCount = 0;
 
     public World(GameContainer gameContainer, StateBasedGame stateBasedGame){
@@ -41,7 +43,7 @@ public class World {
 
         entityHandler = new EntityHandler();
 
-        Player p = new Player(new Vector2f(10,10), Input.KEY_UP, Input.KEY_DOWN, Input.KEY_LEFT, Input.KEY_RIGHT, Input.KEY_SPACE, Input.KEY_LCONTROL);
+        Player p = new Player(new Vector2f(Main.SCREEN_WIDTH/2,Main.SCREEN_HEIGHT/2), Input.KEY_UP, Input.KEY_DOWN, Input.KEY_LEFT, Input.KEY_RIGHT, Input.KEY_SPACE, Input.KEY_LCONTROL);
         gameContainer.getInput().addKeyListener(p);
 
 
@@ -55,8 +57,8 @@ public class World {
 
         //TEMPORARY
             boolean allDead = true;
-            for (int i = 0; i < entityHandler.enemies.size(); i++) {
-                if(entityHandler.enemies.get(i).isAlive){
+            for (int i = 0; i < EntityHandler.enemies.size(); i++) {
+                if(EntityHandler.enemies.get(i).isAlive){
                     allDead = false;
                     break;
                 }

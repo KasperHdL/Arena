@@ -20,8 +20,6 @@ import org.newdawn.slick.geom.Vector2f;
  */
 
 public class Enemy extends Agent {
-	public static boolean debug = true;
-
     float damage = 1f;
 
     int goldDrop;
@@ -59,7 +57,7 @@ public class Enemy extends Agent {
         maxVelocity = 12f;
 
         speedForce = 8f;
-        mass = 2f;
+        mass = level + 1f;
         goldDrop = level * 5;
         expDrop = level * 10;
 
@@ -139,7 +137,7 @@ public class Enemy extends Agent {
             graphics.setColor(Color.black);
             graphics.drawLine(0,0,size.x/2,0);
 
-            if(debug){
+            if(World.DEBUG_MODE){
                 float halfRadius;
 
                 if(isChasing){
@@ -180,7 +178,7 @@ public class Enemy extends Agent {
 
         graphics.popTransform();
 
-        if(debug && isAlive) {
+        if(World.DEBUG_MODE && isAlive) {
             graphics.setColor(Color.white);
             graphics.drawString(curHealth + " / " + maxHealth, position.x + 10, position.y + 10);
             graphics.drawString("level " + level, position.x + 10, position.y - 10);

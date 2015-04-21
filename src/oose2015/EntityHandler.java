@@ -5,8 +5,6 @@ import oose2015.entities.Entity;
 import oose2015.entities.Player;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
 

@@ -23,8 +23,6 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Player extends Agent implements KeyListener{
 
-    public static boolean debug = true;
-
     public int gold;
     public int exp;
     private int lastLevelExp;
@@ -174,10 +172,11 @@ public class Player extends Agent implements KeyListener{
 
         graphics.setColor(Color.red);
 
+        float halfRad = weapon.attackRadius + size.x / 2;
         if(attacking)
-            graphics.fillOval(-(weapon.attackRadius + size.x) / 2, -(weapon.attackRadius + size.y) / 2, weapon.attackRadius + size.x, weapon.attackRadius + size.y);
-        else if(debug)
-            graphics.drawOval(-(weapon.attackRadius + size.x) / 2, -(weapon.attackRadius + size.y) / 2, weapon.attackRadius + size.x, weapon.attackRadius + size.y);
+            graphics.fillOval(-halfRad, -halfRad, halfRad * 2,halfRad * 2);
+        else if(World.DEBUG_MODE)
+            graphics.drawOval(-halfRad, -halfRad, halfRad * 2,halfRad * 2);
 
 
         if(isAlive)
@@ -191,7 +190,7 @@ public class Player extends Agent implements KeyListener{
         graphics.popTransform();
 
 
-        if(debug && isAlive) {
+        if(World.DEBUG_MODE && isAlive) {
             graphics.setColor(Color.white);
             graphics.drawString(curHealth + " / " + maxHealth, position.x + 10, position.y + 10);
             graphics.drawString("gold: " + gold, position.x + 10, position.y - 10);
