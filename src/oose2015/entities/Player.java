@@ -172,14 +172,15 @@ public class Player extends Agent implements KeyListener{
     
     @Override
     public void update(float dt){
-        if(isAlive)
-    	    move(dt);
+        if(isAlive) {
+            move(dt);
 
-        if(attackKeyDown && nextAttackTime < World.TIME){
-            attacking = true;
-            attack();
-        }else if(nextAttackTime - weapon.attackDelay/2 < World.TIME) //mini hack.. should be fixed with animation implementation
-            attacking = false;
+            if (attackKeyDown && nextAttackTime < World.TIME) {
+                attacking = true;
+                attack();
+            } else if (nextAttackTime - weapon.attackDelay / 2 < World.TIME) //mini hack.. should be fixed with animation implementation
+                attacking = false;
+        }
     }
 
     @Override
@@ -277,6 +278,7 @@ public class Player extends Agent implements KeyListener{
             	attacking = false;
             }
         }
+
 
         else if(enterKey == key){
             checkExits();
