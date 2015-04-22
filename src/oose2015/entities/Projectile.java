@@ -19,7 +19,6 @@ import org.newdawn.slick.Color;
 
 public class Projectile extends MovableEntity {
 	public Agent owner;
-	public Enemy hitEnemy;
 	public Vector2f spawnPoint;
 	public float spawnTime;
 	public float range;
@@ -55,13 +54,15 @@ public class Projectile extends MovableEntity {
     public void collides(Entity other){
         //if is colliding with gold then collect
     	if(other instanceof Enemy){
-    		hitEnemy = (Enemy) other;
-        	boolean killCheck = other.takeDamage(damage);
-        	if(killCheck)
-        		if(owner instanceof Player){
-        			Player shooter = (Player) owner;
-        			shooter.addExp(hitEnemy.expDrop);
-        		}
+    		Enemy enemy = (Enemy) other;
+        	if(enemy.takeDamage(damage)) {
+				if (owner instanceof Player) {
+					Player shooter = (Player) owner;
+					shooter.addExp(enemy.expDrop);
+				}
+			}
+
+			EntityHandler.entities.remove(this);
         }
     }
 	

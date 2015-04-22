@@ -120,7 +120,7 @@ public class Player extends Agent implements KeyListener{
     }
     
     protected void rangedAttack(){
-        nextAttackTime = World.time + weapon.attackDelay;
+        nextAttackTime = World.TIME + weapon.attackDelay;
     	new Projectile(this, weapon.attackRadius, weapon.damage);
     }
 
@@ -266,12 +266,11 @@ public class Player extends Agent implements KeyListener{
 
         else if(attackKey == key)
             attackKeyDown = true;
-        }
         
-        if(rangedKey == key) {
+        else if(rangedKey == key) {
         	rangedAttack();
         	rangedKeyDown = true;
-            if(nextAttackTime < World.time){
+            if(nextAttackTime < World.TIME){
                 attacking = true;
                 rangedAttack();
             } else {
