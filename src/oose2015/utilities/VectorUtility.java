@@ -1,4 +1,4 @@
-package oose2015;
+package oose2015.utilities;
 
 import oose2015.entities.Entity;
 import org.newdawn.slick.geom.Vector2f;

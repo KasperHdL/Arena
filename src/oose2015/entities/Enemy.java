@@ -1,7 +1,6 @@
 	package oose2015.entities;
 
-import oose2015.EntityHandler;
-import oose2015.VectorUtility;
+import oose2015.utilities.VectorUtility;
 import oose2015.World;
 
 import org.newdawn.slick.Color;
@@ -120,7 +119,7 @@ public class Enemy extends Agent {
 
         rotation = (float)acceleration.getTheta();
 
-        super.move(dt,input);
+        super.move(dt, input);
     }
 
 

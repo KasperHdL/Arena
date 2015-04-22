@@ -1,8 +1,8 @@
 package oose2015.entities;
 
-import oose2015.CollisionUtility;
+import oose2015.utilities.CollisionUtility;
 import oose2015.EntityHandler;
-import oose2015.VectorUtility;
+import oose2015.utilities.VectorUtility;
 import oose2015.World;
 import oose2015.items.Armor;
 import oose2015.items.Weapon;
