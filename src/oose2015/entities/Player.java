@@ -33,7 +33,7 @@ public class Player extends Agent implements KeyListener{
     public Armor armor;
     
     private float nextAttackTime;
-    private boolean attacking;
+    private boolean drawAttack;
 
     //controls
     public int      upKey,
@@ -100,7 +100,7 @@ public class Player extends Agent implements KeyListener{
 
         weapon = new Weapon(1f, 50f, 300f);
 
-        attacking = false;
+        drawAttack = false;
         nextAttackTime = 0f;
     }
     
@@ -175,11 +175,14 @@ public class Player extends Agent implements KeyListener{
         if(isAlive) {
             move(dt);
 
+            if(rangedKeyDown && nextAttackTime < World.TIME)
+                rangedAttack();
+
             if (attackKeyDown && nextAttackTime < World.TIME) {
-                attacking = true;
+                drawAttack = true;
                 attack();
             } else if (nextAttackTime - weapon.attackDelay / 2 < World.TIME) //mini hack.. should be fixed with animation implementation
-                attacking = false;
+                drawAttack = false;
         }
     }
 
@@ -193,7 +196,7 @@ public class Player extends Agent implements KeyListener{
         graphics.setColor(Color.red);
 
         float halfRad = weapon.attackRadius + size.x / 2;
-        if(attacking)
+        if(drawAttack)
             graphics.fillOval(-halfRad, -halfRad, halfRad * 2,halfRad * 2);
         else if(World.DEBUG_MODE)
             graphics.drawOval(-halfRad, -halfRad, halfRad * 2, halfRad * 2);
@@ -269,14 +272,7 @@ public class Player extends Agent implements KeyListener{
             attackKeyDown = true;
         
         else if(rangedKey == key) {
-        	rangedAttack();
         	rangedKeyDown = true;
-            if(nextAttackTime < World.TIME){
-                attacking = true;
-                rangedAttack();
-            } else {
-            	attacking = false;
-            }
         }
 
 
