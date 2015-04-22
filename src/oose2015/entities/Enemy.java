@@ -137,22 +137,15 @@ public class Enemy extends Agent {
             graphics.setColor(Color.black);
             graphics.drawLine(0,0,size.x/2,0);
 
+            float halfRadius;
+            float dist = Float.MAX_VALUE;
+
+            if(target != null)
+                dist = VectorUtility.getDistanceToEntity(this, target);
+
             if(World.DEBUG_MODE){
-                float halfRadius;
 
                 if(isChasing){
-                    float dist = Float.MAX_VALUE;
-
-                    if(target != null)
-                        dist = VectorUtility.getDistanceToEntity(this, target);
-
-                    //attack radius
-                    halfRadius = attackRadius + size.x/2;
-                    if(nextAttackTime - 50 < World.TIME && dist < attackRadius) {
-                        graphics.setColor(Color.red);
-                        graphics.fillOval(-halfRadius, -halfRadius, halfRadius*2, halfRadius*2);
-                    }else
-                        graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
 
                     //disengage radius
                     halfRadius = disengageRadius + size.x/2;
@@ -165,6 +158,15 @@ public class Enemy extends Agent {
                     graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
                 }
             }
+
+            //attack radius
+            halfRadius = attackRadius + size.x/2;
+            if(nextAttackTime - 50 < World.TIME && dist < attackRadius) {
+                graphics.setColor(Color.red);
+                graphics.fillOval(-halfRadius, -halfRadius, halfRadius*2, halfRadius*2);
+            }else if(World.DEBUG_MODE)
+                graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
+
         }else{
 
             graphics.setColor(new Color(200,0,0,127));
