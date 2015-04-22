@@ -21,6 +21,8 @@ public class Agent extends MovableEntity {
      * The Agent takes damage ie. subtracts damage from health and checks if it is still alive
      * @param damage damage
      */
+    
+    @Override
     public boolean takeDamage(float damage){
         if(!isAlive) return false;
 

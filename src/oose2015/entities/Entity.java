@@ -51,4 +51,8 @@ public class Entity {
 
         return name;
     }
+
+	public boolean takeDamage(float damage) {
+		return false;
+	}
 }
