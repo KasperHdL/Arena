@@ -46,7 +46,7 @@ public class Entity {
 
     @Override
     public String toString(){
-        if(name.equals(""))
+        if(name == null)
             return super.toString();
 
         return name;
