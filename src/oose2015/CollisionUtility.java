@@ -17,7 +17,19 @@ import org.newdawn.slick.geom.Vector2f;
 public class CollisionUtility {
 
     /**
-     * hanldes collision between two entities CURRENTLY ONLY CIRCLES
+     * checks if two entities is colliding CURRENTLY ONLY CIRCLES
+     * @param entity Entity
+     * @param other Entity
+     * @return boolean if is colliding
+     */
+    public static boolean checkCollision(Entity entity, Entity other){
+        Vector2f delta = other.position.copy().sub(entity.position);
+        float dist = delta.length() - entity.size.x/2 - other.size.x/2;
+        return dist <= 0;
+    }
+
+    /**
+     * handles collision between two entities CURRENTLY ONLY CIRCLES
      * @param entity Entity
      * @param other Entity
      */
@@ -45,6 +57,9 @@ public class CollisionUtility {
             entity.position.add(delta);
         }
     }
+
+
+
     private static void pushBasedOnMass(Vector2f delta, MovableEntity entity, MovableEntity other){
         float totalMass = entity.mass + other.mass;
         float eRatio = (other.mass/totalMass);

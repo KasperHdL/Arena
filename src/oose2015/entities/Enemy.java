@@ -43,7 +43,7 @@ public class Enemy extends Agent {
      */
     public Enemy(Vector2f position,int level){
         System.out.println("Enemy created");
-        EntityHandler.enemies.add(this);
+        World.ENEMIES.add(this);
 
         curHealth = 10;
         maxHealth = curHealth;
@@ -100,9 +100,9 @@ public class Enemy extends Agent {
 
         if(dist < attackRadius){
             //attack
-            if(nextAttackTime < World.time) {
+            if(nextAttackTime < World.TIME) {
                 agent.takeDamage(damage);
-                nextAttackTime = World.time + attackDelay;
+                nextAttackTime = World.TIME + attackDelay;
             }
         }else if(dist > disengageRadius){
             //disengage
@@ -148,7 +148,7 @@ public class Enemy extends Agent {
 
                     //attack radius
                     halfRadius = attackRadius + size.x/2;
-                    if(nextAttackTime - 50 < World.time && dist < attackRadius) {
+                    if(nextAttackTime - 50 < World.TIME && dist < attackRadius) {
                         graphics.setColor(Color.red);
                         graphics.fillOval(-halfRadius, -halfRadius, halfRadius*2, halfRadius*2);
                     }else
@@ -189,13 +189,13 @@ public class Enemy extends Agent {
 
 
     private Player getClosestPlayer(){
-        Vector2f delta = EntityHandler.players.get(0).position.copy().sub(position);
+        Vector2f delta = World.PLAYERS.get(0).position.copy().sub(position);
 
         float minDistance = delta.distance(position);
         int minIndex = 0;
 
-        for (int i = 1; i < EntityHandler.players.size(); i++) {
-            Player p = EntityHandler.players.get(i);
+        for (int i = 1; i < World.PLAYERS.size(); i++) {
+            Player p = World.PLAYERS.get(i);
             if(!p.isAlive)continue;
             delta = p.position.copy().sub(position);
             float dist = delta.length();
@@ -206,7 +206,7 @@ public class Enemy extends Agent {
             }
         }
 
-        return EntityHandler.players.get(minIndex);
+        return World.PLAYERS.get(minIndex);
     }
 
     @Override

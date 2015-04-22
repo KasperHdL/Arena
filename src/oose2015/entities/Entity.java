@@ -43,4 +43,12 @@ public class Entity {
     public void collides(Entity other){
 
     }
+
+    @Override
+    public String toString(){
+        if(name.equals(""))
+            return super.toString();
+
+        return name;
+    }
 }

@@ -20,9 +20,6 @@ import java.util.ArrayList;
 
 public class EntityHandler {
 
-    public static ArrayList<Player> players; //for reference
-    public static ArrayList<Enemy> enemies; //for reference
-
     public static ArrayList<Entity> entities;//contains every entity player, enemy and all others
 
     /**
@@ -30,15 +27,12 @@ public class EntityHandler {
      */
     public EntityHandler(){
         entities = new ArrayList<Entity>(50);
-        enemies = new ArrayList<Enemy>();
-        players = new ArrayList<Player>();
     }
 
     public void update(float dt){
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
             entity.update(dt);
-
         }
     }
 

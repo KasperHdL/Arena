@@ -1,5 +1,6 @@
 package oose2015.entities;
 
+import oose2015.CollisionUtility;
 import oose2015.EntityHandler;
 import oose2015.VectorUtility;
 import oose2015.World;
@@ -33,11 +34,26 @@ public class Player extends Agent implements KeyListener{
     
     private float nextAttackTime;
     private boolean attacking;
-    public int upKey, leftKey, rightKey, downKey,attackKey,rangedKey;
-    public boolean upKeyDown, leftKeyDown, rightKeyDown, downKeyDown, attackKeyDown, rangedKeyDown;
+
+    //controls
+    public int      upKey,
+                    leftKey,
+                    rightKey,
+                    downKey,
+                    attackKey,
+                    rangedKey,
+                    enterKey;
+
+    private boolean  upKeyDown = false,
+                    leftKeyDown = false,
+                    rightKeyDown= false,
+                    downKeyDown = false,
+                    attackKeyDown = false,
+                    rangedKeyDown = false,
+                    enterKeyDown = false;
 
     
-    public Vector2f input;
+    private Vector2f input;
 
 
     /**
@@ -49,11 +65,11 @@ public class Player extends Agent implements KeyListener{
      * @param rightKey right key
      * @param attackKey attack key
      */
-    public Player(Vector2f position, int upKey, int downKey, int leftKey, int rightKey, int attackKey, int rangedKey){
+    public Player(Vector2f position, int upKey, int downKey, int leftKey, int rightKey, int attackKey, int rangedKey,int enterKey){
         System.out.println("Player created");
-        EntityHandler.players.add(this);
+        World.PLAYERS.add(this);
         
-        name = "player";
+        name = "Player";
 
         curHealth = 100;
         maxHealth = curHealth;
@@ -80,13 +96,7 @@ public class Player extends Agent implements KeyListener{
         this.rightKey = rightKey;
         this.attackKey = attackKey;
         this.rangedKey = rangedKey;
-        
-        upKeyDown = false;
-        downKeyDown = false;
-        leftKeyDown = false;
-        rightKeyDown = false;
-        attackKeyDown = false;
-        rangedKeyDown = false;
+        this.enterKey = enterKey;
 
         weapon = new Weapon(1f, 50f, 300f);
 
@@ -96,9 +106,9 @@ public class Player extends Agent implements KeyListener{
     
     @Override
     protected void attack(){
-        nextAttackTime = World.time + weapon.attackDelay;
+        nextAttackTime = World.TIME + weapon.attackDelay;
 
-    	for(Enemy enemy : EntityHandler.enemies){
+    	for(Enemy enemy : World.ENEMIES){
     		float dist = VectorUtility.getDistanceToEntity(this, enemy);
     		if(dist < weapon.attackRadius){
     			if(enemy.takeDamage(weapon.damage)){
@@ -111,6 +121,14 @@ public class Player extends Agent implements KeyListener{
     
     protected void rangedAttack(){
     	new Projectile(this, weapon.attackRadius);
+    }
+
+    private void checkExits(){
+        for (int i = 0; i < World.EXITS.size(); i++) {
+            if(CollisionUtility.checkCollision(this,World.EXITS.get(i))){
+                World.enteredExit(this);
+            }
+        }
     }
 
     public void addExp(int value){
@@ -156,10 +174,10 @@ public class Player extends Agent implements KeyListener{
         if(isAlive)
     	    move(dt);
 
-        if(attackKeyDown && nextAttackTime < World.time){
+        if(attackKeyDown && nextAttackTime < World.TIME){
             attacking = true;
             attack();
-        }else if(nextAttackTime - weapon.attackDelay/2 < World.time) //mini hack.. should be fixed with animation implementation
+        }else if(nextAttackTime - weapon.attackDelay/2 < World.TIME) //mini hack.. should be fixed with animation implementation
             attacking = false;
     }
 
@@ -176,7 +194,7 @@ public class Player extends Agent implements KeyListener{
         if(attacking)
             graphics.fillOval(-halfRad, -halfRad, halfRad * 2,halfRad * 2);
         else if(World.DEBUG_MODE)
-            graphics.drawOval(-halfRad, -halfRad, halfRad * 2,halfRad * 2);
+            graphics.drawOval(-halfRad, -halfRad, halfRad * 2, halfRad * 2);
 
 
         if(isAlive)
@@ -236,23 +254,28 @@ public class Player extends Agent implements KeyListener{
 		if(upKey == key)
             upKeyDown = true;
 		
-		if(downKey == key)
+		else if(downKey == key)
 			downKeyDown = true;
-		
-		if(leftKey == key)
+
+        else if(leftKey == key)
 			leftKeyDown = true;
-		
-		if(rightKey == key)
+
+        else if(rightKey == key)
 			rightKeyDown = true;
 
-        if(attackKey == key) {
+        else if(attackKey == key)
             attackKeyDown = true;
-        }
-        
-        if(rangedKey == key) {
+
+        else if(rangedKey == key) {
         	rangedAttack();
         	rangedKeyDown = true;
         }
+
+        else if(enterKey == key){
+            checkExits();
+            enterKeyDown = true;
+        }
+
 	}
 
 	@Override
@@ -260,20 +283,23 @@ public class Player extends Agent implements KeyListener{
         if(upKey == key)
             upKeyDown = false;
 
-        if(downKey == key)
+        else if(downKey == key)
             downKeyDown = false;
 
-        if(leftKey == key)
+        else if(leftKey == key)
             leftKeyDown = false;
 
-        if(rightKey == key)
+        else if(rightKey == key)
             rightKeyDown = false;
 
-        if(attackKey == key)
+        else if(attackKey == key)
             attackKeyDown = false;
-        
-        if(rangedKey == key)
+
+        else if(rangedKey == key)
         	rangedKeyDown = false;
+
+        else if(enterKey == key)
+            enterKeyDown = false;
 	}
     
     @Override
