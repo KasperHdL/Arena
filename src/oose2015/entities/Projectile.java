@@ -52,17 +52,17 @@ public class Projectile extends MovableEntity {
 	
     @Override
     public void collides(Entity other){
-        //if is colliding with gold then collect
     	if(other instanceof Enemy){
     		Enemy enemy = (Enemy) other;
-        	if(enemy.takeDamage(damage)) {
-				if (owner instanceof Player) {
-					Player shooter = (Player) owner;
-					shooter.addExp(enemy.expDrop);
+        	if(enemy.isAlive) {
+				if (enemy.takeDamage(damage)) {
+					if (owner instanceof Player) {
+						Player shooter = (Player) owner;
+						shooter.addExp(enemy.expDrop);
+					}
 				}
+				EntityHandler.entities.remove(this);
 			}
-
-			EntityHandler.entities.remove(this);
         }
     }
 	
