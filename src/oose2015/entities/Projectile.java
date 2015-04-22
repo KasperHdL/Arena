@@ -54,10 +54,9 @@ public class Projectile extends MovableEntity {
     @Override
     public void collides(Entity other){
         //if is colliding with gold then collect
-        boolean killCheck;
     	if(other instanceof Enemy){
     		hitEnemy = (Enemy) other;
-        	killCheck = other.takeDamage(damage);
+        	boolean killCheck = other.takeDamage(damage);
         	if(killCheck)
         		if(owner instanceof Player){
         			Player shooter = (Player) owner;
