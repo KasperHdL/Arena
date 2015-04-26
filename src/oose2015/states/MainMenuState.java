@@ -1,9 +1,17 @@
 package oose2015.states;
 
+import net.java.games.input.Component;
+import net.java.games.input.Controller;
+import net.java.games.input.ControllerEnvironment;
+import oose2015.Main;
+import oose2015.World;
+import oose2015.entities.Player;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -18,9 +26,13 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 
 public class MainMenuState implements GameState{
+	public int[] controllerIndex = new int[] {-1,-1,-1,-1};
+	Controller[] ca = ControllerEnvironment.getDefaultEnvironment().getControllers();
+	
+    StateBasedGame stateBasedGame;
+    
 
-    StateBasedGame sbg;
-
+    
     @Override
     public int getID() {
         return 0;
@@ -28,7 +40,7 @@ public class MainMenuState implements GameState{
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        sbg = stateBasedGame;
+        this.stateBasedGame = stateBasedGame;
     }
 
     @Override
@@ -48,9 +60,9 @@ public class MainMenuState implements GameState{
 
     @Override
     public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-
+    	
     }
-
+    
     @Override
     public void controllerLeftPressed(int i) {
 
@@ -83,17 +95,38 @@ public class MainMenuState implements GameState{
 
     @Override
     public void controllerDownPressed(int i) {
-
+    	
     }
 
     @Override
     public void controllerDownReleased(int i) {
-
+    	
     }
 
     @Override
-    public void controllerButtonPressed(int i, int i1) {
+    public void controllerButtonPressed(int controllerIn, int buttonIn) {
+    	//start == 8
 
+    	if(buttonIn == 8){
+    		int emptyIndex = -1;
+    		for(int i = 0; i < controllerIndex.length; i++){
+    			if(controllerIndex[i] == -1){
+    				emptyIndex = i;
+    			} else if(controllerIndex[i] == controllerIn) {
+    				controllerIndex[i] = -1;
+    				emptyIndex = -1;
+        			System.out.println("Controller " + controllerIn + " is disconnected");
+    				break;
+    			}
+    		}
+    		if(emptyIndex != -1){
+    			controllerIndex[emptyIndex] = controllerIn;
+    			System.out.println("Controller " + controllerIn + " is connected");
+    		}
+    		/*for(int x = 0; x < controllerIndex.length; x++){
+    			System.out.println("ControllerIndex: " + controllerIndex[x]);
+    		}*/
+    	}
     }
 
     @Override
@@ -103,8 +136,18 @@ public class MainMenuState implements GameState{
 
     @Override
     public void keyPressed(int i, char c) {
-        if(i == Input.KEY_SPACE)
-            sbg.enterState(1);
+        if(i == Input.KEY_SPACE){
+            stateBasedGame.enterState(1);
+            for(int j = 0; j < controllerIndex.length; j++){
+        		if(controllerIndex[j] != -1){
+        			Component[] components = ca[controllerIndex[j]].getComponents();
+        			GamePlayState g = (GamePlayState)stateBasedGame.getState(1);
+        			g.world.createPlayer(new Vector2f(0,0), controllerIndex[j]);
+        	        //gameContainer.getInput().addKeyListener(p);
+        		}
+        	}
+            
+        }
     }
 
     @Override

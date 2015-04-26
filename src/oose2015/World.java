@@ -1,8 +1,12 @@
 package oose2015;
 
+import net.java.games.input.Controller;
+import net.java.games.input.ControllerEnvironment;
 import oose2015.entities.DungeonExit;
 import oose2015.entities.Enemy;
+import oose2015.entities.KeyboardPlayer;
 import oose2015.entities.Player;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -25,6 +29,9 @@ import java.util.Random;
 public class World {
     public static boolean DEBUG_MODE = true;
 
+    //ARRAYLIST FOR KEYBOARDPLAYERS
+    public static ArrayList<KeyboardPlayer> KEYBOARDPLAYERS;
+    
     public static ArrayList<Player> PLAYERS; //for reference
     public static ArrayList<Enemy> ENEMIES; //for reference
     public static ArrayList<DungeonExit> EXITS; //for reference
@@ -54,11 +61,8 @@ public class World {
 
         entityHandler = new EntityHandler();
 
-        Player p = new Player(new Vector2f(Main.SCREEN_WIDTH/2,Main.SCREEN_HEIGHT/2), Input.KEY_UP, Input.KEY_DOWN, Input.KEY_LEFT, Input.KEY_RIGHT, Input.KEY_SPACE, Input.KEY_LCONTROL,Input.KEY_ENTER);
-        gameContainer.getInput().addKeyListener(p);
-
         new DungeonExit(new Vector2f(100,10));
-
+        
     }
 
     public void render(Graphics graphics){
@@ -102,5 +106,15 @@ public class World {
 
     public static void enteredExit(Player player){
         System.out.println(player + " exited");
+    }
+    
+    //OVERLOARD FOR KEYBOARDPLAYER
+    public static void enteredExit(KeyboardPlayer player){
+        System.out.println(player + " exited");
+    }
+    
+    public void createPlayer(Vector2f v, int controllerInput){
+    		Player p = new Player(v, controllerInput);
+    		gameContainer.getInput().addControllerListener(p);
     }
 }

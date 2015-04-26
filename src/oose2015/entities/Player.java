@@ -1,12 +1,17 @@
 package oose2015.entities;
 
+import net.java.games.input.Component;
+import net.java.games.input.Controller;
+import net.java.games.input.ControllerEnvironment;
 import oose2015.CollisionUtility;
 import oose2015.EntityHandler;
 import oose2015.VectorUtility;
 import oose2015.World;
 import oose2015.items.Armor;
 import oose2015.items.Weapon;
+
 import org.newdawn.slick.Color;
+import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
@@ -22,7 +27,7 @@ import org.newdawn.slick.geom.Vector2f;
  * ---
  */
 
-public class Player extends Agent implements KeyListener{
+public class Player extends Agent implements ControllerListener{
 
     public int gold;
     public int exp;
@@ -36,13 +41,27 @@ public class Player extends Agent implements KeyListener{
     private boolean attacking;
 
     //controls
-    public int      upKey,
-                    leftKey,
-                    rightKey,
-                    downKey,
-                    attackKey,
-                    rangedKey,
-                    enterKey;
+    public int		controllerIndex,
+    				upButton,
+                    leftButton,
+                    rightButton,
+                    downButton,
+                    attackButton = 1,
+                    rangedButton = 2,
+                    enterButton = 6;
+    /*
+    L1 = 5
+    R1 = 6
+    Triangle = 4
+    Cross = 1
+    Circle = 2
+    Square = 3
+    Left stick = 9
+    Right stick = 10
+    Select = 7
+    Start = 8
+    */
+    
 
     private boolean  upKeyDown = false,
                     leftKeyDown = false,
@@ -52,6 +71,8 @@ public class Player extends Agent implements KeyListener{
                     rangedKeyDown = false,
                     enterKeyDown = false;
 
+	Controller[] ca = ControllerEnvironment.getDefaultEnvironment().getControllers();
+	Component[] components = ca[controllerIndex].getComponents();
     
     private Vector2f input;
 
@@ -65,8 +86,8 @@ public class Player extends Agent implements KeyListener{
      * @param rightKey right key
      * @param attackKey attack key
      */
-    public Player(Vector2f position, int upKey, int downKey, int leftKey, int rightKey, int attackKey, int rangedKey,int enterKey){
-        System.out.println("Player created");
+    public Player(Vector2f position, int controllerIndex){
+    	System.out.println("Player created");
         World.PLAYERS.add(this);
         
         name = "Player";
@@ -90,13 +111,7 @@ public class Player extends Agent implements KeyListener{
         lastLevelExp = 0;
         nextLevelExp = (level*level)*100;
 
-        this.upKey = upKey;
-        this.downKey = downKey;
-        this.leftKey = leftKey;
-        this.rightKey = rightKey;
-        this.attackKey = attackKey;
-        this.rangedKey = rangedKey;
-        this.enterKey = enterKey;
+        this.controllerIndex = controllerIndex;
 
         weapon = new Weapon(1f, 50f, 300f);
 
@@ -248,26 +263,22 @@ public class Player extends Agent implements KeyListener{
 	public void setInput(Input arg0) {
 
 	}
+    
+    @Override
+    public float getDamage(){return weapon.damage;}
 
 	@Override
-	public void keyPressed(int key, char c) {
+	public void controllerButtonPressed(int controllerIn, int button) {
+		// TODO Auto-generated method stub
+		System.out.println(components[2].getPollData());
 
-		if(upKey == key)
-            upKeyDown = true;
+		if(controllerIn != controllerIndex)
+			return;
 		
-		else if(downKey == key)
-			downKeyDown = true;
-
-        else if(leftKey == key)
-			leftKeyDown = true;
-
-        else if(rightKey == key)
-			rightKeyDown = true;
-
-        else if(attackKey == key)
+		if(attackButton == button)
             attackKeyDown = true;
         
-        else if(rangedKey == key) {
+        else if(rangedButton == button) {
         	rangedAttack();
         	rangedKeyDown = true;
             if(nextAttackTime < World.TIME){
@@ -278,37 +289,89 @@ public class Player extends Agent implements KeyListener{
             }
         }
 
-        else if(enterKey == key){
+        else if(enterButton == button){
             checkExits();
             enterKeyDown = true;
         }
-
 	}
 
 	@Override
-	public void keyReleased(int key, char c) {
-        if(upKey == key)
-            upKeyDown = false;
+	public void controllerButtonReleased(int controllerIn, int button) {
+		// TODO Auto-generated method stub
+		if(controllerIn != controllerIndex)
+			return;
 
-        else if(downKey == key)
-            downKeyDown = false;
-
-        else if(leftKey == key)
-            leftKeyDown = false;
-
-        else if(rightKey == key)
-            rightKeyDown = false;
-
-        else if(attackKey == key)
+        if(attackButton == button)
             attackKeyDown = false;
 
-        else if(rangedKey == key)
+        else if(rangedButton == button)
         	rangedKeyDown = false;
 
-        else if(enterKey == key)
+        else if(enterButton == button)
             enterKeyDown = false;
 	}
-    
-    @Override
-    public float getDamage(){return weapon.damage;}
+
+	@Override
+	public void controllerDownPressed(int controllerIn) {
+		// TODO Auto-generated method stub
+		if(controllerIn != controllerIndex)
+			return;
+            downKeyDown = true;
+	}
+
+	@Override
+	public void controllerDownReleased(int controllerIn) {
+		// TODO Auto-generated method stub
+		if(controllerIn != controllerIndex)
+			return;
+            downKeyDown = false;
+	}
+
+	@Override
+	public void controllerLeftPressed(int controllerIn) {
+		// TODO Auto-generated method stub
+		if(controllerIn != controllerIndex)
+			return;
+            leftKeyDown = true;
+	}
+
+	@Override
+	public void controllerLeftReleased(int controllerIn) {
+		// TODO Auto-generated method stub
+		if(controllerIn != controllerIndex)
+			return;
+            leftKeyDown = false;
+	}
+
+	@Override
+	public void controllerRightPressed(int controllerIn) {
+		// TODO Auto-generated method stub
+		if(controllerIn != controllerIndex)
+			return;
+            rightKeyDown = true;
+	}
+
+	@Override
+	public void controllerRightReleased(int controllerIn) {
+		// TODO Auto-generated method stub
+		if(controllerIn != controllerIndex)
+			return;
+            rightKeyDown = false;
+	}
+
+	@Override
+	public void controllerUpPressed(int controllerIn) {
+		// TODO Auto-generated method stub
+		if(controllerIn != controllerIndex)
+			return;
+            upKeyDown = true;
+	}
+
+	@Override
+	public void controllerUpReleased(int controllerIn) {
+		// TODO Auto-generated method stub
+		if(controllerIn != controllerIndex)
+			return;
+            upKeyDown = false;
+	}
 }

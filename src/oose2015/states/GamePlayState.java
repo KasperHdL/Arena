@@ -18,7 +18,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GamePlayState implements GameState {
 
-    World world;
+    public World world;
 
     @Override
     public int getID() {
