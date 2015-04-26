@@ -1,13 +1,18 @@
 package oose2015.states;
 
-import oose2015.EntityHandler;
+import oose2015.Main;
+import oose2015.gui.ShopKeeperMenu;
 import oose2015.World;
-import org.newdawn.slick.*;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- * Created by @Kasper on 26/03/2015
+ * Created by @Kasper on 22/04/2015
  * <p/>
  * Description:
  * ---
@@ -16,35 +21,86 @@ import org.newdawn.slick.state.StateBasedGame;
  * ---
  */
 
-public class GamePlayState implements GameState {
+public class ShopKeeperState implements GameState {
+
+    public static int TIME = 0;
+
+    public int allReadyTime = -1;
+    public int readyTimeLength = 1000;
 
     StateBasedGame stateBasedGame;
+    
+    ShopKeeperMenu[] playerMenus;
 
-    public World world;
+    //TEMPORARY prolly
+    public enum Button{
+        Up,
+        Down,
+        Select
+    }
+
 
     @Override
     public int getID() {
-        return 1;
+        return 2;
     }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         this.stateBasedGame = stateBasedGame;
-        world = new World(gameContainer, stateBasedGame);
+
+    }
+
+    public void createMenu(){
+        playerMenus = new ShopKeeperMenu[World.PLAYERS.size()];
+        int sizeX = Main.SCREEN_WIDTH/4;
+        for (int i = 0; i < playerMenus.length; i++) {
+            playerMenus[i] = new ShopKeeperMenu(new Vector2f(i*sizeX,0),sizeX);
+        }
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        world.render(graphics);
+
+        if(allReadyTime == -1){
+            graphics.drawString("Everyone needs to be ready",200,10);
+        }else{
+            if(allReadyTime < TIME){
+                graphics.drawString("Everyone is ready",200,10);
+            }else{
+                graphics.drawString("Entering battle in " + ((allReadyTime - TIME)/1000),200,10);
+            }
+        }
+
+        for (int i = 0; i < playerMenus.length; i++) {
+            playerMenus[i].render(graphics);
+        }
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
-        world.update(dt);
+        TIME += dt;
+        boolean allReady = true;
+        for (int i = 0; i < playerMenus.length; i++) {
+            playerMenus[i].update();
+            if(!playerMenus[i].isReady)
+                allReady = false;
+        }
+
+        if(!allReady)
+            allReadyTime = -1;
+        else{
+            if(allReadyTime == -1){
+                allReadyTime = TIME + readyTimeLength;
+            }else if(allReadyTime < TIME){
+                stateBasedGame.enterState(1);
+            }
+        }
     }
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        createMenu();
     }
 
     @Override
@@ -103,10 +159,21 @@ public class GamePlayState implements GameState {
     }
 
     @Override
-    public void keyPressed(int i, char c) {
-        if(i == Input.KEY_D){
-            //toggle debug mode
-            World.DEBUG_MODE = !World.DEBUG_MODE;
+    public void keyPressed(int key, char c) {
+        if(Input.KEY_UP == key){
+            playerMenus[0].handleInput(Button.Up);
+        }else if(Input.KEY_DOWN == key){
+            playerMenus[0].handleInput(Button.Down);
+        }else if(Input.KEY_RIGHT == key){
+            playerMenus[0].handleInput(Button.Select);
+        }
+
+        else if(Input.KEY_W == key){
+            playerMenus[1].handleInput(Button.Up);
+        }else if(Input.KEY_S == key){
+            playerMenus[1].handleInput(Button.Down);
+        }else if(Input.KEY_D == key){
+            playerMenus[1].handleInput(Button.Select);
         }
     }
 

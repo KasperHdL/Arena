@@ -30,7 +30,7 @@ public class World {
     public static ArrayList<DungeonExit> EXITS; //for reference
 
     GameContainer gameContainer;
-    StateBasedGame stateBasedGame;
+    static StateBasedGame stateBasedGame;
 
     EntityHandler entityHandler;
 
@@ -58,6 +58,8 @@ public class World {
         gameContainer.getInput().addKeyListener(p);
 
         new DungeonExit(new Vector2f(100,10));
+
+
 
     }
 
@@ -102,5 +104,7 @@ public class World {
 
     public static void enteredExit(Player player){
         System.out.println(player + " exited");
+        stateBasedGame.enterState(2);
     }
+
 }

@@ -9,8 +9,8 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Main extends StateBasedGame
 {
 
-	public static int SCREEN_WIDTH = 640;
-	public static int SCREEN_HEIGHT = 480;
+	public static final int SCREEN_WIDTH = 1280;
+	public static final int SCREEN_HEIGHT = 720;
 
 
 	public Main(String gamename){
@@ -20,8 +20,9 @@ public class Main extends StateBasedGame
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
 		gameContainer.setTargetFrameRate(120);
-        addState(new MainMenuState());
-        addState(new GamePlayState());
+		addState(new ShopKeeperState());
+		addState(new MainMenuState());
+		addState(new GamePlayState());
 
     }
 
