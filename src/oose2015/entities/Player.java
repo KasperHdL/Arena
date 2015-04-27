@@ -3,9 +3,11 @@ package oose2015.entities;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
-import oose2015.CollisionUtility;
+
+import oose2015.utilities.CollisionUtility;
+
 import oose2015.EntityHandler;
-import oose2015.VectorUtility;
+import oose2015.utilities.VectorUtility;
 import oose2015.World;
 import oose2015.items.Armor;
 import oose2015.items.Weapon;
@@ -38,17 +40,24 @@ public class Player extends Agent implements ControllerListener{
     public Armor armor;
     
     private float nextAttackTime;
-    private boolean attacking;
+    private boolean drawAttack;
 
     //controls
     public int		controllerIndex,
-    				upButton,
-                    leftButton,
-                    rightButton,
-                    downButton,
-                    attackButton = 1,
-                    rangedButton = 2,
-                    enterButton = 6;
+                    attackButton = 5,
+                    rangedButton = 6,
+                    enterButton = 4,
+                    leftStickX = 1,
+                    leftStickY = 0,
+    				rightStickX = 3,
+    				rightStickY = 2;
+
+    //deadzones
+    public float 	leftDeadX = 0.1f,
+    				leftDeadY = 0.1f,
+    				rightDeadX = 0.6f,
+    				rightDeadY = 0.6f;
+    
     /*
     L1 = 5
     R1 = 6
@@ -70,11 +79,8 @@ public class Player extends Agent implements ControllerListener{
                     attackKeyDown = false,
                     rangedKeyDown = false,
                     enterKeyDown = false;
-
-	Controller[] ca = ControllerEnvironment.getDefaultEnvironment().getControllers();
-	Component[] components = ca[controllerIndex].getComponents();
-    
-    private Vector2f input;
+	
+	private Input input;
 
 
     /**
@@ -86,10 +92,11 @@ public class Player extends Agent implements ControllerListener{
      * @param rightKey right key
      * @param attackKey attack key
      */
-    public Player(Vector2f position, int controllerIndex){
+    public Player(Vector2f position, int controllerIndex, Input input){
     	System.out.println("Player created");
         World.PLAYERS.add(this);
-        
+        this.input = input;
+        input.addControllerListener(this);
         name = "Player";
 
         curHealth = 100;
@@ -115,7 +122,7 @@ public class Player extends Agent implements ControllerListener{
 
         weapon = new Weapon(1f, 50f, 300f);
 
-        attacking = false;
+        drawAttack = false;
         nextAttackTime = 0f;
     }
     
@@ -160,41 +167,48 @@ public class Player extends Agent implements ControllerListener{
     }
 
     @Override
-    protected void move(float dt){
-
-    	input = new Vector2f(0,0);
+    protected void move(float dt){    	    	
+    	float x = input.getAxisValue(controllerIndex, rightStickX), 
+    		  y = input.getAxisValue(controllerIndex, rightStickY);
+    
+    	if(Math.abs(x) < rightDeadX && Math.abs(y) < rightDeadY){
+    		x = 0;
+    		y = 0;
+    	}
     	
-    	if(upKeyDown)
-    		input.y = -1;
-    	else if(downKeyDown)
-    		input.y = 1;
-        else
-            input.y = 0;
+    	Vector2f axis = new Vector2f(x,y);
     	
-    	if(leftKeyDown)
-    		input.x = -1;
-    	else if(rightKeyDown)
-    		input.x = 1;
-        else
-            input.x = 0;
+    	if(axis.length() != 0)
+    		rotation = (float)axis.getTheta();
+    	
+    	x = input.getAxisValue(controllerIndex, leftStickX);
+    	y = input.getAxisValue(controllerIndex, leftStickY);
 
-        input.normalise();
+    	if(Math.abs(x) < leftDeadX)
+    		x = 0;
+    	if(Math.abs(y) < leftDeadY)
+    		y = 0;	
+    	
+    	axis = new Vector2f(x,y);
+    	axis.scale(speedForce / mass);
 
-    	input.scale(speedForce / mass);
-
-    	super.move(dt,input);
+    	super.move(dt, axis);
     }
     
     @Override
     public void update(float dt){
-        if(isAlive)
-    	    move(dt);
+        if(isAlive) {
+            move(dt);
 
-        if(attackKeyDown && nextAttackTime < World.TIME){
-            attacking = true;
-            attack();
-        }else if(nextAttackTime - weapon.attackDelay/2 < World.TIME) //mini hack.. should be fixed with animation implementation
-            attacking = false;
+            if(rangedKeyDown && nextAttackTime < World.TIME)
+                rangedAttack();
+
+            if (attackKeyDown && nextAttackTime < World.TIME) {
+                drawAttack = true;
+                attack();
+            } else if (nextAttackTime - weapon.attackDelay / 2 < World.TIME) //mini hack.. should be fixed with animation implementation
+                drawAttack = false;
+        }
     }
 
     @Override
@@ -207,7 +221,7 @@ public class Player extends Agent implements ControllerListener{
         graphics.setColor(Color.red);
 
         float halfRad = weapon.attackRadius + size.x / 2;
-        if(attacking)
+        if(drawAttack)
             graphics.fillOval(-halfRad, -halfRad, halfRad * 2,halfRad * 2);
         else if(World.DEBUG_MODE)
             graphics.drawOval(-halfRad, -halfRad, halfRad * 2, halfRad * 2);
@@ -220,7 +234,9 @@ public class Player extends Agent implements ControllerListener{
 
         graphics.fillOval(-size.x / 2, -size.x / 2, size.x, size.y);
 
-
+        graphics.setColor(Color.white);
+        graphics.drawLine(0,0,size.x/2,0);
+        
         graphics.popTransform();
 
 
@@ -270,8 +286,7 @@ public class Player extends Agent implements ControllerListener{
 	@Override
 	public void controllerButtonPressed(int controllerIn, int button) {
 		// TODO Auto-generated method stub
-		System.out.println(components[2].getPollData());
-
+		System.out.println(button);
 		if(controllerIn != controllerIndex)
 			return;
 		
@@ -281,12 +296,6 @@ public class Player extends Agent implements ControllerListener{
         else if(rangedButton == button) {
         	rangedAttack();
         	rangedKeyDown = true;
-            if(nextAttackTime < World.TIME){
-                attacking = true;
-                rangedAttack();
-            } else {
-            	attacking = false;
-            }
         }
 
         else if(enterButton == button){
@@ -316,7 +325,7 @@ public class Player extends Agent implements ControllerListener{
 		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
-            downKeyDown = true;
+        downKeyDown = true;
 	}
 
 	@Override
@@ -324,7 +333,7 @@ public class Player extends Agent implements ControllerListener{
 		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
-            downKeyDown = false;
+        downKeyDown = false;
 	}
 
 	@Override
@@ -332,7 +341,7 @@ public class Player extends Agent implements ControllerListener{
 		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
-            leftKeyDown = true;
+        leftKeyDown = true;
 	}
 
 	@Override
@@ -340,7 +349,7 @@ public class Player extends Agent implements ControllerListener{
 		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
-            leftKeyDown = false;
+        leftKeyDown = false;
 	}
 
 	@Override
@@ -348,7 +357,7 @@ public class Player extends Agent implements ControllerListener{
 		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
-            rightKeyDown = true;
+        rightKeyDown = true;
 	}
 
 	@Override
@@ -356,7 +365,7 @@ public class Player extends Agent implements ControllerListener{
 		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
-            rightKeyDown = false;
+        rightKeyDown = false;
 	}
 
 	@Override
@@ -364,7 +373,7 @@ public class Player extends Agent implements ControllerListener{
 		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
-            upKeyDown = true;
+        upKeyDown = true;
 	}
 
 	@Override
@@ -372,6 +381,6 @@ public class Player extends Agent implements ControllerListener{
 		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
-            upKeyDown = false;
+        upKeyDown = false;
 	}
 }

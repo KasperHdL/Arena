@@ -1,7 +1,6 @@
 	package oose2015.entities;
 
-import oose2015.EntityHandler;
-import oose2015.VectorUtility;
+import oose2015.utilities.VectorUtility;
 import oose2015.World;
 
 import org.newdawn.slick.Color;
@@ -120,7 +119,7 @@ public class Enemy extends Agent {
 
         rotation = (float)acceleration.getTheta();
 
-        super.move(dt,input);
+        super.move(dt, input);
     }
 
 
@@ -137,22 +136,15 @@ public class Enemy extends Agent {
             graphics.setColor(Color.black);
             graphics.drawLine(0,0,size.x/2,0);
 
+            float halfRadius;
+            float dist = Float.MAX_VALUE;
+
+            if(target != null)
+                dist = VectorUtility.getDistanceToEntity(this, target);
+
             if(World.DEBUG_MODE){
-                float halfRadius;
 
                 if(isChasing){
-                    float dist = Float.MAX_VALUE;
-
-                    if(target != null)
-                        dist = VectorUtility.getDistanceToEntity(this, target);
-
-                    //attack radius
-                    halfRadius = attackRadius + size.x/2;
-                    if(nextAttackTime - 50 < World.TIME && dist < attackRadius) {
-                        graphics.setColor(Color.red);
-                        graphics.fillOval(-halfRadius, -halfRadius, halfRadius*2, halfRadius*2);
-                    }else
-                        graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
 
                     //disengage radius
                     halfRadius = disengageRadius + size.x/2;
@@ -165,6 +157,15 @@ public class Enemy extends Agent {
                     graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
                 }
             }
+
+            //attack radius
+            halfRadius = attackRadius + size.x/2;
+            if(nextAttackTime - 50 < World.TIME && dist < attackRadius) {
+                graphics.setColor(Color.red);
+                graphics.fillOval(-halfRadius, -halfRadius, halfRadius*2, halfRadius*2);
+            }else if(World.DEBUG_MODE)
+                graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
+
         }else{
 
             graphics.setColor(new Color(200,0,0,127));
@@ -187,6 +188,16 @@ public class Enemy extends Agent {
 
 
     private Player getClosestPlayer(){
+    	if(World.PLAYERS.size() == 0){
+    		//Hack
+    		try {
+				throw new Exception("ERROR: NO PLAYERS");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		return null;
+    	}
         Vector2f delta = World.PLAYERS.get(0).position.copy().sub(position);
 
         float minDistance = delta.distance(position);

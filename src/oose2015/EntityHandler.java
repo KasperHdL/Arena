@@ -1,9 +1,8 @@
 package oose2015;
 
-import oose2015.entities.Enemy;
 import oose2015.entities.Entity;
-import oose2015.entities.Player;
 
+import oose2015.utilities.CollisionUtility;
 import org.newdawn.slick.Graphics;
 
 import java.util.ArrayList;

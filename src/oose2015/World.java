@@ -37,7 +37,7 @@ public class World {
     public static ArrayList<DungeonExit> EXITS; //for reference
 
     GameContainer gameContainer;
-    StateBasedGame stateBasedGame;
+    static StateBasedGame stateBasedGame;
 
     EntityHandler entityHandler;
 
@@ -62,7 +62,6 @@ public class World {
         entityHandler = new EntityHandler();
 
         new DungeonExit(new Vector2f(100,10));
-        
     }
 
     public void render(Graphics graphics){
@@ -106,6 +105,7 @@ public class World {
 
     public static void enteredExit(Player player){
         System.out.println(player + " exited");
+        stateBasedGame.enterState(2);
     }
     
     //OVERLOARD FOR KEYBOARDPLAYER
@@ -114,7 +114,7 @@ public class World {
     }
     
     public void createPlayer(Vector2f v, int controllerInput){
-    		Player p = new Player(v, controllerInput);
-    		gameContainer.getInput().addControllerListener(p);
+    		Player p = new Player(v, controllerInput,gameContainer.getInput());
+    		
     }
 }
