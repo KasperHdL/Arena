@@ -1,5 +1,6 @@
-package oose2015.gui.active;
+package oose2015.gui.elements.interactable;
 
+import oose2015.Main;
 import oose2015.gui.ShopKeeperMenu;
 import oose2015.states.ShopKeeperState;
 import org.newdawn.slick.Color;
@@ -18,7 +19,7 @@ import oose2015.gui.Element;
  * ---
  */
 
-public class ActiveElement extends Element {
+public class InteractableElement extends Element {
     protected ShopKeeperMenu menu;
 
     public boolean isOver;
@@ -31,13 +32,13 @@ public class ActiveElement extends Element {
 
 
 
-    public ActiveElement(ShopKeeperMenu menu,Vector2f position, Vector2f size) {
+    public InteractableElement(ShopKeeperMenu menu, Vector2f position, Vector2f size) {
         this.menu = menu;
         this.position = position;
         this.size = size;
     }
 
-
+    @Override
     public void render(Graphics graphics) {
         graphics.pushTransform();
         graphics.translate(position.x, position.y);
@@ -46,7 +47,7 @@ public class ActiveElement extends Element {
         graphics.setColor(Color.white);
         graphics.drawRect(0,0, size.x, size.y);
 
-        if(stopBlink > ShopKeeperState.TIME)
+        if(stopBlink > Main.TIME)
             graphics.setColor(blinkColor);
         else if(isOver)
             graphics.setColor(overColor);
@@ -59,7 +60,7 @@ public class ActiveElement extends Element {
 
 
     public void blink(Color color){
-        stopBlink = ShopKeeperState.TIME + blinkLength;
+        stopBlink = Main.TIME + blinkLength;
         blinkColor = color;
     }
 

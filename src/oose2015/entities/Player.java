@@ -67,7 +67,7 @@ public class Player extends Agent implements ControllerListener{
     */
     
 
-    private boolean  upKeyDown = false,
+    private boolean upKeyDown = false,
                     leftKeyDown = false,
                     rightKeyDown= false,
                     downKeyDown = false,
@@ -111,7 +111,8 @@ public class Player extends Agent implements ControllerListener{
 
         this.controllerIndex = controllerIndex;
 
-        weapon = new Weapon(1f, 50f, 300f);
+        weapon = new Weapon(1);
+        armor = new Armor(1);
 
         drawAttack = false;
         nextAttackTime = 0f;
@@ -181,7 +182,7 @@ public class Player extends Agent implements ControllerListener{
     		y = 0;	
     	
     	axis = new Vector2f(x,y);
-    	axis.scale(speedForce / mass);
+    	axis.scale((armor.getSpeedModifier() * speedForce) / mass);
 
     	super.move(dt, axis);
     }
@@ -249,6 +250,18 @@ public class Player extends Agent implements ControllerListener{
 
             EntityHandler.entities.remove(other);
         }
+    }
+
+    @Override
+    public boolean takeDamage(float damage){
+        if(!isAlive) return false;
+
+        curHealth -= (damage * armor.getDamageModifier());
+        if(curHealth <= 0){
+            die();
+            return true;
+        }
+        return false;
     }
 
 

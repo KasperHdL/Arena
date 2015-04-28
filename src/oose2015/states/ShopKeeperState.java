@@ -3,10 +3,7 @@ package oose2015.states;
 import oose2015.Main;
 import oose2015.gui.ShopKeeperMenu;
 import oose2015.World;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -22,8 +19,6 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 
 public class ShopKeeperState implements GameState {
-
-    public static int TIME = 0;
 
     public int allReadyTime = -1;
     public int readyTimeLength = 1000;
@@ -61,14 +56,17 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-
+        graphics.setColor(Color.white);
         if(allReadyTime == -1){
             graphics.drawString("Everyone needs to be ready",200,10);
         }else{
-            if(allReadyTime < TIME){
+            if(allReadyTime < Main.TIME){
                 graphics.drawString("Everyone is ready",200,10);
             }else{
-                graphics.drawString("Entering battle in " + ((allReadyTime - TIME)/1000),200,10);
+
+                String time = "" + ((float)(allReadyTime - Main.TIME)/1000);
+
+                graphics.drawString("Entering battle in " + time.substring(0,3) + " seconds",200,10);
             }
         }
 
@@ -79,8 +77,8 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
-        TIME += dt;
         boolean allReady = true;
+
         for (int i = 0; i < playerMenus.length; i++) {
             playerMenus[i].update();
             if(!playerMenus[i].isReady)
@@ -91,8 +89,8 @@ public class ShopKeeperState implements GameState {
             allReadyTime = -1;
         else{
             if(allReadyTime == -1){
-                allReadyTime = TIME + readyTimeLength;
-            }else if(allReadyTime < TIME){
+                allReadyTime = Main.TIME + readyTimeLength;
+            }else if(allReadyTime < Main.TIME){
                 stateBasedGame.enterState(1);
             }
         }

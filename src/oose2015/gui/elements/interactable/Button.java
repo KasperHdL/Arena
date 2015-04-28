@@ -1,5 +1,6 @@
-package oose2015.gui.active;
+package oose2015.gui.elements.interactable;
 
+import oose2015.Main;
 import oose2015.gui.ShopKeeperMenu;
 import oose2015.states.ShopKeeperState;
 import org.newdawn.slick.Color;
@@ -17,7 +18,7 @@ import org.newdawn.slick.geom.Vector2f;
  * ---
  */
 
-public class Button extends ActiveElement {
+public class Button extends InteractableElement {
 
     public String text;
 
@@ -53,7 +54,7 @@ public class Button extends ActiveElement {
 
         //graphic
 
-        if(stopBlink > ShopKeeperState.TIME)
+        if(stopBlink > Main.TIME)
             graphics.setColor(blinkColor);
         else if(isDown)
             graphics.setColor(downColor);
@@ -64,7 +65,7 @@ public class Button extends ActiveElement {
 
         String txt = text;
 
-        if(stopTextBlink > ShopKeeperState.TIME){
+        if(stopTextBlink > Main.TIME){
             graphics.setColor(blinkBtnColor);
             txt = blinkText;
         }
@@ -77,7 +78,7 @@ public class Button extends ActiveElement {
 
         //text
 
-        if(stopTextBlink > ShopKeeperState.TIME)
+        if(stopTextBlink > Main.TIME)
             graphics.setColor(blinkTextColor);
         else
             graphics.setColor(textColor);
@@ -89,7 +90,7 @@ public class Button extends ActiveElement {
 
 
     public void blinkText(String text,Color textColor,Color btnColor){
-        stopTextBlink = ShopKeeperState.TIME + blinkTextLength;
+        stopTextBlink = Main.TIME + blinkTextLength;
         blinkTextColor = textColor;
         blinkBtnColor = btnColor;
         blinkText = text;
