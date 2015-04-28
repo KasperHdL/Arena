@@ -102,28 +102,26 @@ public class MainMenuState implements GameState{
     }
 
     @Override
-    public void controllerButtonPressed(int controllerIn, int buttonIn) {
+    public void controllerButtonPressed(int conIndex, int btnIndex) {
     	//start == 8
+        System.out.println("con: " + conIndex + ", btn: " + btnIndex);
 
-    	if(buttonIn == 8){
+    	if(btnIndex == 8){
     		int emptyIndex = -1;
     		for(int i = 0; i < controllerIndex.length; i++){
     			if(controllerIndex[i] == -1){
     				emptyIndex = i;
-    			} else if(controllerIndex[i] == controllerIn) {
+    			} else if(controllerIndex[i] == conIndex) {
     				controllerIndex[i] = -1;
     				emptyIndex = -1;
-        			System.out.println("Controller " + controllerIn + " is disconnected");
+        			System.out.println("Controller " + conIndex + " is disconnected");
     				break;
     			}
     		}
     		if(emptyIndex != -1){
-    			controllerIndex[emptyIndex] = controllerIn;
-    			System.out.println("Controller " + controllerIn + " is connected");
+    			controllerIndex[emptyIndex] = conIndex;
+    			System.out.println("Controller " + conIndex + " is connected");
     		}
-    		/*for(int x = 0; x < controllerIndex.length; x++){
-    			System.out.println("ControllerIndex: " + controllerIndex[x]);
-    		}*/
     	}
     }
 

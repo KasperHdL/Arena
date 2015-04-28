@@ -130,7 +130,11 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void controllerUpPressed(int i) {
-
+        for (int j = 0; j < World.PLAYERS.size(); j++) {
+           if(World.PLAYERS.get(j).controllerIndex == i){
+               playerMenus[j].handleInput(Button.Up);
+           }
+        }
     }
 
     @Override
@@ -140,7 +144,11 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void controllerDownPressed(int i) {
-
+        for (int j = 0; j < World.PLAYERS.size(); j++) {
+            if(World.PLAYERS.get(j).controllerIndex == i){
+                playerMenus[j].handleInput(Button.Down);
+            }
+        }
     }
 
     @Override
@@ -149,32 +157,22 @@ public class ShopKeeperState implements GameState {
     }
 
     @Override
-    public void controllerButtonPressed(int i, int i1) {
-
+    public void controllerButtonPressed(int i, int btnIndex) {
+        for (int j = 0; j < World.PLAYERS.size(); j++) {
+            if(World.PLAYERS.get(j).controllerIndex == i && (btnIndex == 1 || btnIndex == 3)){
+                playerMenus[j].handleInput(Button.Select);
+            }
+        }
     }
 
     @Override
-    public void controllerButtonReleased(int i, int i1) {
+    public void controllerButtonReleased(int i, int btnIndex) {
 
     }
 
     @Override
     public void keyPressed(int key, char c) {
-        if(Input.KEY_UP == key){
-            playerMenus[0].handleInput(Button.Up);
-        }else if(Input.KEY_DOWN == key){
-            playerMenus[0].handleInput(Button.Down);
-        }else if(Input.KEY_RIGHT == key){
-            playerMenus[0].handleInput(Button.Select);
-        }
 
-        else if(Input.KEY_W == key){
-            playerMenus[1].handleInput(Button.Up);
-        }else if(Input.KEY_S == key){
-            playerMenus[1].handleInput(Button.Down);
-        }else if(Input.KEY_D == key){
-            playerMenus[1].handleInput(Button.Select);
-        }
     }
 
     @Override
