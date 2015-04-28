@@ -27,7 +27,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class MainMenuState implements GameState{
 	public int[] controllerIndex = new int[] {-1,-1,-1,-1};
-	Controller[] ca = ControllerEnvironment.getDefaultEnvironment().getControllers();
 	
     StateBasedGame stateBasedGame;
     
@@ -140,9 +139,8 @@ public class MainMenuState implements GameState{
             stateBasedGame.enterState(1);
             for(int j = 0; j < controllerIndex.length; j++){
         		if(controllerIndex[j] != -1){
-        			Component[] components = ca[controllerIndex[j]].getComponents();
         			GamePlayState g = (GamePlayState)stateBasedGame.getState(1);
-        			g.world.createPlayer(new Vector2f(0,0), controllerIndex[j]);
+        			g.world.createPlayer(new Vector2f(Main.SCREEN_WIDTH/2,Main.SCREEN_HEIGHT/2), controllerIndex[j]);
         	        //gameContainer.getInput().addKeyListener(p);
         		}
         	}

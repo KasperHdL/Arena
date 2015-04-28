@@ -56,7 +56,7 @@ public class World {
         EXITS = new ArrayList<DungeonExit>(1);
 
         this.gameContainer = gameContainer;
-        this.stateBasedGame = stateBasedGame;
+        World.stateBasedGame = stateBasedGame;
         RANDOM = new Random();
 
         entityHandler = new EntityHandler();
@@ -107,8 +107,11 @@ public class World {
         System.out.println(player + " exited");
         stateBasedGame.enterState(2);
     }
-    
-    //OVERLOARD FOR KEYBOARDPLAYER
+
+    /**
+     * OVERLOARD FOR KEYBOARDPLAYER
+     * @param player Player
+     */
     public static void enteredExit(KeyboardPlayer player){
         System.out.println(player + " exited");
     }

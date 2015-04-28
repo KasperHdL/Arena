@@ -1,9 +1,5 @@
 package oose2015.entities;
 
-import net.java.games.input.Component;
-import net.java.games.input.Controller;
-import net.java.games.input.ControllerEnvironment;
-
 import oose2015.utilities.CollisionUtility;
 
 import oose2015.EntityHandler;
@@ -16,7 +12,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -86,11 +81,8 @@ public class Player extends Agent implements ControllerListener{
     /**
      * Constructor for player [use Input.KEY_X as key arguments]
      * @param position Position
-     * @param upKey up key
-     * @param downKey down key
-     * @param leftKey left key
-     * @param rightKey right key
-     * @param attackKey attack key
+     * @param controllerIndex index for the controller
+     * @param input reference to input
      */
     public Player(Vector2f position, int controllerIndex, Input input){
     	System.out.println("Player created");
@@ -293,10 +285,8 @@ public class Player extends Agent implements ControllerListener{
 		if(attackButton == button)
             attackKeyDown = true;
         
-        else if(rangedButton == button) {
-        	rangedAttack();
+        else if(rangedButton == button)
         	rangedKeyDown = true;
-        }
 
         else if(enterButton == button){
             checkExits();
