@@ -132,7 +132,14 @@ public class MainMenuState implements GameState{
 
         //select
         if(btnIndex == 7){
-            addController(conIndex);
+            boolean noControllers = true;
+            for(int i = controllerIndex.length - 1; i >= 0; i--)
+                if(controllerIndex[i] != -1){
+                    noControllers = false;
+                    break;
+                }
+            if(noControllers)
+                addController(conIndex);
             startGame();
         }
 
