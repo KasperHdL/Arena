@@ -1,8 +1,11 @@
 package oose2015.states;
 
 import oose2015.EntityHandler;
+import oose2015.Main;
 import oose2015.World;
+import oose2015.entities.Player;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -35,7 +38,15 @@ public class GamePlayState implements GameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+
+        //Super simple camera for single player -- TEMPORARY @hack
+        graphics.pushTransform();
+        Vector2f p = World.PLAYERS.get(0).position;
+        Vector2f a = World.PLAYERS.get(0).acceleration.copy();
+        a.scale(2);
+        graphics.translate(-p.x + a.x + Main.SCREEN_WIDTH/2,-p.y + a.y + Main.SCREEN_HEIGHT/2);
         world.render(graphics);
+        graphics.popTransform();
     }
 
     @Override
