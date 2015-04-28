@@ -54,7 +54,6 @@ public class MainMenuState implements GameState{
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        System.out.println("main menu entered");
     }
 
     @Override
@@ -141,7 +140,6 @@ public class MainMenuState implements GameState{
         		if(controllerIndex[j] != -1){
         			GamePlayState g = (GamePlayState)stateBasedGame.getState(1);
         			g.world.createPlayer(new Vector2f(Main.SCREEN_WIDTH/2,Main.SCREEN_HEIGHT/2), controllerIndex[j]);
-        	        //gameContainer.getInput().addKeyListener(p);
         		}
         	}
             

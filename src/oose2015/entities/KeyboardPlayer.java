@@ -66,7 +66,6 @@ public class KeyboardPlayer extends Agent implements KeyListener{
      * @param attackKey attack key
      */
     public KeyboardPlayer(Vector2f position, int upKey, int downKey, int leftKey, int rightKey, int attackKey, int rangedKey,int enterKey){
-        System.out.println("Player created");
         World.KEYBOARDPLAYERS.add(this);
         
         name = "Player";

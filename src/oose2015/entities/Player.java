@@ -85,7 +85,6 @@ public class Player extends Agent implements ControllerListener{
      * @param input reference to input
      */
     public Player(Vector2f position, int controllerIndex, Input input){
-    	System.out.println("Player created");
         World.PLAYERS.add(this);
         this.input = input;
         input.addControllerListener(this);
@@ -277,8 +276,6 @@ public class Player extends Agent implements ControllerListener{
 
 	@Override
 	public void controllerButtonPressed(int controllerIn, int button) {
-		// TODO Auto-generated method stub
-		System.out.println(button);
 		if(controllerIn != controllerIndex)
 			return;
 		
@@ -296,7 +293,6 @@ public class Player extends Agent implements ControllerListener{
 
 	@Override
 	public void controllerButtonReleased(int controllerIn, int button) {
-		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
 
@@ -312,7 +308,6 @@ public class Player extends Agent implements ControllerListener{
 
 	@Override
 	public void controllerDownPressed(int controllerIn) {
-		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
         downKeyDown = true;
@@ -320,7 +315,6 @@ public class Player extends Agent implements ControllerListener{
 
 	@Override
 	public void controllerDownReleased(int controllerIn) {
-		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
         downKeyDown = false;
@@ -328,7 +322,6 @@ public class Player extends Agent implements ControllerListener{
 
 	@Override
 	public void controllerLeftPressed(int controllerIn) {
-		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
         leftKeyDown = true;
@@ -336,7 +329,6 @@ public class Player extends Agent implements ControllerListener{
 
 	@Override
 	public void controllerLeftReleased(int controllerIn) {
-		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
         leftKeyDown = false;
@@ -344,7 +336,6 @@ public class Player extends Agent implements ControllerListener{
 
 	@Override
 	public void controllerRightPressed(int controllerIn) {
-		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
         rightKeyDown = true;
@@ -352,7 +343,6 @@ public class Player extends Agent implements ControllerListener{
 
 	@Override
 	public void controllerRightReleased(int controllerIn) {
-		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
         rightKeyDown = false;
@@ -360,7 +350,6 @@ public class Player extends Agent implements ControllerListener{
 
 	@Override
 	public void controllerUpPressed(int controllerIn) {
-		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
         upKeyDown = true;
@@ -368,7 +357,6 @@ public class Player extends Agent implements ControllerListener{
 
 	@Override
 	public void controllerUpReleased(int controllerIn) {
-		// TODO Auto-generated method stub
 		if(controllerIn != controllerIndex)
 			return;
         upKeyDown = false;

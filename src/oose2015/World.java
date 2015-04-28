@@ -104,7 +104,6 @@ public class World {
     }
 
     public static void enteredExit(Player player){
-        System.out.println(player + " exited");
         stateBasedGame.enterState(2);
     }
 
@@ -113,7 +112,6 @@ public class World {
      * @param player Player
      */
     public static void enteredExit(KeyboardPlayer player){
-        System.out.println(player + " exited");
     }
     
     public void createPlayer(Vector2f v, int controllerInput){

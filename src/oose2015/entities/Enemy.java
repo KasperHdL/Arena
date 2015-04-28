@@ -41,7 +41,6 @@ public class Enemy extends Agent {
      * @param position spawn position
      */
     public Enemy(Vector2f position,int level){
-        System.out.println("Enemy created");
         World.ENEMIES.add(this);
 
         curHealth = 10;
@@ -193,7 +192,6 @@ public class Enemy extends Agent {
     		try {
 				throw new Exception("ERROR: NO PLAYERS");
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     		return null;
