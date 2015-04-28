@@ -24,17 +24,19 @@ public class Enemy extends Agent {
     int goldDrop;
     int expDrop;
 
-    float engageRadius = 100f;
-    float disengageRadius = 150f;
+    float engageRadius = 200f;
+    float disengageRadius = 500f;
     float attackRadius = 10f;
 
     float nextAttackTime = 0f;
     float attackDelay = 200f;
 
-    boolean isChasing = false;
+    boolean isChasing = false,
+    		isShot = false;
      
 	
     public Agent target;
+    public Player shooter;
 
     /**
      * Constructor for Enemy
@@ -66,6 +68,10 @@ public class Enemy extends Agent {
     public void update(float dt){
         if(isAlive){
             Player player = getClosestPlayer();
+            if(isShot){
+            	player = shooter;
+            	isChasing = true;
+            }
             if(isChasing){
 
                 if(player != target)
@@ -101,8 +107,10 @@ public class Enemy extends Agent {
             if(nextAttackTime < World.TIME) {
                 agent.takeDamage(damage);
                 nextAttackTime = World.TIME + attackDelay;
+                if(isShot)
+                    isShot = false;
             }
-        }else if(dist > disengageRadius){
+        }else if(dist > disengageRadius && !isShot){
             //disengage
             target = null;
             isChasing = false;

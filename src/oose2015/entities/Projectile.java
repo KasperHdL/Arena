@@ -61,6 +61,9 @@ public class Projectile extends MovableEntity {
 						shooter.addExp(enemy.expDrop);
 					}
 				}
+				
+				enemy.isShot = true;
+				enemy.shooter = (Player)owner;
 				EntityHandler.entities.remove(this);
 			}
         }
