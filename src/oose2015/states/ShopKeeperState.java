@@ -3,10 +3,7 @@ package oose2015.states;
 import oose2015.Main;
 import oose2015.gui.ShopKeeperMenu;
 import oose2015.World;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -22,8 +19,6 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 
 public class ShopKeeperState implements GameState {
-
-    public static int TIME = 0;
 
     public int allReadyTime = -1;
     public int readyTimeLength = 1000;
@@ -55,20 +50,22 @@ public class ShopKeeperState implements GameState {
         playerMenus = new ShopKeeperMenu[World.PLAYERS.size()];
         int sizeX = Main.SCREEN_WIDTH/4;
         for (int i = 0; i < playerMenus.length; i++) {
-            playerMenus[i] = new ShopKeeperMenu(new Vector2f(i*sizeX,0),sizeX);
+            playerMenus[i] = new ShopKeeperMenu(new Vector2f(i*sizeX,0),sizeX,i);
         }
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-
+        graphics.setColor(Color.white);
         if(allReadyTime == -1){
             graphics.drawString("Everyone needs to be ready",200,10);
         }else{
-            if(allReadyTime < TIME){
+            if(allReadyTime < Main.TIME){
                 graphics.drawString("Everyone is ready",200,10);
             }else{
-                graphics.drawString("Entering battle in " + ((allReadyTime - TIME)/1000),200,10);
+
+                String time = "" + ((float)(allReadyTime - Main.TIME)/1000);
+                graphics.drawString("Entering battle in " + time.substring(0,3) + " seconds",200,10);
             }
         }
 
@@ -79,8 +76,8 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
-        TIME += dt;
         boolean allReady = true;
+
         for (int i = 0; i < playerMenus.length; i++) {
             playerMenus[i].update();
             if(!playerMenus[i].isReady)
@@ -91,8 +88,8 @@ public class ShopKeeperState implements GameState {
             allReadyTime = -1;
         else{
             if(allReadyTime == -1){
-                allReadyTime = TIME + readyTimeLength;
-            }else if(allReadyTime < TIME){
+                allReadyTime = Main.TIME + readyTimeLength;
+            }else if(allReadyTime < Main.TIME){
                 stateBasedGame.enterState(1);
             }
         }
@@ -130,7 +127,11 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void controllerUpPressed(int i) {
-
+        for (int j = 0; j < World.PLAYERS.size(); j++) {
+           if(World.PLAYERS.get(j).controllerIndex == i){
+               playerMenus[j].handleInput(Button.Up);
+           }
+        }
     }
 
     @Override
@@ -140,7 +141,11 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void controllerDownPressed(int i) {
-
+        for (int j = 0; j < World.PLAYERS.size(); j++) {
+            if(World.PLAYERS.get(j).controllerIndex == i){
+                playerMenus[j].handleInput(Button.Down);
+            }
+        }
     }
 
     @Override
@@ -149,32 +154,22 @@ public class ShopKeeperState implements GameState {
     }
 
     @Override
-    public void controllerButtonPressed(int i, int i1) {
-
+    public void controllerButtonPressed(int i, int btnIndex) {
+        for (int j = 0; j < World.PLAYERS.size(); j++) {
+            if(World.PLAYERS.get(j).controllerIndex == i && (btnIndex == 1 || btnIndex == 3)){
+                playerMenus[j].handleInput(Button.Select);
+            }
+        }
     }
 
     @Override
-    public void controllerButtonReleased(int i, int i1) {
+    public void controllerButtonReleased(int i, int btnIndex) {
 
     }
 
     @Override
     public void keyPressed(int key, char c) {
-        if(Input.KEY_UP == key){
-            playerMenus[0].handleInput(Button.Up);
-        }else if(Input.KEY_DOWN == key){
-            playerMenus[0].handleInput(Button.Down);
-        }else if(Input.KEY_RIGHT == key){
-            playerMenus[0].handleInput(Button.Select);
-        }
 
-        else if(Input.KEY_W == key){
-            playerMenus[1].handleInput(Button.Up);
-        }else if(Input.KEY_S == key){
-            playerMenus[1].handleInput(Button.Down);
-        }else if(Input.KEY_D == key){
-            playerMenus[1].handleInput(Button.Select);
-        }
     }
 
     @Override

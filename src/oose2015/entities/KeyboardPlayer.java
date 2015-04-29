@@ -97,7 +97,7 @@ public class KeyboardPlayer extends Agent implements KeyListener{
         this.rangedKey = rangedKey;
         this.enterKey = enterKey;
 
-        weapon = new Weapon(1f, 50f, 300f);
+        weapon = new Weapon(1);
 
         attacking = false;
         nextAttackTime = 0f;

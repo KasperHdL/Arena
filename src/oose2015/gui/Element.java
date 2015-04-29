@@ -1,6 +1,7 @@
 package oose2015.gui;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -19,4 +20,9 @@ public class Element {
     public Vector2f size;
 
     public Color color;
+
+    public void render(Graphics graphics){
+
+
+    }
 }

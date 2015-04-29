@@ -9,6 +9,8 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Main extends StateBasedGame
 {
 
+	public static int TIME = 0;
+
 	public static final int SCREEN_WIDTH = 1280;
 	public static final int SCREEN_HEIGHT = 720;
 
@@ -43,6 +45,6 @@ public class Main extends StateBasedGame
 
 	@Override
 	protected void preUpdateState(GameContainer container, int delta){
-
+		TIME += delta;
 	}
 }
