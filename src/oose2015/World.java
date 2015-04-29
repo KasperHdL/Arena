@@ -139,7 +139,7 @@ public class World {
     public void spawnWave(){
         waveCount++;
         for (int i = 0; i < waveCount * 2; i++) {
-            new Enemy(new Vector2f(RANDOM.nextInt(Main.SCREEN_WIDTH),RANDOM.nextInt(Main.SCREEN_HEIGHT)),RANDOM.nextInt(2)+RANDOM.nextInt(waveCount)+1, true);
+            new Enemy(new Vector2f(RANDOM.nextInt(Main.SCREEN_WIDTH),RANDOM.nextInt(Main.SCREEN_HEIGHT)),RANDOM.nextInt(2)+RANDOM.nextInt(waveCount)+1, RANDOM.nextBoolean());
         }
     }
 
@@ -153,6 +153,7 @@ public class World {
             }
 
             playerOnExit = playersOnExit != 0;
+
 
             if(justExitedShop && !playerOnExit)
                     justExitedShop = false;
