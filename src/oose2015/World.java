@@ -146,20 +146,17 @@ public class World {
     public void checkExits(){
 
         for (int i = 0; i < EXITS.size(); i++) {
-            int playerCount = 0;
+            playersOnExit = 0;
             for (int j = 0; j < PLAYERS.size(); j++) {
-                if (CollisionUtility.checkCollision(PLAYERS.get(j), EXITS.get(i))) {
-                    playerOnExit = true;
-                    playerCount++;
-                }
+                if (CollisionUtility.checkCollision(PLAYERS.get(j), EXITS.get(i)))
+                    playersOnExit++;
             }
-            playersOnExit = playerCount;
-            if(justExitedShop){
-                if(playerOnExit)
-                    return;
-                else
+
+            playerOnExit = playersOnExit != 0;
+
+            if(justExitedShop && !playerOnExit)
                     justExitedShop = false;
-            }else if(playerCount != PLAYERS.size())
+            else if(playersOnExit != PLAYERS.size())
                 dungeonExitTime = -1;
             else if(dungeonExitTime == -1)
                 dungeonExitTime = TIME + dungeonExitLength;
@@ -174,7 +171,7 @@ public class World {
     }
     
     public void createPlayer(Vector2f v, Color color, int controllerInput){
-    		Player p = new Player(v, color, controllerInput,gameContainer.getInput());
+    		new Player(v, color, controllerInput,gameContainer.getInput());
     		
     }
 }

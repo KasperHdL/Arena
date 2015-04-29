@@ -134,8 +134,6 @@ public class MainMenuState implements GameState{
             }
 
         }
-        System.out.println("p1: " + playerColors[0] + "p2: " + playerColors[1] + "p3: " + playerColors[2] + "p4: " + playerColors[3]);
-        System.out.println("ind " + index + " color: " + c);
         playerColors[index] = c;
     }
     
