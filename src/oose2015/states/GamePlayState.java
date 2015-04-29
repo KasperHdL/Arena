@@ -47,6 +47,8 @@ public class GamePlayState implements GameState {
         graphics.translate(-p.x + a.x + Main.SCREEN_WIDTH/2,-p.y + a.y + Main.SCREEN_HEIGHT/2);
         world.render(graphics);
         graphics.popTransform();
+
+        world.renderInterface(graphics);
     }
 
     @Override

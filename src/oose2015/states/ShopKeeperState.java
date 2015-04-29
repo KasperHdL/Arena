@@ -65,7 +65,6 @@ public class ShopKeeperState implements GameState {
             }else{
 
                 String time = "" + ((float)(allReadyTime - Main.TIME)/1000);
-
                 graphics.drawString("Entering battle in " + time.substring(0,3) + " seconds",200,10);
             }
         }

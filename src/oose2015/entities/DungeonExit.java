@@ -24,7 +24,7 @@ public class DungeonExit extends Entity {
         World.EXITS.add(this);
         this.position = position;
 
-        this.size = new Vector2f(20f,20f);
+        this.size = new Vector2f(100f,100f);
 
         isSolid = false;
     }

@@ -83,4 +83,8 @@ public class TextBox extends Element {
         blinkTextColor = textColor;
         blinkText = text;
     }
+
+    public void stopBlinkText(){
+        stopTextBlink = 0;
+    }
 }

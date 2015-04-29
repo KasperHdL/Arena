@@ -41,7 +41,6 @@ public class Player extends Agent implements ControllerListener{
     public int		controllerIndex,
                     attackButton = 5,
                     rangedButton = 6,
-                    enterButton = 4,
                     leftStickX = 1,
                     leftStickY = 0,
     				rightStickX = 3,
@@ -72,10 +71,11 @@ public class Player extends Agent implements ControllerListener{
                     rightKeyDown= false,
                     downKeyDown = false,
                     attackKeyDown = false,
-                    rangedKeyDown = false,
-                    enterKeyDown = false;
-	
+                    rangedKeyDown = false;
+
 	private Input input;
+
+    private Color color;
 
 
     /**
@@ -84,9 +84,10 @@ public class Player extends Agent implements ControllerListener{
      * @param controllerIndex index for the controller
      * @param input reference to input
      */
-    public Player(Vector2f position, int controllerIndex, Input input){
+    public Player(Vector2f position,Color color, int controllerIndex, Input input){
         World.PLAYERS.add(this);
         this.input = input;
+        this.color = color;
         input.addControllerListener(this);
         name = "Player";
 
@@ -136,14 +137,6 @@ public class Player extends Agent implements ControllerListener{
     protected void rangedAttack(){
         nextAttackTime = World.TIME + weapon.attackDelay;
     	new Projectile(this, weapon.attackRadius, weapon.damage);
-    }
-
-    private void checkExits(){
-        for (int i = 0; i < World.EXITS.size(); i++) {
-            if(CollisionUtility.checkCollision(this,World.EXITS.get(i))){
-                World.enteredExit(this);
-            }
-        }
     }
 
     public void addExp(int value){
@@ -220,14 +213,14 @@ public class Player extends Agent implements ControllerListener{
 
 
         if(isAlive)
-            graphics.setColor(Color.blue);
+            graphics.setColor(color);
         else
-            graphics.setColor(Color.red);
+            graphics.setColor(new Color(color.r,color.g,color.b,.15f));
 
         graphics.fillOval(-size.x / 2, -size.x / 2, size.x, size.y);
 
         graphics.setColor(Color.white);
-        graphics.drawLine(0,0,size.x/2,0);
+        if(isAlive)graphics.drawLine(0,0,size.x/2,0);
         
         graphics.popTransform();
 
@@ -298,10 +291,6 @@ public class Player extends Agent implements ControllerListener{
         else if(rangedButton == button)
         	rangedKeyDown = true;
 
-        else if(enterButton == button){
-            checkExits();
-            enterKeyDown = true;
-        }
 	}
 
 	@Override
@@ -315,8 +304,6 @@ public class Player extends Agent implements ControllerListener{
         else if(rangedButton == button)
         	rangedKeyDown = false;
 
-        else if(enterButton == button)
-            enterKeyDown = false;
 	}
 
 	@Override
