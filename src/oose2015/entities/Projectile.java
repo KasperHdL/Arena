@@ -52,7 +52,7 @@ public class Projectile extends MovableEntity {
 	
     @Override
     public void collides(Entity other){
-    	if(other instanceof Enemy){
+    	if(other instanceof Enemy && owner instanceof Player){
     		Enemy enemy = (Enemy) other;
         	if(enemy.isAlive) {
 				if (enemy.takeDamage(damage)) {
@@ -64,6 +64,17 @@ public class Projectile extends MovableEntity {
 				
 				enemy.isShot = true;
 				enemy.shooter = (Player)owner;
+				EntityHandler.entities.remove(this);
+			}
+        }
+    	
+    	if(other instanceof Player && owner instanceof Enemy){
+    		Enemy shooter = (Enemy) owner;
+    		Player player = (Player) other;
+        	if(player.isAlive) {
+        		player.takeDamage(damage);
+        		
+        		shooter.isShot = false;
 				EntityHandler.entities.remove(this);
 			}
         }

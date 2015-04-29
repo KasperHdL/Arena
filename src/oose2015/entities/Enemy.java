@@ -32,17 +32,19 @@ public class Enemy extends Agent {
     float attackDelay = 200f;
 
     boolean isChasing = false,
-    		isShot = false;
+    		isShot = false,
+    		isMelee;
      
 	
     public Agent target;
     public Player shooter;
 
+    
     /**
      * Constructor for Enemy
      * @param position spawn position
      */
-    public Enemy(Vector2f position,int level){
+    public Enemy(Vector2f position, int level, boolean isMelee){
         World.ENEMIES.add(this);
 
         curHealth = 10;
@@ -50,7 +52,8 @@ public class Enemy extends Agent {
 
         this.level = level;
         this.position = position;
-
+        this.isMelee = isMelee;
+        
         size = new Vector2f(level * 5f + 5f,level * 5f + 5f );
 
 
@@ -61,6 +64,9 @@ public class Enemy extends Agent {
         goldDrop = level * 5;
         expDrop = level * 10;
 
+        if(!isMelee){
+        	attackRadius = 200f;
+        }
       
     }
 
@@ -105,10 +111,18 @@ public class Enemy extends Agent {
         if(dist < attackRadius){
             //attack
             if(nextAttackTime < World.TIME) {
-                agent.takeDamage(damage);
-                nextAttackTime = World.TIME + attackDelay;
-                if(isShot)
-                    isShot = false;
+            	if(isMelee){
+	                agent.takeDamage(damage);
+	                nextAttackTime = World.TIME + attackDelay;
+	            	
+	                if(isShot)
+	                    isShot = false;
+            	} else {
+            		rotation = calculateRotation();
+            		//System.out.println(rotation);
+            		//rotation = (float)target.position.getTheta();
+            		rangedAttack();
+            	}
             }
         }else if(dist > disengageRadius && !isShot){
             //disengage
@@ -119,7 +133,31 @@ public class Enemy extends Agent {
             move(delta,dt);
         }
     }
+    
+    protected float calculateRotation(){
+    // Calculates rotation from target position and own position.
+    	Vector2f vectorA = new Vector2f(1,0);
+    	Vector2f tVector = target.position;
+    	tVector = new Vector2f(tVector.x-position.x, tVector.y-position.y);
+    	float targetMagnitude = tVector.length(),
+    		  vectorAMagnitude = vectorA.length();
+    		  
+    	float rotationAngle = (float)(vectorA.dot(tVector)/(targetMagnitude*vectorAMagnitude));
+    	
+    	System.out.println(Math.toDegrees(Math.acos(rotationAngle)) + " Target Vector: " + tVector.x +" , "+ tVector.y);
+    	
+    	if(tVector.y < 0)
+        	return (float)(-1*Math.toDegrees((Math.acos(rotationAngle))));
+    	
+    	return (float)Math.toDegrees((Math.acos(rotationAngle)));
+    	//return (float)rotationAngle;
+    }
 
+    protected void rangedAttack(){
+        nextAttackTime = World.TIME + attackDelay;
+    	new Projectile(this, attackRadius, damage);
+    }
+    
     protected void move(Vector2f input, float dt){
         input.normalise();
         input.scale(speedForce / mass);
@@ -128,7 +166,6 @@ public class Enemy extends Agent {
 
         super.move(dt, input);
     }
-
 
     @Override
     public void render(Graphics graphics){
@@ -166,13 +203,14 @@ public class Enemy extends Agent {
             }
 
             //attack radius
+            if(isMelee){
             halfRadius = attackRadius + size.x/2;
             if(nextAttackTime - 50 < World.TIME && dist < attackRadius) {
-                graphics.setColor(Color.red);
-                graphics.fillOval(-halfRadius, -halfRadius, halfRadius*2, halfRadius*2);
-            }else if(World.DEBUG_MODE)
-                graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
-
+	                graphics.setColor(Color.red);
+	                graphics.fillOval(-halfRadius, -halfRadius, halfRadius*2, halfRadius*2);
+	            }else if(World.DEBUG_MODE)
+	                graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
+            }
         }else{
 
             graphics.setColor(new Color(200,0,0,127));
