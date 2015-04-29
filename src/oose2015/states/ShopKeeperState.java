@@ -50,7 +50,7 @@ public class ShopKeeperState implements GameState {
         playerMenus = new ShopKeeperMenu[World.PLAYERS.size()];
         int sizeX = Main.SCREEN_WIDTH/4;
         for (int i = 0; i < playerMenus.length; i++) {
-            playerMenus[i] = new ShopKeeperMenu(new Vector2f(i*sizeX,0),sizeX);
+            playerMenus[i] = new ShopKeeperMenu(new Vector2f(i*sizeX,0),sizeX,i);
         }
     }
 

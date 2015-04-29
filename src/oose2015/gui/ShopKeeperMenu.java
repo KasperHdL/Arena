@@ -42,11 +42,17 @@ public class ShopKeeperMenu {
     private InteractableElement[] interactables;
     private Element[] elements;
 
-    public ShopKeeperMenu(Vector2f position,int sizeX){
+    public ShopKeeperMenu(Vector2f position,int sizeX,int index){
         this.position = position;
         interactables = new InteractableElement[9];
-
+        playerIndex = index;
         player = World.PLAYERS.get(playerIndex);
+
+        Color color = player.color;
+        Color overColor = color.brighter(.2f);
+        Color boughtColor = color.darker(.4f);
+        Color boughtOverColor = boughtColor.brighter(.2f);
+
         //Create List
         int startY = Main.SCREEN_HEIGHT - (interactables.length) * 30;
         for (int i = 0; i < interactables.length-1; i++) {
@@ -55,6 +61,11 @@ public class ShopKeeperMenu {
                 l = new ItemElement(this,new Vector2f(0,startY + i*29),new Vector2f(sizeX,25),new Weapon(player.weapon.level+1));
             else
                 l = new ItemElement(this,new Vector2f(0,startY + i*29),new Vector2f(sizeX,25),new Armor(player.armor.level+1));
+
+            l.color = color;
+            l.overColor = overColor;
+            l.boughtColor = boughtColor;
+            l.boughtOverColor = boughtOverColor;
 
             interactables[i] = l;
         }

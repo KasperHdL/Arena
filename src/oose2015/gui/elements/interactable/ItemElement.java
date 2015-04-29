@@ -37,7 +37,8 @@ public class ItemElement extends InteractableElement {
     private TextBox middleOverlay;
     private TextBox rightBox;
 
-
+    public Color boughtColor;
+    public Color boughtOverColor;
 
     public boolean isSelected;
     public boolean hasBeenBought;
@@ -46,7 +47,7 @@ public class ItemElement extends InteractableElement {
         super(menu,position, size);
         this.item = item;
         level = item.level;
-        price = level * 1000 + World.RANDOM.nextInt(1000) - 500;
+        price = level * 10 + World.RANDOM.nextInt(10) - 5;
 
         //temp until icon
         if(item instanceof Weapon)
@@ -61,6 +62,8 @@ public class ItemElement extends InteractableElement {
 
         color = Color.gray;
         overColor = Color.lightGray;
+        boughtColor = Color.darkGray;
+        boughtOverColor = Color.gray;
 
     }
 
@@ -76,14 +79,17 @@ public class ItemElement extends InteractableElement {
 
         if(stopBlink > Main.TIME)
             graphics.setColor(blinkColor);
-        else if(hasBeenBought && isOver)
-            graphics.setColor(Color.gray);
-        else if(hasBeenBought)
-            graphics.setColor(Color.darkGray);
-        else if(isOver)
-            graphics.setColor(overColor);
-        else
-            graphics.setColor(color);
+        else if(hasBeenBought){
+            if(isOver)
+                graphics.setColor(boughtOverColor);
+            else
+                graphics.setColor(boughtColor);
+        }else{
+            if(isOver)
+                graphics.setColor(overColor);
+            else
+                graphics.setColor(color);
+        }
 
         graphics.fillRect(1, 1, size.x - 1, size.y - 1);
 
@@ -109,8 +115,6 @@ public class ItemElement extends InteractableElement {
 
     @Override
     public void select(){
-    }
-    public void select(int gold){
         if(hasBeenBought)return;
 
         if(isSelected){

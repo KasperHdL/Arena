@@ -75,7 +75,7 @@ public class Player extends Agent implements ControllerListener{
 
 	private Input input;
 
-    private Color color;
+    public Color color;
 
 
     /**
