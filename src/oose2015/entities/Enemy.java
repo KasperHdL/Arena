@@ -26,7 +26,7 @@ public class Enemy extends Agent {
 
     float engageRadius = 200f;
     float disengageRadius = 500f;
-    float attackRadius = 10f;
+    float attackRadius = 20f;
 
     float nextAttackTime = 0f;
     float attackDelay = 200f;
@@ -142,9 +142,9 @@ public class Enemy extends Agent {
     	float targetMagnitude = tVector.length(),
     		  vectorAMagnitude = vectorA.length();
     		  
-    	float rotationAngle = (float)(vectorA.dot(tVector)/(targetMagnitude*vectorAMagnitude));
+    	float rotationAngle = (vectorA.dot(tVector)/(targetMagnitude*vectorAMagnitude));
     	
-    	System.out.println(Math.toDegrees(Math.acos(rotationAngle)) + " Target Vector: " + tVector.x +" , "+ tVector.y);
+    	//System.out.println(Math.toDegrees(Math.acos(rotationAngle)) + " Target Vector: " + tVector.x +" , "+ tVector.y);
     	
     	if(tVector.y < 0)
         	return (float)(-1*Math.toDegrees((Math.acos(rotationAngle))));
@@ -203,14 +203,13 @@ public class Enemy extends Agent {
             }
 
             //attack radius
-            if(isMelee){
             halfRadius = attackRadius + size.x/2;
-            if(nextAttackTime - 50 < World.TIME && dist < attackRadius) {
-	                graphics.setColor(Color.red);
-	                graphics.fillOval(-halfRadius, -halfRadius, halfRadius*2, halfRadius*2);
-	            }else if(World.DEBUG_MODE)
-	                graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
-            }
+            if(isMelee && nextAttackTime - 50 < World.TIME && dist < attackRadius) {
+                graphics.setColor(Color.red);
+                graphics.fillOval(-halfRadius, -halfRadius, halfRadius*2, halfRadius*2);
+            }else if(World.DEBUG_MODE)
+                graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
+
         }else{
 
             graphics.setColor(new Color(200,0,0,127));
