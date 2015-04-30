@@ -28,7 +28,7 @@ public class Enemy extends Agent {
     float disengageRadius = 500f;
     float attackRadius = 20f;
 
-    float nextAttackTime = 0f;
+    float nextAttackTime;
     float attackDelay = 200f;
 
     boolean isChasing = false,
