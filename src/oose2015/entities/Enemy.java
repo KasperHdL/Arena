@@ -110,13 +110,12 @@ public class Enemy extends Agent {
 
         if(dist < attackRadius){
             //attack
+        	if(isShot)
+                isShot = false;
             if(nextAttackTime < World.TIME) {
             	if(isMelee){
 	                agent.takeDamage(damage);
 	                nextAttackTime = World.TIME + attackDelay;
-	            	
-	                if(isShot)
-	                    isShot = false;
             	} else {
             		rotation = calculateRotation();
             		//System.out.println(rotation);
