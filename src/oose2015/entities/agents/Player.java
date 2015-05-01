@@ -229,6 +229,7 @@ public class Player extends Agent implements ControllerListener{
                 rangedKeyDown = false;
                 drawTime = 0;
                 startedBowDraw = false;
+            	arrowShootSound.play();
             } else if(rangedKeyDown && nextAttackTime > World.TIME)
             	rangedKeyDown = false;
             	
@@ -341,7 +342,7 @@ public class Player extends Agent implements ControllerListener{
 		if(attackButton == button && weapon.melee)
             attackKeyDown = true;
         
-        else if(rangedButton == button && weapon.ranged){
+        else if(rangedButton == button && weapon.ranged && nextAttackTime < World.TIME){
         	startTime = World.TIME;
         	bowDrawSound.play();
             startedBowDraw = true;
@@ -358,13 +359,12 @@ public class Player extends Agent implements ControllerListener{
         if(attackButton == button && weapon.melee)
             attackKeyDown = false;
 
-        else if(rangedButton == button && weapon.ranged){
+        else if(rangedButton == button && weapon.ranged && startedBowDraw){
         	releaseTime = World.TIME;
         	drawTime = releaseTime - startTime;
             startedBowDraw = false;
         	rangedKeyDown = true;
         	bowDrawSound.stop();
-        	arrowShootSound.play();
         }
 
 	}
