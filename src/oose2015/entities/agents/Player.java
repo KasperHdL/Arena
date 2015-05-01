@@ -49,7 +49,11 @@ public class Player extends Agent implements ControllerListener{
     boolean startedBowDraw = false;
 	float startTime;
 	float releaseTime;
-	public float drawTime;
+	public float drawTime,
+				 minDrawTime = 700,
+				 maxDrawTime = 1500,
+				 maxDrawGraphicSize = 10,
+				 drawGraphic = 0;
     
     //controls
     public int		controllerIndex,
@@ -165,14 +169,15 @@ public class Player extends Agent implements ControllerListener{
     }
     
     protected void rangedAttack(){
-    	if(drawTime < 700)
-    		drawTime = 700;
-    	else if(drawTime > 1500)
-    		drawTime = 1500;
+    	if(drawTime < minDrawTime)
+    		drawTime = minDrawTime;
+    	else if(drawTime > maxDrawTime)
+    		drawTime = maxDrawTime;
     	float projectileSpeed = 10*(drawTime/1000);
     	float damage = weapon.damage*(drawTime/1000);
     	
         nextAttackTime = World.TIME + weapon.attackDelay;
+        drawGraphic = 0;
 
         //System.out.println("Time: " + World.TIME + " attackDelay: " + nextAttackTime);
         new Projectile(this, weapon.attackRadius, damage, projectileSpeed);
@@ -273,6 +278,18 @@ public class Player extends Agent implements ControllerListener{
                 if(t < 0) t = 0;
                 else if( t> 1) t = 1;
                 graphics.drawLine(size.x / 2, 0, (1 - t) * (size.x / 2), 0);
+                
+                if(World.TIME - startTime >= maxDrawTime - maxDrawGraphicSize*100){
+                	if(World.TIME - startTime <= maxDrawTime)
+                		graphics.setColor(Color.white);
+                	else
+                		graphics.setColor(Color.red);
+                	graphics.drawOval(-(size.x+drawGraphic)/2, -(size.x+drawGraphic)/2, size.x+drawGraphic, size.y+drawGraphic);
+                	if(drawGraphic < maxDrawGraphicSize && (World.TIME - startTime) % 100 == 0)
+                		drawGraphic++;
+                	else if(drawGraphic >= maxDrawGraphicSize && (World.TIME - startTime) % 100 == 0){
+                		drawGraphic = 7;}
+                }
             }
         }
         
