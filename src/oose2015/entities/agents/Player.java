@@ -1,9 +1,14 @@
 package oose2015.entities.agents;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
 import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
-
 import oose2015.EntityHandler;
 import oose2015.utilities.VectorUtility;
 import oose2015.World;
@@ -14,6 +19,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -71,6 +78,11 @@ public class Player extends Agent implements ControllerListener{
     Start = 8
     */
     
+    //sound variables
+    public File file;
+    public Sound bowDrawSound;
+    public Sound arrowShootSound;
+    
 
     private boolean upKeyDown = false,
                     leftKeyDown = false,
@@ -123,6 +135,17 @@ public class Player extends Agent implements ControllerListener{
 
         drawAttack = false;
         nextAttackTime = 0f;
+        
+        //load sound clips
+        String s = System.getProperty("user.dir");
+        String bowDrawPath = s+"\\Assets\\Sounds\\BowDrawCreak.wav";
+        String arrowShootPath = s+"\\Assets\\Sounds\\ArrowShootSound.wav";
+	    try {
+			bowDrawSound = new Sound(bowDrawPath);
+			arrowShootSound = new Sound(arrowShootPath);
+		} catch (SlickException e) {
+			System.out.println("Error with file path");
+		}
     }
     
     @Override
@@ -141,16 +164,14 @@ public class Player extends Agent implements ControllerListener{
     }
     
     protected void rangedAttack(){
-    	if(drawTime < 500)
-    		drawTime = 500;
+    	if(drawTime < 700)
+    		drawTime = 700;
     	else if(drawTime > 1500)
     		drawTime = 1500;
     	float projectileSpeed = 10*(drawTime/1000);
     	float damage = weapon.damage*(drawTime/1000);
     	
         nextAttackTime = World.TIME + weapon.attackDelay;
-        //System.out.println("Time: " + World.TIME + " attackDelay: " + nextAttackTime);
-        System.out.println(weapon.attackDelay);
         new Projectile(this, weapon.attackRadius, damage, projectileSpeed);
     }
 
@@ -309,6 +330,7 @@ public class Player extends Agent implements ControllerListener{
         
         else if(rangedButton == button && weapon.ranged){
         	startTime = World.TIME;
+        	bowDrawSound.play();
         	//rangedKeyDown = true;
         }
 
@@ -326,6 +348,8 @@ public class Player extends Agent implements ControllerListener{
         	releaseTime = World.TIME;
         	drawTime = releaseTime - startTime;
         	rangedKeyDown = true;
+        	bowDrawSound.stop();
+        	arrowShootSound.play();
         }
 
 	}

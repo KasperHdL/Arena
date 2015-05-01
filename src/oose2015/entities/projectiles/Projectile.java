@@ -103,7 +103,7 @@ public class Projectile extends MovableEntity {
 		graphics.rotate(0,0,rotation);
 		graphics.setColor(Color.red);
 	
-		graphics.fillOval(-size.x/2, -size.x/2, size.x, size.y);
+		graphics.fillRect(0, -size.x/6, size.x*2, size.y/3);
 		graphics.popTransform();
 	}
 	
