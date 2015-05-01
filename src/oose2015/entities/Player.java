@@ -285,11 +285,13 @@ public class Player extends Agent implements ControllerListener{
 		if(controllerIn != controllerIndex)
 			return;
 		
-		if(attackButton == button)
-            attackKeyDown = true;
+		if(attackButton == button && weapon.melee)
+			attackKeyDown = true;
         
-        else if(rangedButton == button)
+        else if(rangedButton == button && weapon.ranged){
+			speedForce = 3f;
         	rangedKeyDown = true;
+        }
 
 	}
 
@@ -298,11 +300,13 @@ public class Player extends Agent implements ControllerListener{
 		if(controllerIn != controllerIndex)
 			return;
 
-        if(attackButton == button)
-            attackKeyDown = false;
-
-        else if(rangedButton == button)
+        if(attackButton == button && weapon.melee)
+        	attackKeyDown = false;
+        
+        else if(rangedButton == button && weapon.ranged){
+        	speedForce = 6f;
         	rangedKeyDown = false;
+        }
 
 	}
 

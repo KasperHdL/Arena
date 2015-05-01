@@ -2,6 +2,8 @@ package oose2015.items;
 
 public class Weapon extends Item{
 	public float damage, attackRadius, attackDelay = 200f;
+	public boolean ranged = true,
+				   melee = true;
 
     public Weapon(int level){
         if (level < 0)
