@@ -5,6 +5,7 @@ import oose2015.World;
 
 import oose2015.entities.Entity;
 import oose2015.entities.MovableEntity;
+import oose2015.entities.Wall;
 import oose2015.entities.agents.Agent;
 import oose2015.entities.agents.Enemy;
 import oose2015.entities.agents.Player;
@@ -42,6 +43,7 @@ public class Projectile extends MovableEntity {
 		spawnPoint = position;
 		size = new Vector2f(10,10);
 		spawnTime = World.TIME;
+		isMovable = false;
 		isSolid = false;
 		this.speedForce = speedForce;
 		friction = 0.99f;
@@ -74,9 +76,7 @@ public class Projectile extends MovableEntity {
 				enemy.shooter = (Player)owner;
 				EntityHandler.entities.remove(this);
 			}
-        }
-    	
-    	if(other instanceof Player && owner instanceof Enemy){
+        }else if(other instanceof Player && owner instanceof Enemy){
     		Enemy shooter = (Enemy) owner;
     		Player player = (Player) other;
         	if(player.isAlive) {
@@ -85,7 +85,9 @@ public class Projectile extends MovableEntity {
         		shooter.isShot = false;
 				EntityHandler.entities.remove(this);
 			}
-        }
+        }else if(other instanceof Wall){
+            EntityHandler.entities.remove(this);
+		}
     }
 	
 	@Override

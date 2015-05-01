@@ -37,15 +37,7 @@ public class GamePlayState implements GameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
 
-        //Super simple camera for single player -- TEMPORARY @hack
-        graphics.pushTransform();
-        Vector2f p = World.PLAYERS.get(0).position;
-        Vector2f a = World.PLAYERS.get(0).acceleration.copy();
-        a.scale(2);
-        graphics.translate(-p.x + a.x + Main.SCREEN_WIDTH/2,-p.y + a.y + Main.SCREEN_HEIGHT/2);
         world.render(graphics);
-        graphics.popTransform();
-
         world.renderInterface(graphics);
     }
 

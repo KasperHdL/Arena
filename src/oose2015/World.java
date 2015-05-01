@@ -1,10 +1,13 @@
 package oose2015;
 
-import oose2015.entities.tiles.DungeonExit;
+import oose2015.entities.DungeonExit;
 import oose2015.entities.agents.Enemy;
 import oose2015.entities.agents.KeyboardPlayer;
 import oose2015.entities.agents.Player;
 
+import oose2015.entities.tiles.Floor;
+import oose2015.entities.tiles.Tile;
+import oose2015.entities.Wall;
 import oose2015.gui.elements.TextBox;
 import oose2015.utilities.CollisionUtility;
 import org.newdawn.slick.Color;
@@ -38,6 +41,8 @@ public class World {
 
     private int numPlayersOnExits = 0;
 
+    public static Camera camera;
+
     GameContainer gameContainer;
     static StateBasedGame stateBasedGame;
 
@@ -60,7 +65,9 @@ public class World {
 
     public World(GameContainer gameContainer, StateBasedGame stateBasedGame){
 
-        PLAYERS = new ArrayList<Player>(4);
+        camera = new Camera();
+
+        PLAYERS = new ArrayList<Player>();
         ENEMIES = new ArrayList<Enemy>(20);
         EXITS = new ArrayList<DungeonExit>(1);
 
@@ -68,11 +75,21 @@ public class World {
         World.stateBasedGame = stateBasedGame;
         RANDOM = new Random();
 
-        entityHandler = new EntityHandler();
+        entityHandler = new EntityHandler(camera);
 
         dungeonExitText = new TextBox("dungeon exit", new Vector2f(Main.SCREEN_WIDTH/2,(Main.SCREEN_HEIGHT*3)/4), TextBox.Align.CENTER);
 
         new DungeonExit(new Vector2f(100,10));
+
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < 100; j++) {
+                if(i == 0 || j == 0 || i == 99 || j == 99)
+                    new Wall(new Vector2f(i * Tile.TILE_SIZE,j * Tile.TILE_SIZE));
+                else
+                    new Floor(new Vector2f(i * Tile.TILE_SIZE,j * Tile.TILE_SIZE),Color.green);
+            }
+
+        }
     }
 
     public void render(Graphics graphics){

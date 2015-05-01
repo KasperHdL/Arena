@@ -1,7 +1,7 @@
 package oose2015;
 
 import oose2015.entities.Entity;
-
+import oose2015.entities.tiles.Tile;
 import oose2015.utilities.CollisionUtility;
 import org.newdawn.slick.Graphics;
 
@@ -20,15 +20,22 @@ import java.util.ArrayList;
 public class EntityHandler {
 
     public static ArrayList<Entity> entities;//contains every entity player, enemy and all others
+    public static ArrayList<Tile> tiles;
+
+    private Camera camera;
 
     /**
      * Constructor for the EntityHandler
      */
-    public EntityHandler(){
+    public EntityHandler(Camera camera){
+        this.camera = camera;
         entities = new ArrayList<Entity>(50);
+        tiles = new ArrayList<Tile>(10000);
     }
 
     public void update(float dt){
+        camera.update(dt);
+
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
             entity.update(dt);
@@ -39,6 +46,7 @@ public class EntityHandler {
 
         //Collision
         for (int i = 0; i < entities.size(); i++) {
+
             Entity entity = entities.get(i);
             for (int j = i+1; j < entities.size(); j++) {
                 Entity other = entities.get(j);
@@ -49,9 +57,22 @@ public class EntityHandler {
     }
 
     public void render(Graphics graphics){
-        for(Entity entity : entities){
-            entity.render(graphics);
+        graphics.pushTransform();
+        graphics.scale(camera.scale,camera.scale);
+        graphics.translate(-camera.position.x + (camera.halfViewSize.x * (1 / camera.scale)), -camera.position.y + (camera.halfViewSize.y * (1/camera.scale)));
+        for(Tile tile : tiles){
+            if(camera.tileWithinView(tile))
+                tile.render(graphics);
         }
+
+        for(Entity entity : entities){
+            if(camera.entityWithinView(entity))
+                entity.render(graphics);
+        }
+
+
+
+        graphics.popTransform();
     }
 
 }

@@ -1,4 +1,4 @@
-package oose2015.entities.tiles;
+package oose2015.entities;
 
 import oose2015.World;
 import oose2015.entities.Entity;
@@ -17,7 +17,6 @@ import org.newdawn.slick.geom.Vector2f;
  * ---
  */
 
-//TODO should be a tile...
 public class DungeonExit extends Entity {
 
     public boolean isVisible = true;
@@ -28,6 +27,7 @@ public class DungeonExit extends Entity {
 
         this.size = new Vector2f(100f,100f);
 
+        isMovable = false;
         isSolid = false;
     }
 
