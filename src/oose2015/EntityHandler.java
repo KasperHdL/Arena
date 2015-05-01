@@ -58,7 +58,8 @@ public class EntityHandler {
 
     public void render(Graphics graphics){
         graphics.pushTransform();
-        graphics.translate(-camera.position.x + camera.halfViewSize.x,-camera.position.y + camera.halfViewSize.y);
+        graphics.scale(camera.scale,camera.scale);
+        graphics.translate(-camera.position.x + (camera.halfViewSize.x * (1 / camera.scale)), -camera.position.y + (camera.halfViewSize.y * (1/camera.scale)));
         for(Tile tile : tiles){
             if(camera.tileWithinView(tile))
                 tile.render(graphics);

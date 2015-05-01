@@ -67,7 +67,7 @@ public class World {
 
         camera = new Camera();
 
-        PLAYERS = new ArrayList<Player>(4);
+        PLAYERS = new ArrayList<Player>();
         ENEMIES = new ArrayList<Enemy>(20);
         EXITS = new ArrayList<DungeonExit>(1);
 

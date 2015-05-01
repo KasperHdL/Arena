@@ -234,15 +234,6 @@ public class Enemy extends Agent {
 
 
     private Player getClosestPlayer(){
-    	if(World.PLAYERS.size() == 0){
-    		//Hack
-    		try {
-				throw new Exception("ERROR: NO PLAYERS");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-    		return null;
-    	}
         Vector2f delta = World.PLAYERS.get(0).position.copy().sub(position);
 
         float minDistance = delta.distance(position);
