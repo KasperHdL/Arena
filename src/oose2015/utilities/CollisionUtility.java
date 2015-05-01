@@ -2,6 +2,7 @@ package oose2015.utilities;
 
 import oose2015.entities.Entity;
 import oose2015.entities.MovableEntity;
+import oose2015.entities.tiles.Tile;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -34,6 +35,11 @@ public class CollisionUtility {
      * @param other Entity
      */
     public static void handleCollision(Entity entity, Entity other){
+        if(entity.ignoreCollision || other.ignoreCollision)
+            return;
+
+        if(!entity.isSolid && !other.isSolid)
+            return;
 
         Vector2f delta = other.position.copy().sub(entity.position);
         float dist = delta.length() - entity.size.x/2 - other.size.x/2;
@@ -46,15 +52,18 @@ public class CollisionUtility {
         other.collides(entity);
 
         if(!entity.isSolid || !other.isSolid) return;
+        if(!entity.isMovable && !other.isMovable) return;
 
 
         delta.normalise();
         delta.scale(dist);
 
-        if(entity instanceof MovableEntity && other instanceof MovableEntity){
-            pushBasedOnMass(delta,(MovableEntity)entity,(MovableEntity)other);
-        }else{
+        if(entity.isMovable && other.isMovable){
+            pushBasedOnMass(delta, (MovableEntity) entity, (MovableEntity) other);
+        }else if(entity.isMovable){
             entity.position.add(delta);
+        } else if(other.isMovable){
+            other.position.add(delta.scale(-1f));
         }
     }
 

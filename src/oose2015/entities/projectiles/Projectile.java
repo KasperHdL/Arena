@@ -41,6 +41,7 @@ public class Projectile extends MovableEntity {
 		spawnPoint = position;
 		size = new Vector2f(10,10);
 		spawnTime = World.TIME;
+		isMovable = false;
 		isSolid = false;
 		speedForce = 10f;
 		friction = 0.99f;

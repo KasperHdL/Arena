@@ -27,7 +27,7 @@ public class Gold extends Entity {
         float s = World.RANDOM.nextFloat() * 2 + value;
         this.size = new Vector2f(s,s);
 
-        isSolid = false;
+        isMovable = false;
     }
 
     @Override

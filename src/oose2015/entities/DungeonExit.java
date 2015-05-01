@@ -1,4 +1,4 @@
-package oose2015.entities.tiles;
+package oose2015.entities;
 
 import oose2015.World;
 import oose2015.entities.Entity;
@@ -28,7 +28,7 @@ public class DungeonExit extends Entity {
 
         this.size = new Vector2f(100f,100f);
 
-        isSolid = false;
+        isMovable = false;
     }
 
     @Override

@@ -20,16 +20,22 @@ public class Entity {
 
     public Vector2f position;
     public Vector2f size;
+
     public float rotation;
-    public Vector2f scale;
+    public Vector2f scale = new Vector2f(1f,1f);
     public Texture texture;
 
-    //if solid then Entities will collide
+    //if can be pushed then it will be affected by other entities
+    public boolean isMovable = true;
     public boolean isSolid = true;
+
+    //do not send collision messages for this object
+
+    //Completly skips all collision for that entity
+    public boolean ignoreCollision = false;
 
     public Entity(){
         EntityHandler.entities.add(this);
-        scale = new Vector2f(1f,1f);
     }
 
     public void update(float dt){
