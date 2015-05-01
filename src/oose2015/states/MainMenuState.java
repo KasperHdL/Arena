@@ -1,19 +1,12 @@
 package oose2015.states;
 
-import net.java.games.input.Component;
-import net.java.games.input.Controller;
-import net.java.games.input.ControllerEnvironment;
 import oose2015.Main;
-import oose2015.World;
-import oose2015.entities.Player;
 
 import oose2015.gui.elements.TextBox;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
-
-import javax.xml.soap.Text;
 
 /**
  * Created by @Kasper on 26/03/2015

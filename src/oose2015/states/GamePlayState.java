@@ -1,9 +1,7 @@
 package oose2015.states;
 
-import oose2015.EntityHandler;
 import oose2015.Main;
 import oose2015.World;
-import oose2015.entities.Player;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;

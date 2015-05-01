@@ -2,7 +2,7 @@ package oose2015.gui;
 
 import oose2015.Main;
 import oose2015.World;
-import oose2015.entities.Player;
+import oose2015.entities.agents.Player;
 import oose2015.gui.elements.TextBox;
 import oose2015.gui.elements.interactable.InteractableElement;
 import oose2015.gui.elements.interactable.Button;
@@ -13,8 +13,6 @@ import oose2015.states.ShopKeeperState;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
-
-import javax.xml.soap.Text;
 
 /**
  * Created by @Kasper on 22/04/2015
@@ -139,11 +137,9 @@ public class ShopKeeperMenu {
             ie.select();
             if(ie.hasBeenBought){
                 if(ie.item instanceof Weapon){
-                    Weapon w = (Weapon) ie.item;
-                    player.weapon = w;
+                    player.weapon = (Weapon) ie.item;
                 }else{
-                    Armor a = (Armor) ie.item;
-                    player.armor = a;
+                    player.armor = (Armor)ie.item;
 
                 }
                 player.gold -= ie.price;

@@ -1,5 +1,8 @@
-package oose2015.entities;
+package oose2015.entities.agents;
 
+import oose2015.entities.Entity;
+import oose2015.entities.drops.Gold;
+import oose2015.entities.projectiles.Projectile;
 import oose2015.utilities.CollisionUtility;
 import oose2015.EntityHandler;
 import oose2015.utilities.VectorUtility;

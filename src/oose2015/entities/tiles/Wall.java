@@ -1,4 +1,4 @@
-package oose2015.entities;
+package oose2015.entities.tiles;
 
 /**
  * Created by @Kasper on 01/05/2015
@@ -10,5 +10,5 @@ package oose2015.entities;
  * ---
  */
 
-public class Tile {
+public class Wall {
 }

@@ -1,10 +1,14 @@
-package oose2015.entities;
+package oose2015.entities.projectiles;
 
 import oose2015.EntityHandler;
 import oose2015.World;
 
+import oose2015.entities.Entity;
+import oose2015.entities.MovableEntity;
+import oose2015.entities.agents.Agent;
+import oose2015.entities.agents.Enemy;
+import oose2015.entities.agents.Player;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.Color;
 /**
