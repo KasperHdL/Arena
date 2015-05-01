@@ -1,6 +1,8 @@
-package oose2015.entities;
+package oose2015.entities.agents;
 
-import oose2015.utilities.CollisionUtility;
+import oose2015.entities.Entity;
+import oose2015.entities.drops.Gold;
+import oose2015.entities.projectiles.Projectile;
 
 import oose2015.EntityHandler;
 import oose2015.utilities.VectorUtility;
@@ -24,8 +26,7 @@ import org.newdawn.slick.geom.Vector2f;
  * ---
  */
 
-public class Player extends Agent implements ControllerListener{
-
+public class Player extends Agent implements ControllerListener{	
     public int gold;
     public int exp;
     private int lastLevelExp;
@@ -37,6 +38,11 @@ public class Player extends Agent implements ControllerListener{
     private float nextAttackTime;
     private boolean drawAttack;
 
+	//bow variables
+	float startTime;
+	float releaseTime;
+	public float drawTime;
+    
     //controls
     public int		controllerIndex,
                     attackButton = 5,
@@ -135,8 +141,17 @@ public class Player extends Agent implements ControllerListener{
     }
     
     protected void rangedAttack(){
+    	if(drawTime < 500)
+    		drawTime = 500;
+    	else if(drawTime > 1500)
+    		drawTime = 1500;
+    	float projectileSpeed = 10*(drawTime/1000);
+    	float damage = weapon.damage*(drawTime/1000);
+    	
         nextAttackTime = World.TIME + weapon.attackDelay;
-    	new Projectile(this, weapon.attackRadius, weapon.damage);
+        //System.out.println("Time: " + World.TIME + " attackDelay: " + nextAttackTime);
+        System.out.println(weapon.attackDelay);
+        new Projectile(this, weapon.attackRadius, damage, projectileSpeed);
     }
 
     public void addExp(int value){
@@ -185,9 +200,13 @@ public class Player extends Agent implements ControllerListener{
         if(isAlive) {
             move(dt);
 
-            if(rangedKeyDown && nextAttackTime < World.TIME)
+            if(rangedKeyDown && nextAttackTime < World.TIME){
                 rangedAttack();
-
+                rangedKeyDown = false;
+                drawTime = 0;
+            } else if(rangedKeyDown && nextAttackTime > World.TIME)
+            	rangedKeyDown = false;
+            	
             if (attackKeyDown && nextAttackTime < World.TIME) {
                 drawAttack = true;
                 attack();
@@ -286,11 +305,11 @@ public class Player extends Agent implements ControllerListener{
 			return;
 		
 		if(attackButton == button && weapon.melee)
-			attackKeyDown = true;
+            attackKeyDown = true;
         
         else if(rangedButton == button && weapon.ranged){
-			speedForce = 3f;
-        	rangedKeyDown = true;
+        	startTime = World.TIME;
+        	//rangedKeyDown = true;
         }
 
 	}
@@ -301,11 +320,12 @@ public class Player extends Agent implements ControllerListener{
 			return;
 
         if(attackButton == button && weapon.melee)
-        	attackKeyDown = false;
-        
+            attackKeyDown = false;
+
         else if(rangedButton == button && weapon.ranged){
-        	speedForce = 6f;
-        	rangedKeyDown = false;
+        	releaseTime = World.TIME;
+        	drawTime = releaseTime - startTime;
+        	rangedKeyDown = true;
         }
 
 	}

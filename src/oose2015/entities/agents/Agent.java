@@ -1,4 +1,6 @@
-package oose2015.entities;
+package oose2015.entities.agents;
+
+import oose2015.entities.MovableEntity;
 
 /**
  * Created by @Kasper on 26/03/2015

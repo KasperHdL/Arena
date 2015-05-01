@@ -1,19 +1,15 @@
 package oose2015;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-import net.java.games.input.Controller;
-import net.java.games.input.ControllerEnvironment;
-import oose2015.entities.DungeonExit;
-import oose2015.entities.Enemy;
-import oose2015.entities.KeyboardPlayer;
-import oose2015.entities.Player;
+import oose2015.entities.tiles.DungeonExit;
+import oose2015.entities.agents.Enemy;
+import oose2015.entities.agents.KeyboardPlayer;
+import oose2015.entities.agents.Player;
 
 import oose2015.gui.elements.TextBox;
 import oose2015.utilities.CollisionUtility;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 

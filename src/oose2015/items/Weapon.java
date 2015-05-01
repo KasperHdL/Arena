@@ -1,7 +1,7 @@
 package oose2015.items;
 
 public class Weapon extends Item{
-	public float damage, attackRadius, attackDelay = 200f;
+	public float damage, attackRadius, attackDelay;
 	public boolean ranged = true,
 				   melee = true;
 
@@ -12,7 +12,7 @@ public class Weapon extends Item{
         this.level = level;
         this.damage = level;
         this.attackRadius = level * 20;
-        this.attackDelay = level * 200;
+        this.attackDelay = level * 2000;
     }
     /**
      * Constructor for weapon

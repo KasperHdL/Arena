@@ -1,10 +1,14 @@
-package oose2015.entities;
+package oose2015.entities.projectiles;
 
 import oose2015.EntityHandler;
 import oose2015.World;
 
+import oose2015.entities.Entity;
+import oose2015.entities.MovableEntity;
+import oose2015.entities.agents.Agent;
+import oose2015.entities.agents.Enemy;
+import oose2015.entities.agents.Player;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.Color;
 /**
@@ -24,9 +28,10 @@ public class Projectile extends MovableEntity {
 	public float range;
 	public Vector2f direction;
 	public float damage;
+	public float flyTime = 1500;
 
 	
-	public Projectile(Agent owner, float range, float damage){
+	public Projectile(Agent owner, float range, float damage, float speedForce){
 		name = "projectile";
 		this.owner = owner;
 		this.range = range;
@@ -38,14 +43,17 @@ public class Projectile extends MovableEntity {
 		size = new Vector2f(10,10);
 		spawnTime = World.TIME;
 		isSolid = false;
-		speedForce = 10f;
+		this.speedForce = speedForce;
 		friction = 0.99f;
 		inertia = 0.999f;
 	}
 	
 	@Override
 	protected void move(float dt){
-    	direction.scale(speedForce/mass);
+		direction.scale(speedForce/mass);
+    	if(World.TIME > spawnTime+flyTime){
+			EntityHandler.entities.remove(this);
+    	}
     	
 		super.move(dt,direction);
 	}

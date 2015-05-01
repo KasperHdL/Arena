@@ -1,5 +1,7 @@
-	package oose2015.entities;
+	package oose2015.entities.agents;
 
+import oose2015.entities.drops.Gold;
+import oose2015.entities.projectiles.Projectile;
 import oose2015.utilities.VectorUtility;
 import oose2015.World;
 
@@ -21,17 +23,17 @@ import org.newdawn.slick.geom.Vector2f;
 public class Enemy extends Agent {
     float damage = 1f;
 
-    int goldDrop;
-    int expDrop;
+    public int goldDrop;
+    public int expDrop;
 
     float engageRadius = 200f;
     float disengageRadius = 500f;
     float attackRadius = 20f;
 
-    float nextAttackTime = 0f;
+    float nextAttackTime;
     float attackDelay = 200f;
 
-    boolean isChasing = false,
+    public boolean isChasing = false,
     		isShot = false,
     		isMelee;
      
@@ -101,6 +103,7 @@ public class Enemy extends Agent {
             }
         }else{
             //dead
+            //do dead stuff...
         }
     }
 
@@ -154,7 +157,7 @@ public class Enemy extends Agent {
 
     protected void rangedAttack(){
         nextAttackTime = World.TIME + attackDelay;
-    	new Projectile(this, attackRadius, damage);
+    	new Projectile(this, attackRadius, damage, 10f);
     }
     
     protected void move(Vector2f input, float dt){
@@ -178,6 +181,7 @@ public class Enemy extends Agent {
             graphics.fillOval(-size.x / 2, -size.y / 2, size.x, size.y);
             graphics.setColor(Color.black);
             graphics.drawLine(0,0,size.x/2,0);
+
 
             float halfRadius;
             float dist = Float.MAX_VALUE;
@@ -214,7 +218,6 @@ public class Enemy extends Agent {
             graphics.setColor(new Color(200,0,0,127));
 
             graphics.fillOval(-size.x / 2, -size.y / 2, size.x, size.y);
-
         }
 
 

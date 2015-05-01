@@ -1,6 +1,7 @@
-package oose2015.entities;
+package oose2015.entities.tiles;
 
 import oose2015.World;
+import oose2015.entities.Entity;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -16,6 +17,7 @@ import org.newdawn.slick.geom.Vector2f;
  * ---
  */
 
+//TODO should be a tile...
 public class DungeonExit extends Entity {
 
     public boolean isVisible = true;
