@@ -2,7 +2,6 @@ package oose2015;
 
 import oose2015.entities.Entity;
 import oose2015.entities.tiles.Tile;
-import oose2015.utilities.VectorUtility;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
