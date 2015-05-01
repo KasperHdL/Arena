@@ -2,7 +2,6 @@ package oose2015;
 
 import oose2015.entities.DungeonExit;
 import oose2015.entities.agents.Enemy;
-import oose2015.entities.agents.KeyboardPlayer;
 import oose2015.entities.agents.Player;
 
 import oose2015.entities.tiles.Floor;
@@ -31,15 +30,10 @@ import java.util.Random;
 
 public class World {
     public static boolean DEBUG_MODE = true;
-
-    //ARRAYLIST FOR KEYBOARDPLAYERS
-    public static ArrayList<KeyboardPlayer> KEYBOARDPLAYERS;
     
     public static ArrayList<Player> PLAYERS; //for reference
     public static ArrayList<Enemy> ENEMIES; //for reference
     public static ArrayList<DungeonExit> EXITS; //for reference
-
-    private int numPlayersOnExits = 0;
 
     public static Camera camera;
 
@@ -57,7 +51,7 @@ public class World {
     private int waveCount = 0;
 
     private TextBox dungeonExitText;
-    private int playersOnExit = 0;
+    private int numPlayersOnExit = 0;
     private boolean playerOnExit = false;
     private boolean justExitedShop = false;
     private int dungeonExitTime = -1;
@@ -90,6 +84,7 @@ public class World {
             }
 
         }
+
     }
 
     public void render(Graphics graphics){
@@ -104,7 +99,7 @@ public class World {
 
             if(dungeonExitTime == -1) {
                 //waiting for other players
-                dungeonExitText.text = "Waiting for " + (PLAYERS.size() - playersOnExit) + " players";
+                dungeonExitText.text = "Waiting for " + (PLAYERS.size() - numPlayersOnExit) + " players";
                 dungeonExitText.render(graphics);
             }else if(dungeonExitTime < TIME){
                 //exit dungeon
@@ -159,30 +154,24 @@ public class World {
     public void checkExits(){
 
         for (int i = 0; i < EXITS.size(); i++) {
-            playersOnExit = 0;
+            numPlayersOnExit = 0;
             for (int j = 0; j < PLAYERS.size(); j++) {
                 if (CollisionUtility.checkCollision(PLAYERS.get(j), EXITS.get(i)))
-                    playersOnExit++;
+                    numPlayersOnExit++;
             }
 
-            playerOnExit = playersOnExit != 0;
+            playerOnExit = numPlayersOnExit != 0;
 
 
             if(justExitedShop && !playerOnExit)
                     justExitedShop = false;
-            else if(playersOnExit != PLAYERS.size())
+            else if(numPlayersOnExit != PLAYERS.size())
                 dungeonExitTime = -1;
             else if(dungeonExitTime == -1)
                 dungeonExitTime = TIME + dungeonExitLength;
         }
     }
 
-    /**
-     * OVERLOARD FOR KEYBOARDPLAYER
-     * @param player Player
-     */
-    public static void enteredExit(KeyboardPlayer player){
-    }
     
     public void createPlayer(Vector2f v, Color color, int controllerInput){
     		new Player(v, color, controllerInput,gameContainer.getInput());

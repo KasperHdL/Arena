@@ -46,6 +46,7 @@ public class Player extends Agent implements ControllerListener{
     private boolean drawAttack;
 
 	//bow variables
+    boolean startedBowDraw = false;
 	float startTime;
 	float releaseTime;
 	public float drawTime;
@@ -172,6 +173,8 @@ public class Player extends Agent implements ControllerListener{
     	float damage = weapon.damage*(drawTime/1000);
     	
         nextAttackTime = World.TIME + weapon.attackDelay;
+
+        //System.out.println("Time: " + World.TIME + " attackDelay: " + nextAttackTime);
         new Projectile(this, weapon.attackRadius, damage, projectileSpeed);
     }
 
@@ -225,6 +228,7 @@ public class Player extends Agent implements ControllerListener{
                 rangedAttack();
                 rangedKeyDown = false;
                 drawTime = 0;
+                startedBowDraw = false;
             } else if(rangedKeyDown && nextAttackTime > World.TIME)
             	rangedKeyDown = false;
             	
@@ -260,7 +264,16 @@ public class Player extends Agent implements ControllerListener{
         graphics.fillOval(-size.x / 2, -size.x / 2, size.x, size.y);
 
         graphics.setColor(Color.white);
-        if(isAlive)graphics.drawLine(0,0,size.x/2,0);
+        if(isAlive) {
+            graphics.drawLine(0, 0, size.x / 2, 0);
+            if (startedBowDraw) {
+                graphics.setColor(Color.red);
+                float t = (World.TIME - startTime)/1500;
+                if(t < 0) t = 0;
+                else if( t> 1) t = 1;
+                graphics.drawLine(size.x / 2, 0, (1 - t) * (size.x / 2), 0);
+            }
+        }
         
         graphics.popTransform();
 
@@ -331,6 +344,7 @@ public class Player extends Agent implements ControllerListener{
         else if(rangedButton == button && weapon.ranged){
         	startTime = World.TIME;
         	bowDrawSound.play();
+            startedBowDraw = true;
         	//rangedKeyDown = true;
         }
 
@@ -347,6 +361,7 @@ public class Player extends Agent implements ControllerListener{
         else if(rangedButton == button && weapon.ranged){
         	releaseTime = World.TIME;
         	drawTime = releaseTime - startTime;
+            startedBowDraw = false;
         	rangedKeyDown = true;
         	bowDrawSound.stop();
         	arrowShootSound.play();
