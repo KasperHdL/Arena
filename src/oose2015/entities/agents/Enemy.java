@@ -3,6 +3,7 @@
 import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
 import oose2015.utilities.VectorUtility;
+import oose2015.Settings;
 import oose2015.World;
 
 import org.newdawn.slick.Color;
@@ -21,14 +22,14 @@ import org.newdawn.slick.geom.Vector2f;
  */
 
 public class Enemy extends Agent {
-    float damage = 1f;
+    float damage = Settings.ENEMY_DAMAGE;
 
     public int goldDrop;
     public int expDrop;
 
-    float engageRadius = 200f;
-    float disengageRadius = 500f;
-    float attackRadius = 20f;
+    float engageRadius = Settings.ENEMY_ENGAGERADIUS;
+    float disengageRadius = Settings.ENEMY_DISENGAGERADIUS;
+    float attackRadius = Settings.ENEMY_MELEERADIUS;
 
     float nextAttackTime;
     float attackDelay = 200f;
@@ -49,7 +50,7 @@ public class Enemy extends Agent {
     public Enemy(Vector2f position, int level, boolean isMelee){
         World.ENEMIES.add(this);
 
-        curHealth = 10;
+        curHealth = Settings.ENEMY_HEALTH;
         maxHealth = curHealth;
 
         this.level = level;
@@ -59,15 +60,15 @@ public class Enemy extends Agent {
         size = new Vector2f(level * 5f + 5f,level * 5f + 5f );
 
 
-        maxVelocity = 12f;
+        maxVelocity = Settings.ENEMY_MAXVELOCITY;
 
-        speedForce = 8f;
-        mass = level + 1f;
-        goldDrop = level * 5;
-        expDrop = level * 10;
+        speedForce = Settings.ENEMY_SPEEDFORCE;
+        mass = level + Settings.ENEMY_MASSPERLVL;
+        goldDrop = level * Settings.ENEMY_GOLDDROPPERLVL;
+        expDrop = level * Settings.ENEMY_EXPDROPPERLVL;
 
         if(!isMelee){
-        	attackRadius = 200f;
+        	attackRadius = Settings.ENEMY_RANGEDRADIUS;
         }
       
     }

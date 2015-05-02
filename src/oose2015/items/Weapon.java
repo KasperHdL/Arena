@@ -1,7 +1,10 @@
 package oose2015.items;
 
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Vector2f;
+
 public class Weapon extends Item{
-	public float damage, attackRadius, attackDelay;
+	public float damage, attackRadius, attackDelay, rotation;
 	public boolean ranged = true,
 				   melee = true;
 
@@ -13,6 +16,7 @@ public class Weapon extends Item{
         this.damage = level;
         this.attackRadius = level * 20;
         this.attackDelay = level * 2000;
+        this.rotation = rotation;
     }
     /**
      * Constructor for weapon
@@ -31,5 +35,6 @@ public class Weapon extends Item{
         this.attackDelay = attackDelay;
         this.attackRadius = attackRadius;
         this.damage = damage;
+        this.rotation = rotation;
     }
 }

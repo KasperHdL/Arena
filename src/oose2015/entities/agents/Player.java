@@ -10,6 +10,7 @@ import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
 import oose2015.EntityHandler;
+import oose2015.Settings;
 import oose2015.utilities.VectorUtility;
 import oose2015.World;
 import oose2015.items.Armor;
@@ -45,43 +46,35 @@ public class Player extends Agent implements ControllerListener{
     private float nextAttackTime;
     private boolean drawAttack;
 
-	//bow variables
+	//bow
     boolean startedBowDraw = false;
 	float startTime;
 	float releaseTime;
+	
 	public float drawTime,
-				 minDrawTime = 700,
-				 maxDrawTime = 1500,
-				 maxDrawGraphicSize = 10,
-				 drawGraphic = 0;
+				 minDrawTime = Settings.MINDRAWSPEED,
+				 maxDrawTime = Settings.MAXDRAWSPEED,
+				 maxDrawGraphicSize = Settings.MAXDRAWGRAPHICSIZE,
+				 drawGraphic = Settings.DRAWGRAPHIC;
     
+	//melee
+	public float startArc = Settings.PLAYER_STARTARC,
+				 endArc = Settings.PLAYER_ENDARC;
+	
     //controls
     public int		controllerIndex,
-                    attackButton = 5,
-                    rangedButton = 6,
-                    leftStickX = 1,
-                    leftStickY = 0,
-    				rightStickX = 3,
-    				rightStickY = 2;
+                    attackButton = Settings.ATTACKBUTTON,
+                    rangedButton = Settings.RANGEDBUTTON,
+                    leftStickX = Settings.LEFTSTICKX,
+                    leftStickY = Settings.LEFTSTICKY,
+    				rightStickX = Settings.RIGHTSTICKX,
+    				rightStickY = Settings.RIGHTSTICKY;
 
     //deadzones
-    public float 	leftDeadX = 0.1f,
-    				leftDeadY = 0.1f,
-    				rightDeadX = 0.6f,
-    				rightDeadY = 0.6f;
-    
-    /*
-    L1 = 5
-    R1 = 6
-    Triangle = 4
-    Cross = 1
-    Circle = 2
-    Square = 3
-    Left stick = 9
-    Right stick = 10
-    Select = 7
-    Start = 8
-    */
+    public float 	leftDeadX = Settings.LEFTDEADX,
+    				leftDeadY = Settings.LEFTDEADY,
+    				rightDeadX = Settings.RIGHTDEADX,
+    				rightDeadY = Settings.RIGHTDEADY;
     
     //sound variables
     public File file;
@@ -114,17 +107,17 @@ public class Player extends Agent implements ControllerListener{
         input.addControllerListener(this);
         name = "Player";
 
-        curHealth = 100;
+        curHealth = Settings.PLAYER_HEALTH;
         maxHealth = curHealth;
 
         size = new Vector2f(50.0f, 50.0f);
 
         this.position = position;
 
-        maxVelocity = 15f;
+        maxVelocity = Settings.PLAYER_MAXVELOCITY;
 
-        speedForce = 6f;
-        mass = 1f;
+        speedForce = Settings.PLAYER_SPEEDFORCE;
+        mass = Settings.PLAYER_MASS;
 
         gold = 0;
         exp = 0;
@@ -156,9 +149,10 @@ public class Player extends Agent implements ControllerListener{
     @Override
     protected void attack(){
         nextAttackTime = World.TIME + weapon.attackDelay;
-
+        
     	for(Enemy enemy : World.ENEMIES){
     		float dist = VectorUtility.getDistanceToEntity(this, enemy);
+	    	float x = 0;
     		if(dist < weapon.attackRadius){
     			if(enemy.takeDamage(weapon.damage)){
                     //enemy killed
@@ -173,7 +167,7 @@ public class Player extends Agent implements ControllerListener{
     		drawTime = minDrawTime;
     	else if(drawTime > maxDrawTime)
     		drawTime = maxDrawTime;
-    	float projectileSpeed = 10*(drawTime/1000);
+    	float projectileSpeed = Settings.BASEPROJECTILESPEED*(drawTime/1000);
     	float damage = weapon.damage*(drawTime/1000);
     	
         nextAttackTime = World.TIME + weapon.attackDelay;
@@ -196,7 +190,7 @@ public class Player extends Agent implements ControllerListener{
     }
 
     @Override
-    protected void move(float dt){    	    	
+    protected void move(float dt){
     	float x = input.getAxisValue(controllerIndex, rightStickX), 
     		  y = input.getAxisValue(controllerIndex, rightStickY);
     
@@ -252,12 +246,12 @@ public class Player extends Agent implements ControllerListener{
         graphics.translate(position.x, position.y);
         graphics.rotate(0, 0, rotation);
 
-
         graphics.setColor(Color.red);
 
         float halfRad = weapon.attackRadius + size.x / 2;
-        if(drawAttack)
-            graphics.fillOval(-halfRad, -halfRad, halfRad * 2,halfRad * 2);
+        if(drawAttack){
+    		graphics.fillArc(-halfRad, -halfRad, halfRad * 2,halfRad * 2, startArc, endArc);
+        }
         else if(World.DEBUG_MODE)
             graphics.drawOval(-halfRad, -halfRad, halfRad * 2, halfRad * 2);
 
@@ -287,8 +281,8 @@ public class Player extends Agent implements ControllerListener{
                 	graphics.drawOval(-(size.x+drawGraphic)/2, -(size.x+drawGraphic)/2, size.x+drawGraphic, size.y+drawGraphic);
                 	if(drawGraphic < maxDrawGraphicSize && (World.TIME - startTime) % 100 == 0)
                 		drawGraphic++;
-                	else if(drawGraphic >= maxDrawGraphicSize && (World.TIME - startTime) % 100 == 0){
-                		drawGraphic = 7;}
+                	else if(drawGraphic >= maxDrawGraphicSize && (World.TIME - startTime) % 100 == 0)
+                		drawGraphic = 7;
                 }
             }
         }

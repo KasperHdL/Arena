@@ -1,14 +1,15 @@
 package oose2015.entities.projectiles;
 
 import oose2015.EntityHandler;
+import oose2015.Settings;
 import oose2015.World;
-
 import oose2015.entities.Entity;
 import oose2015.entities.MovableEntity;
 import oose2015.entities.Wall;
 import oose2015.entities.agents.Agent;
 import oose2015.entities.agents.Enemy;
 import oose2015.entities.agents.Player;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.Color;
@@ -29,7 +30,7 @@ public class Projectile extends MovableEntity {
 	public float range;
 	public Vector2f direction;
 	public float damage;
-	public float flyTime = 1500;
+	public float flyTime = Settings.PROJECTILE_FLYTIME;
 
 	
 	public Projectile(Agent owner, float range, float damage, float speedForce){
@@ -46,8 +47,8 @@ public class Projectile extends MovableEntity {
 		isMovable = false;
 		isSolid = false;
 		this.speedForce = speedForce;
-		friction = 0.99f;
-		inertia = 0.999f;
+		friction = Settings.PROJECTILE_FRICTION;
+		inertia = Settings.PROJECTILE_INERTIA;
 	}
 	
 	@Override
