@@ -30,7 +30,7 @@ public class Projectile extends MovableEntity {
 	public float range;
 	public Vector2f direction;
 	public float damage;
-	public float flyTime = Settings.PROJECTILE_FLYTIME;
+	public float flyTime = Settings.PROJECTILE_FLY_TIME;
 
 	
 	public Projectile(Agent owner, float range, float damage, float speedForce){

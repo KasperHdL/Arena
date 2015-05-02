@@ -1,10 +1,6 @@
 package oose2015.entities.agents;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
 import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
@@ -36,9 +32,18 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Player extends Agent implements ControllerListener{	
     public int gold;
+
     public int exp;
     private int lastLevelExp;
     private int nextLevelExp;
+
+    //level attr
+
+    private boolean attributeMenu = false;
+    private int healthLevel;
+    private int damageLevel;
+    private int speedLevel;
+
 
     public Weapon weapon;
     public Armor armor;
@@ -52,29 +57,29 @@ public class Player extends Agent implements ControllerListener{
 	float releaseTime;
 	
 	public float drawTime,
-				 minDrawTime = Settings.MINDRAWSPEED,
-				 maxDrawTime = Settings.MAXDRAWSPEED,
-				 maxDrawGraphicSize = Settings.MAXDRAWGRAPHICSIZE,
-				 drawGraphic = Settings.DRAWGRAPHIC;
+				 minDrawTime = Settings.MIN_DRAW_SPEED,
+				 maxDrawTime = Settings.MAX_DRAW_SPEED,
+				 maxDrawGraphicSize = Settings.MAX_DRAW_GRAPHIC_SIZE,
+				 drawGraphic = 0;
     
 	//melee
-	public float startArc = Settings.PLAYER_STARTARC,
-				 endArc = Settings.PLAYER_ENDARC;
+	public float startArc = Settings.PLAYER_ARC_START,
+				 endArc = Settings.PLAYER_ARC_END;
 	
     //controls
     public int		controllerIndex,
-                    attackButton = Settings.ATTACKBUTTON,
-                    rangedButton = Settings.RANGEDBUTTON,
-                    leftStickX = Settings.LEFTSTICKX,
-                    leftStickY = Settings.LEFTSTICKY,
-    				rightStickX = Settings.RIGHTSTICKX,
-    				rightStickY = Settings.RIGHTSTICKY;
+                    attackButton = Settings.ATTACK_BUTTON,
+                    rangedButton = Settings.RANGED_BUTTON,
+                    leftStickX = Settings.LEFT_STICK_X,
+                    leftStickY = Settings.LEFT_STICK_Y,
+    				rightStickX = Settings.RIGHT_STICK_X,
+    				rightStickY = Settings.RIGHT_STICK_Y;
 
     //deadzones
-    public float 	leftDeadX = Settings.LEFTDEADX,
-    				leftDeadY = Settings.LEFTDEADY,
-    				rightDeadX = Settings.RIGHTDEADX,
-    				rightDeadY = Settings.RIGHTDEADY;
+    public float 	leftDeadX = Settings.LEFT_DEAD_X,
+    				leftDeadY = Settings.LEFT_DEAD_Y,
+    				rightDeadX = Settings.RIGHT_DEAD_X,
+    				rightDeadY = Settings.RIGHT_DEAD_Y;
     
     //sound variables
     public File file;
@@ -114,9 +119,9 @@ public class Player extends Agent implements ControllerListener{
 
         this.position = position;
 
-        maxVelocity = Settings.PLAYER_MAXVELOCITY;
+        maxVelocity = Settings.PLAYER_MAX_VELOCITY;
 
-        speedForce = Settings.PLAYER_SPEEDFORCE;
+        speedForce = Settings.PLAYER_SPEED_FORCE;
         mass = Settings.PLAYER_MASS;
 
         gold = 0;
@@ -125,6 +130,11 @@ public class Player extends Agent implements ControllerListener{
         level = 1;
         lastLevelExp = 0;
         nextLevelExp = (level*level)*100;
+
+        attributeMenu = false;
+        healthLevel = 0;
+        speedLevel = 0;
+        damageLevel = 0;
 
         this.controllerIndex = controllerIndex;
 
@@ -167,7 +177,7 @@ public class Player extends Agent implements ControllerListener{
     		drawTime = minDrawTime;
     	else if(drawTime > maxDrawTime)
     		drawTime = maxDrawTime;
-    	float projectileSpeed = Settings.BASEPROJECTILESPEED*(drawTime/1000);
+    	float projectileSpeed = Settings.BASE_PROJECTILE_SPEED *(drawTime/1000);
     	float damage = weapon.damage*(drawTime/1000);
     	
         nextAttackTime = World.TIME + weapon.attackDelay;
@@ -185,6 +195,8 @@ public class Player extends Agent implements ControllerListener{
 
             lastLevelExp = nextLevelExp;
             nextLevelExp = (level*level)*100;
+
+
         }
 
     }

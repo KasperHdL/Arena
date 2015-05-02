@@ -6,9 +6,9 @@ public class Settings {
 		//general
 	    public static final float 	PLAYER_HEALTH = 100;
 	
-	    public static final float 	PLAYER_MAXVELOCITY = 15f;
+	    public static final float 	PLAYER_MAX_VELOCITY = 15f;
 	
-	    public static final float 	PLAYER_SPEEDFORCE = 6f;
+	    public static final float 	PLAYER_SPEED_FORCE = 6f;
 	    public static final float 	PLAYER_MASS = 1f;
 	
 		//controls
@@ -24,54 +24,51 @@ public class Settings {
 	    Select = 7
 	    Start = 8*/
 
-	    public static final int		ATTACKBUTTON = 5,
-									RANGEDBUTTON = 6,
-									LEFTSTICKX = 1,
-									LEFTSTICKY = 0,
-									RIGHTSTICKX = 3,
-									RIGHTSTICKY = 2;
+	    public static final int ATTACK_BUTTON = 5,
+									RANGED_BUTTON = 6,
+									LEFT_STICK_X = 1,
+									LEFT_STICK_Y = 0,
+									RIGHT_STICK_X = 3,
+									RIGHT_STICK_Y = 2;
 
 	    //deadzones
-	    public static final float 	LEFTDEADX = 0.1f,
-				    				LEFTDEADY = 0.1f,
-				    				RIGHTDEADX = 0.6f,
-				    				RIGHTDEADY = 0.6f;
+	    public static final float 	LEFT_DEAD_X = 0.1f,
+				    				LEFT_DEAD_Y = 0.1f,
+				    				RIGHT_DEAD_X = 0.6f,
+				    				RIGHT_DEAD_Y = 0.6f;
 
 	
 		//player bowdraw Variables
-		public static final float 	MINDRAWSPEED = 700,
-									MAXDRAWSPEED = 1500;
+		public static final float 	MIN_DRAW_SPEED = 700,
+									MAX_DRAW_SPEED = 1500;
 	
-		public static final float 	MAXDRAWGRAPHICSIZE = 10;
-		public static final float 	DRAWGRAPHIC = 0;
-	
+		public static final float 	MAX_DRAW_GRAPHIC_SIZE = 10;
+
 		//melee variables
-		public static final float 	PLAYER_STARTARC = -20,
-				 				  	PLAYER_ENDARC = 80;
+		public static final float 	PLAYER_ARC_START = -20,
+				 				  	PLAYER_ARC_END = 80;
 		
 	//Enemy Variables
 		public static final float 	ENEMY_DAMAGE = 1f,
 									ENEMY_HEALTH = 10;
 		
-		public static final int 	ENEMY_GOLDDROPPERLVL = 5,
-									ENEMY_EXPDROPPERLVL = 10;
+		public static final int 	ENEMY_GOLD_DROP_PER_LVL = 5,
+									ENEMY_EXP_DROP_PER_LVL = 10;
 
-		public static final float 	ENEMY_MASSPERLVL = 1;
+		public static final float 	ENEMY_MASS_PER_LVL = 1;
 
-		public static final float 	ENEMY_SPEEDFORCE = 8f,
-									ENEMY_MAXVELOCITY = 12f;
+		public static final float 	ENEMY_SPEED_FORCE = 8f,
+									ENEMY_MAX_VELOCITY = 12f;
 		
-		public static final float 	ENEMY_ENGAGERADIUS = 200f,
-									ENEMY_DISENGAGERADIUS = 500f,
-									ENEMY_MELEERADIUS = 20f,
-									ENEMY_RANGEDRADIUS = 200f;
+		public static final float 	ENEMY_ENGAGE_RADIUS = 200f,
+									ENEMY_DISENGAGE_RADIUS = 500f,
+									ENEMY_MELEE_RADIUS = 20f,
+									ENEMY_RANGED_RADIUS = 200f;
 
-		public static final float 	attackDelay = 200f;
-		
 	//Projectile Variables
-		public static final float 	BASEPROJECTILESPEED = 10; //Base speed of projectiles (before drawtime modifier), this is located in the player script
+		public static final float 	BASE_PROJECTILE_SPEED = 10; //Base speed of projectiles (before drawtime modifier), this is located in the player script
 		
-		public static final float 	PROJECTILE_FLYTIME = 1500;
+		public static final float 	PROJECTILE_FLY_TIME = 1500;
 	
 		public static final float 	PROJECTILE_FRICTION = 0.99f,
 									PROJECTILE_INERTIA = 0.999f;

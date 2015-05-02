@@ -27,9 +27,9 @@ public class Enemy extends Agent {
     public int goldDrop;
     public int expDrop;
 
-    float engageRadius = Settings.ENEMY_ENGAGERADIUS;
-    float disengageRadius = Settings.ENEMY_DISENGAGERADIUS;
-    float attackRadius = Settings.ENEMY_MELEERADIUS;
+    float engageRadius = Settings.ENEMY_ENGAGE_RADIUS;
+    float disengageRadius = Settings.ENEMY_DISENGAGE_RADIUS;
+    float attackRadius = Settings.ENEMY_MELEE_RADIUS;
 
     float nextAttackTime;
     float attackDelay = 200f;
@@ -60,15 +60,15 @@ public class Enemy extends Agent {
         size = new Vector2f(level * 5f + 5f,level * 5f + 5f );
 
 
-        maxVelocity = Settings.ENEMY_MAXVELOCITY;
+        maxVelocity = Settings.ENEMY_MAX_VELOCITY;
 
-        speedForce = Settings.ENEMY_SPEEDFORCE;
-        mass = level + Settings.ENEMY_MASSPERLVL;
-        goldDrop = level * Settings.ENEMY_GOLDDROPPERLVL;
-        expDrop = level * Settings.ENEMY_EXPDROPPERLVL;
+        speedForce = Settings.ENEMY_SPEED_FORCE;
+        mass = level + Settings.ENEMY_MASS_PER_LVL;
+        goldDrop = level * Settings.ENEMY_GOLD_DROP_PER_LVL;
+        expDrop = level * Settings.ENEMY_EXP_DROP_PER_LVL;
 
         if(!isMelee){
-        	attackRadius = Settings.ENEMY_RANGEDRADIUS;
+        	attackRadius = Settings.ENEMY_RANGED_RADIUS;
         }
       
     }
