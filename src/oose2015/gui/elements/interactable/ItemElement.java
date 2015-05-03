@@ -100,7 +100,6 @@ public class ItemElement extends InteractableElement {
         //text
         graphics.translate(0, 3);
         graphics.setColor(Color.white);
-        Font f = graphics.getFont();
 
         leftBox.render(graphics);
         if(hasBeenBought || isSelected) {
@@ -127,16 +126,5 @@ public class ItemElement extends InteractableElement {
             middleOverlay.text = "buy this item?";
         }
     }
-
-    @Override
-    public void movedOver(){
-        super.movedOver();
-    }
-
-    @Override
-    public void movedAway(){
-        super.movedAway();
-    }
-
 
 }

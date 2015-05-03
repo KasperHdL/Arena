@@ -16,7 +16,6 @@ public class Weapon extends Item{
         this.damage = level;
         this.attackRadius = level * 20;
         this.attackDelay = level * 2000;
-        this.rotation = rotation;
     }
     /**
      * Constructor for weapon
@@ -35,6 +34,5 @@ public class Weapon extends Item{
         this.attackDelay = attackDelay;
         this.attackRadius = attackRadius;
         this.damage = damage;
-        this.rotation = rotation;
     }
 }

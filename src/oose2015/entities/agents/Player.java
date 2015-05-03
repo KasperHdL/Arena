@@ -162,7 +162,6 @@ public class Player extends Agent implements ControllerListener{
         
     	for(Enemy enemy : World.ENEMIES){
     		float dist = VectorUtility.getDistanceToEntity(this, enemy);
-	    	float x = 0;
     		if(dist < weapon.attackRadius){
     			if(enemy.takeDamage(weapon.damage)){
                     //enemy killed
