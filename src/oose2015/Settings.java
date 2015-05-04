@@ -24,7 +24,7 @@ public class Settings {
 	    Select = 7
 	    Start = 8*/
 
-	    public static final int ATTACK_BUTTON = 5,
+	    public static final int 	ATTACK_BUTTON = 5,
 									RANGED_BUTTON = 6,
 									LEFT_STICK_X = 1,
 									LEFT_STICK_Y = 0,
@@ -39,14 +39,14 @@ public class Settings {
 
 	
 		//player bowdraw Variables
-		public static final float 	MIN_DRAW_SPEED = 700,
+		public static final float 	MIN_DRAW_SPEED = 100,
 									MAX_DRAW_SPEED = 1500;
 	
 		public static final float 	MAX_DRAW_GRAPHIC_SIZE = 10;
 
 		//melee variables
-		public static final float 	PLAYER_ARC_START = -20,
-				 				  	PLAYER_ARC_END = 80;
+		public static final float 	PLAYER_ARC_START = 50,
+				 				  	PLAYER_ARC_END = -50;
 		
 	//Enemy Variables
 		public static final float 	ENEMY_DAMAGE = 1f,

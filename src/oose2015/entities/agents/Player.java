@@ -163,17 +163,38 @@ public class Player extends Agent implements ControllerListener{
     	for(Enemy enemy : World.ENEMIES){
     		float dist = VectorUtility.getDistanceToEntity(this, enemy);
     		if(dist < weapon.attackRadius){
-    			if(enemy.takeDamage(weapon.damage)){
-                    //enemy killed
-                    addExp(enemy.expDrop);
-                }
+    			float enemyAngle = calculateAngleToTarget((Agent)enemy);
+
+    			System.out.println("EnemyAngle: " + enemyAngle + " startArc: " + (startArc + rotation) + " endArc: " + (endArc + rotation));
+    			if(startArc + rotation > 360 && endArc + rotation < 360){
+    				if((enemyAngle < (startArc + rotation) % 360 && enemyAngle > 0) || (enemyAngle > endArc+rotation && enemyAngle < 360)){
+		    			if(enemy.takeDamage(weapon.damage)){
+		                    //enemy killed
+		                    addExp(enemy.expDrop);
+		                }
+    				}
+    			} else if(startArc + rotation > 360 && endArc + rotation > 360){
+	    			if(enemyAngle < (startArc + rotation) % 360 && enemyAngle > (endArc + rotation) % 360){
+		    			if(enemy.takeDamage(weapon.damage)){
+		                    //enemy killed
+		                    addExp(enemy.expDrop);
+		                }
+	    			}
+    			} else if(startArc + rotation < 360 && endArc + rotation < 360){
+	    			if(enemyAngle < startArc + rotation && enemyAngle > endArc + rotation){
+		    			if(enemy.takeDamage(weapon.damage)){
+		                    //enemy killed
+		                    addExp(enemy.expDrop);
+		                }
+	    			}
+    			}
     		}
     	}
     }
     
     protected void rangedAttack(){
     	if(drawTime < minDrawTime)
-    		drawTime = minDrawTime;
+    		return;
     	else if(drawTime > maxDrawTime)
     		drawTime = maxDrawTime;
     	float projectileSpeed = Settings.BASE_PROJECTILE_SPEED *(drawTime/1000);
@@ -183,7 +204,7 @@ public class Player extends Agent implements ControllerListener{
         drawGraphic = 0;
 
         //System.out.println("Time: " + World.TIME + " attackDelay: " + nextAttackTime);
-        new Projectile(this, weapon.attackRadius, damage, projectileSpeed);
+        	new Projectile(this, weapon.attackRadius, damage, projectileSpeed);
     }
 
     public void addExp(int value){
@@ -261,7 +282,7 @@ public class Player extends Agent implements ControllerListener{
 
         float halfRad = weapon.attackRadius + size.x / 2;
         if(drawAttack){
-    		graphics.fillArc(-halfRad, -halfRad, halfRad * 2,halfRad * 2, startArc, endArc);
+        	graphics.fillArc(-halfRad, -halfRad, halfRad * 2,halfRad * 2, endArc, startArc);
         }
         else if(World.DEBUG_MODE)
             graphics.drawOval(-halfRad, -halfRad, halfRad * 2, halfRad * 2);
@@ -281,7 +302,7 @@ public class Player extends Agent implements ControllerListener{
                 graphics.setColor(Color.red);
                 float t = (World.TIME - startTime)/1500;
                 if(t < 0) t = 0;
-                else if( t> 1) t = 1;
+                else if(t > 1) t = 1;
                 graphics.drawLine(size.x / 2, 0, (1 - t) * (size.x / 2), 0);
                 
                 if(World.TIME - startTime >= maxDrawTime - maxDrawGraphicSize*100){

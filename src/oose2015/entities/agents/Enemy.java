@@ -121,7 +121,7 @@ public class Enemy extends Agent {
 	                agent.takeDamage(damage);
 	                nextAttackTime = World.TIME + attackDelay;
             	} else {
-            		rotation = calculateRotation();
+            		rotation = calculateAngleToTarget(target);
             		//System.out.println(rotation);
             		//rotation = (float)target.position.getTheta();
             		rangedAttack();
@@ -135,25 +135,6 @@ public class Enemy extends Agent {
             //move
             move(delta,dt);
         }
-    }
-    
-    protected float calculateRotation(){
-    // Calculates rotation from target position and own position.
-    	Vector2f vectorA = new Vector2f(1,0);
-    	Vector2f tVector = target.position;
-    	tVector = new Vector2f(tVector.x-position.x, tVector.y-position.y);
-    	float targetMagnitude = tVector.length(),
-    		  vectorAMagnitude = vectorA.length();
-    		  
-    	float rotationAngle = (vectorA.dot(tVector)/(targetMagnitude*vectorAMagnitude));
-    	
-    	//System.out.println(Math.toDegrees(Math.acos(rotationAngle)) + " Target Vector: " + tVector.x +" , "+ tVector.y);
-    	
-    	if(tVector.y < 0)
-        	return (float)(-1*Math.toDegrees((Math.acos(rotationAngle))));
-    	
-    	return (float)Math.toDegrees((Math.acos(rotationAngle)));
-    	//return (float)rotationAngle;
     }
 
     protected void rangedAttack(){

@@ -1,5 +1,7 @@
 package oose2015.entities.agents;
 
+import org.newdawn.slick.geom.Vector2f;
+
 import oose2015.entities.MovableEntity;
 
 /**
@@ -40,6 +42,12 @@ public class Agent extends MovableEntity {
         isSolid = false;
     }
 
+    protected float calculateAngleToTarget(Agent other){
+    // Calculates rotation from target position and own position.
+    	Vector2f tVector = new Vector2f(other.position.x-position.x, other.position.y-position.y);
+    	return (float)tVector.getTheta();
+    }
+    
     public float getDamage() {
         return 0;
     }
