@@ -7,6 +7,7 @@ import oose2015.entities.agents.Player;
 import oose2015.entities.tiles.Floor;
 import oose2015.entities.tiles.Tile;
 import oose2015.entities.Wall;
+import oose2015.gui.PlayerUI;
 import oose2015.gui.elements.TextBox;
 import oose2015.utilities.CollisionUtility;
 import org.newdawn.slick.Color;
@@ -40,6 +41,8 @@ public class World {
     GameContainer gameContainer;
     static StateBasedGame stateBasedGame;
 
+    public static PlayerUI[] playerUIs;
+
     EntityHandler entityHandler;
 
     public static Random RANDOM;
@@ -65,6 +68,12 @@ public class World {
         ENEMIES = new ArrayList<Enemy>(20);
         EXITS = new ArrayList<DungeonExit>(1);
 
+        playerUIs = new PlayerUI[4];
+        int sizeX = Main.SCREEN_WIDTH/4;
+        for (int i = 0; i < playerUIs.length; i++) {
+            playerUIs[i] = new PlayerUI(i*sizeX,sizeX);
+        }
+
         this.gameContainer = gameContainer;
         World.stateBasedGame = stateBasedGame;
         RANDOM = new Random();
@@ -89,10 +98,13 @@ public class World {
 
     public void render(Graphics graphics){
         entityHandler.render(graphics);
-
     }
 
     public void renderInterface(Graphics graphics){
+
+        for (int i = 0; i < playerUIs.length; i++) {
+            playerUIs[i].render(graphics);
+        }
 
         //dungeon exiting
         if(!justExitedShop && playerOnExit){
@@ -174,7 +186,7 @@ public class World {
 
     
     public void createPlayer(Vector2f v, Color color, int controllerInput){
-    		new Player(v, color, controllerInput,gameContainer.getInput());
+        new Player(v, color, controllerInput,gameContainer.getInput());
     		
     }
 }

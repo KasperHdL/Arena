@@ -7,6 +7,7 @@ import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
 import oose2015.EntityHandler;
 import oose2015.Settings;
+import oose2015.gui.PlayerUI;
 import oose2015.utilities.VectorUtility;
 import oose2015.World;
 import oose2015.items.Armor;
@@ -36,13 +37,6 @@ public class Player extends Agent implements ControllerListener{
     public int exp;
     private int lastLevelExp;
     private int nextLevelExp;
-
-    //level attr
-
-    private boolean attributeMenu = false;
-    private int healthLevel;
-    private int damageLevel;
-    private int speedLevel;
 
 
     public Weapon weapon;
@@ -98,6 +92,8 @@ public class Player extends Agent implements ControllerListener{
 
     public Color color;
 
+    public PlayerUI playerUI;
+
 
     /**
      * Constructor for player [use Input.KEY_X as key arguments]
@@ -106,7 +102,9 @@ public class Player extends Agent implements ControllerListener{
      * @param input reference to input
      */
     public Player(Vector2f position,Color color, int controllerIndex, Input input){
+        playerUI = World.playerUIs[World.PLAYERS.size()];
         World.PLAYERS.add(this);
+
         this.input = input;
         this.color = color;
         input.addControllerListener(this);
@@ -131,11 +129,6 @@ public class Player extends Agent implements ControllerListener{
         lastLevelExp = 0;
         nextLevelExp = (level*level)*100;
 
-        attributeMenu = false;
-        healthLevel = 0;
-        speedLevel = 0;
-        damageLevel = 0;
-
         this.controllerIndex = controllerIndex;
 
         weapon = new Weapon(1);
@@ -143,7 +136,9 @@ public class Player extends Agent implements ControllerListener{
 
         drawAttack = false;
         nextAttackTime = 0f;
-        
+
+        playerUI.setPlayer(this,color);
+
         //load sound clips
         String s = System.getProperty("user.dir");
         String bowDrawPath = s+"\\Assets\\Sounds\\BowDrawCreak.wav";
@@ -191,6 +186,7 @@ public class Player extends Agent implements ControllerListener{
 
         if(exp >= nextLevelExp){
             level++;
+            playerUI.updateLevel();
 
             lastLevelExp = nextLevelExp;
             nextLevelExp = (level*level)*100;
@@ -316,6 +312,7 @@ public class Player extends Agent implements ControllerListener{
         if(other instanceof Gold){
             Gold g = (Gold) other;
             gold += g.value;
+            playerUI.updateGold();
 
             EntityHandler.entities.remove(other);
         }
@@ -326,9 +323,11 @@ public class Player extends Agent implements ControllerListener{
         if(!isAlive) return false;
 
         curHealth -= (damage * armor.getDamageModifier());
+        playerUI.updateHealth();
         if(curHealth <= 0){
             die();
             return true;
+        }else{
         }
         return false;
     }
