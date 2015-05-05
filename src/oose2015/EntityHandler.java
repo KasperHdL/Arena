@@ -1,7 +1,9 @@
 package oose2015;
 
+import oose2015.artifacts.Artifact;
 import oose2015.entities.Entity;
 import oose2015.entities.tiles.Tile;
+import oose2015.particles.Particle;
 import oose2015.utilities.CollisionUtility;
 import org.newdawn.slick.Graphics;
 
@@ -21,6 +23,9 @@ public class EntityHandler {
 
     public static ArrayList<Entity> entities;//contains every entity player, enemy and all others
     public static ArrayList<Tile> tiles;
+    public static ArrayList<Particle> particles;
+    public static ArrayList<Artifact> artifacts;
+
 
     private Camera camera;
 
@@ -31,6 +36,8 @@ public class EntityHandler {
         this.camera = camera;
         entities = new ArrayList<Entity>(50);
         tiles = new ArrayList<Tile>(10000);
+        particles = new ArrayList<Particle>();
+        artifacts = new ArrayList<Artifact>();
     }
 
     public void update(float dt){
@@ -39,6 +46,10 @@ public class EntityHandler {
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
             entity.update(dt);
+        }
+        for (int i = 0; i < particles.size(); i++) {
+            Particle particle = particles.get(i);
+            particle.update(dt);
         }
     }
 
@@ -64,11 +75,21 @@ public class EntityHandler {
             if(camera.tileWithinView(tile))
                 tile.render(graphics);
         }
+        for(Artifact artifact: artifacts){
+            if(camera.artifactWithinView(artifact))
+                artifact.render(graphics);
+        }
+
+        for(Particle particle : particles){
+            if(World.camera.particleWithinView(particle))
+                particle.render(graphics);
+        }
 
         for(Entity entity : entities){
             if(camera.entityWithinView(entity))
                 entity.render(graphics);
         }
+
 
 
 

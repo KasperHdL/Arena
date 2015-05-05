@@ -1,8 +1,10 @@
 package oose2015.entities.projectiles;
 
 import oose2015.EntityHandler;
+import oose2015.ParticleFactory;
 import oose2015.Settings;
 import oose2015.World;
+import oose2015.artifacts.Artifact;
 import oose2015.entities.Entity;
 import oose2015.entities.MovableEntity;
 import oose2015.entities.Wall;
@@ -55,6 +57,7 @@ public class Projectile extends MovableEntity {
 	protected void move(float dt){
 		direction.scale(speedForce/mass);
     	if(World.TIME > spawnTime+flyTime){
+			new Artifact(position,new Vector2f(size.x*2, size.y/3),rotation,Color.red.darker(0.3f));
 			EntityHandler.entities.remove(this);
     	}
     	
@@ -66,7 +69,7 @@ public class Projectile extends MovableEntity {
     	if(other instanceof Enemy && owner instanceof Player){
     		Enemy enemy = (Enemy) other;
         	if(enemy.isAlive) {
-				if (enemy.takeDamage(damage)) {
+				if (enemy.takeDamage(owner,damage)) {
 					if (owner instanceof Player) {
 						Player shooter = (Player) owner;
 						shooter.addExp(enemy.expDrop);
@@ -81,7 +84,7 @@ public class Projectile extends MovableEntity {
     		Enemy shooter = (Enemy) owner;
     		Player player = (Player) other;
         	if(player.isAlive) {
-        		player.takeDamage(damage);
+        		player.takeDamage(owner,damage);
         		
         		shooter.isShot = false;
 				EntityHandler.entities.remove(this);
@@ -93,7 +96,10 @@ public class Projectile extends MovableEntity {
 	
 	@Override
 	public void update(float dt){
-    	move(dt);
+
+		ParticleFactory.createProjectileTrail(position, new Vector2f(0, size.x/2).add(direction.getTheta()), direction.copy().scale(-1f));
+
+		move(dt);
 	}
 
 	

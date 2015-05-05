@@ -68,10 +68,12 @@ public class Settings {
 									ENEMY_MELEE_RADIUS = 20f,
 									ENEMY_RANGED_RADIUS = 200f;
 
-		public static final float CHARGE_DELAY = 3000;
-		public static final float MIN_CHARGE_DISTANCE = 300;
-		public static final float MAX_CHARGE_DISTANCE = 500;
-		
+		public static final float 	CHARGE_DELAY = 3000;
+		public static final float 	MIN_CHARGE_DISTANCE = 50;
+		public static final float 	MAX_CHARGE_DISTANCE = 200;
+		public static final float	CHARGE_TIME = 100;		
+
+		public static final int		CHARGE_SCALAR = 5;
 	//Projectile Variables
 		public static final float 	BASE_PROJECTILE_SPEED = 7; //Base speed of projectiles (before drawtime modifier), this is located in the player script
 		

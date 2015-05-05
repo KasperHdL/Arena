@@ -1,7 +1,9 @@
 package oose2015;
 
+import oose2015.artifacts.Artifact;
 import oose2015.entities.Entity;
 import oose2015.entities.tiles.Tile;
+import oose2015.particles.Particle;
 import oose2015.states.GamePlayState;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
@@ -133,8 +135,8 @@ public class Camera {
         float y = (1/scale) * halfViewSize.y;
         return  entity.position.x + entity.size.x/2 > position.x - x &&
                 entity.position.x - entity.size.x/2 < position.x + x &&
-                entity.position.y + entity.size.x/2 > position.y - y &&
-                entity.position.y - entity.size.x/2 < position.y + y;
+                entity.position.y + entity.size.y/2 > position.y - y &&
+                entity.position.y - entity.size.y/2 < position.y + y;
     }
     
     public boolean tileWithinView(Tile tile){
@@ -144,6 +146,24 @@ public class Camera {
                 tile.position.x - halfTileSize < position.x + x &&
                 tile.position.y + halfTileSize > position.y - y &&
                 tile.position.y - halfTileSize < position.y + y;
+    }
+
+    public boolean particleWithinView(Particle particle){
+        float x = (1/scale) * halfViewSize.x;
+        float y = (1/scale) * halfViewSize.y;
+        return  particle.position.x + particle.renderSize > position.x - x &&
+                particle.position.x - particle.renderSize < position.x + x &&
+                particle.position.y + particle.renderSize > position.y - y &&
+                particle.position.y - particle.renderSize < position.y + y;
+    }
+
+    public boolean artifactWithinView(Artifact artifact){
+        float x = (1/scale) * halfViewSize.x;
+        float y = (1/scale) * halfViewSize.y;
+        return  artifact.position.x + artifact.renderSize > position.x - x &&
+                artifact.position.x - artifact.renderSize < position.x + x &&
+                artifact.position.y + artifact.renderSize > position.y - y &&
+                artifact.position.y - artifact.renderSize < position.y + y;
     }
 
 }

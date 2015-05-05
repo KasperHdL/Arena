@@ -37,6 +37,9 @@ public class Enemy extends Agent {
     float chargeDelay = Settings.CHARGE_DELAY;
     float minChargeDistance = Settings.MIN_CHARGE_DISTANCE;
     float maxChargeDistance = Settings.MAX_CHARGE_DISTANCE;
+    float chargeTime = Settings.CHARGE_TIME;
+    float chargeEndTime = 0;
+    int chargeScalar = Settings.CHARGE_SCALAR;
 
     public boolean isChasing = false,
     		isShot = false,
@@ -117,22 +120,25 @@ public class Enemy extends Agent {
     private void chasePlayer(Agent agent, float dt){
         Vector2f delta = target.position.copy().sub(position);
         float dist = VectorUtility.getDistanceToEntity(this, agent);
-        if(nextChargeTime < World.TIME && dist > minChargeDistance && dist < maxChargeDistance)
-        	isCharging = true;
-        
-    	if(isMelee && isCharging){
-    		System.out.println(nextChargeTime);
-    		chargePlayer(target, dist);
+    	
+        if(isMelee && nextChargeTime < World.TIME && !isCharging && dist > minChargeDistance && dist < maxChargeDistance){
+    		speedForce = speedForce*chargeScalar;
+    		chargeEndTime = chargeTime + World.TIME;
+    		nextChargeTime = chargeDelay + World.TIME;
+    		isCharging = true;
+    	} else if(isCharging && chargeEndTime == World.TIME){
+    		speedForce = Settings.ENEMY_SPEED_FORCE;
+    		isCharging = false;
     	}
         
         if(dist < attackRadius){
             //attack
         	if(isShot)
                 isShot = false;
-        	
-        	if(nextAttackTime < World.TIME) {
+
+            if(nextAttackTime < World.TIME) {
             	if(isMelee && !isCharging){
-	                agent.takeDamage(damage);
+	                agent.takeDamage(this,damage);
 	                nextAttackTime = World.TIME + attackDelay;
             	} else {
             		rotation = calculateAngleToTarget(target);
@@ -151,7 +157,7 @@ public class Enemy extends Agent {
         }
     }
     
-    private void chargePlayer(Agent agent, float dist){
+    /*private void chargePlayer(Agent agent, float dist){
     	if(!isCharging){
 	    	chargePoint = new Vector2f(0,1);
 	    	chargePoint.add(rotation);
@@ -162,7 +168,7 @@ public class Enemy extends Agent {
     	nextChargeTime = chargeDelay+World.TIME;
     	if(dist < attackRadius)
     		isCharging = false;
-    }
+    }*/
 
     protected void rangedAttack(){
         nextAttackTime = World.TIME + attackDelay;
@@ -222,15 +228,7 @@ public class Enemy extends Agent {
             }else if(World.DEBUG_MODE)
                 graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
 
-        }else{
-
-            graphics.setColor(new Color(200,0,0,127));
-
-            graphics.fillOval(-size.x / 2, -size.y / 2, size.x, size.y);
         }
-
-
-
 
         graphics.popTransform();
 

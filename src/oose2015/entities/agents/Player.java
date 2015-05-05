@@ -2,10 +2,7 @@ package oose2015.entities.agents;
 
 import java.io.File;
 
-import net.java.games.input.Component;
-import net.java.games.input.Controller;
-import net.java.games.input.ControllerEnvironment;
-import net.java.games.input.Rumbler;
+import oose2015.ParticleFactory;
 import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
@@ -168,21 +165,21 @@ public class Player extends Agent implements ControllerListener{
     			//System.out.println("EnemyAngle: " + enemyAngle + " startArc: " + (startArc + rotation) + " endArc: " + (endArc + rotation));
     			if(startArc + rotation > 360 && endArc + rotation < 360){
     				if((enemyAngle < (startArc + rotation) % 360 && enemyAngle > 0) || (enemyAngle > endArc+rotation && enemyAngle < 360)){
-		    			if(enemy.takeDamage(weapon.damage)){
+		    			if(enemy.takeDamage(this,weapon.damage)){
 		                    //enemy killed
 		                    addExp(enemy.expDrop);
 		                }
     				}
     			} else if(startArc + rotation > 360 && endArc + rotation > 360){
 	    			if(enemyAngle < (startArc + rotation) % 360 && enemyAngle > (endArc + rotation) % 360){
-		    			if(enemy.takeDamage(weapon.damage)){
+		    			if(enemy.takeDamage(this,weapon.damage)){
 		                    //enemy killed
 		                    addExp(enemy.expDrop);
 		                }
 	    			}
     			} else if(startArc + rotation < 360 && endArc + rotation < 360){
 	    			if(enemyAngle < startArc + rotation && enemyAngle > endArc + rotation){
-		    			if(enemy.takeDamage(weapon.damage)){
+		    			if(enemy.takeDamage(this,weapon.damage)){
 		                    //enemy killed
 		                    addExp(enemy.expDrop);
 		                }
@@ -252,9 +249,15 @@ public class Player extends Agent implements ControllerListener{
     		x = 0;
     	if(Math.abs(y) < leftDeadY)
     		y = 0;	
-    	
+
     	axis = new Vector2f(x,y);
-    	axis.scale((armor.getSpeedModifier() * speedForce) / mass);
+
+
+
+        axis.scale((armor.getSpeedModifier() * speedForce) / mass);
+
+        if(axis.length() > .5f)
+            ParticleFactory.createSmokeTrail(position.copy(),new Vector2f(0,size.y/2-20).add(velocity.getTheta()),velocity.copy().scale(-1f));
 
     	super.move(dt, axis);
     }
@@ -354,18 +357,20 @@ public class Player extends Agent implements ControllerListener{
     }
 
     @Override
-    public boolean takeDamage(float damage){
+    public boolean takeDamage(Agent attacker, float damage){
         if(!isAlive) return false;
 
         curHealth -= (damage * armor.getDamageModifier());
         playerUI.updateHealth();
         if(curHealth <= 0){
             World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*100,World.RANDOM.nextFloat()*100),200,.5f);
+            ParticleFactory.createDeathSplatter(position.copy(), color);
 
             die();
             return true;
         }else{
             World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*20,World.RANDOM.nextFloat()*20),100,2f);
+            ParticleFactory.createBloodSplatter(position.copy(),new Vector2f(calculateAngleToTarget(attacker) ), color);
         }
         return false;
     }
