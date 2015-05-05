@@ -1,5 +1,8 @@
 package oose2015.entities.agents;
 
+import oose2015.ParticleFactory;
+import oose2015.World;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Vector2f;
 
 import oose2015.entities.MovableEntity;
@@ -26,14 +29,18 @@ public class Agent extends MovableEntity {
      * @param damage damage
      */
 
-    public boolean takeDamage(float damage){
+    public boolean takeDamage(Agent attacker,float damage){
         if(!isAlive) return false;
 
         curHealth -= damage;
         if(curHealth <= 0){
             die();
+            ParticleFactory.createDeathSplatter(position.copy(), Color.red);
+
             return true;
-        }
+        }else
+            ParticleFactory.createBloodSplatter(position.copy(),new Vector2f((World.RANDOM.nextFloat()*2)-1,(World.RANDOM.nextFloat()*2)-1), Color.red);
+
         return false;
     }
 

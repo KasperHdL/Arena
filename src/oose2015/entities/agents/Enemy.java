@@ -118,7 +118,7 @@ public class Enemy extends Agent {
                 isShot = false;
             if(nextAttackTime < World.TIME) {
             	if(isMelee){
-	                agent.takeDamage(damage);
+	                agent.takeDamage(this,damage);
 	                nextAttackTime = World.TIME + attackDelay;
             	} else {
             		rotation = calculateAngleToTarget(target);
@@ -195,15 +195,7 @@ public class Enemy extends Agent {
             }else if(World.DEBUG_MODE)
                 graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
 
-        }else{
-
-            graphics.setColor(new Color(200,0,0,127));
-
-            graphics.fillOval(-size.x / 2, -size.y / 2, size.x, size.y);
         }
-
-
-
 
         graphics.popTransform();
 

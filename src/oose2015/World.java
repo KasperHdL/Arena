@@ -30,7 +30,7 @@ import java.util.Random;
  */
 
 public class World {
-    public static boolean DEBUG_MODE = true;
+    public static boolean DEBUG_MODE = false;
     
     public static ArrayList<Player> PLAYERS; //for reference
     public static ArrayList<Enemy> ENEMIES; //for reference
