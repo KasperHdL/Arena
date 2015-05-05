@@ -66,7 +66,7 @@ public class Enemy extends Agent {
         this.position = position;
         this.isMelee = isMelee;
         
-        size = new Vector2f(level * 5f + 5f,level * 5f + 5f );
+        size = new Vector2f(level * 5f + 15f,level * 5f + 15f );
 
 
         maxVelocity = Settings.ENEMY_MAX_VELOCITY;
@@ -191,7 +191,7 @@ public class Enemy extends Agent {
         graphics.rotate(0, 0, rotation);
 
         if(isAlive){
-            graphics.setColor(Color.pink);
+            graphics.setColor(Color.red);
 
             graphics.fillOval(-size.x / 2, -size.y / 2, size.x, size.y);
             graphics.setColor(Color.black);

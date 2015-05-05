@@ -221,6 +221,7 @@ public class Player extends Agent implements ControllerListener{
             nextLevelExp = (level*level)*100;
 
             World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*20,World.RANDOM.nextFloat()*20),1000,3f);
+            ParticleFactory.createLevelUpRing(position);
 
         }else
             World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*15,World.RANDOM.nextFloat()*15),200,1f);

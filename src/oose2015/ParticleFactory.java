@@ -79,4 +79,20 @@ public class ParticleFactory {
             );
         }
     }
+
+    public static void createLevelUpRing(Vector2f position){
+        for (int i = 0; i < 120; i++) {
+            Color c = new Color(Color.yellow).brighter(World.RANDOM.nextFloat()*0.2f+.1f);
+            new Particle(
+                    position.copy(),//position
+                    World.RANDOM.nextInt(10)+15,//size
+                    World.RANDOM.nextFloat()*360,//rotation
+                    new Vector2f(i*3).scale(World.RANDOM.nextFloat()*10+20),//velocity
+                    World.RANDOM.nextFloat()*2000,//angular velocity
+                    500,//time Alive
+                    true,//fade out
+                    c//color
+            );
+        }
+    }
 }
