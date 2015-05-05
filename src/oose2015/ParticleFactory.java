@@ -19,7 +19,7 @@ public class ParticleFactory {
 
     public static void createBloodSplatter(Vector2f position, Vector2f dir,Color color){
         for (int i = 0; i < 5; i++) {
-            Color c = new Color(color).darker(World.RANDOM.nextFloat()*0.1f+.1f);
+            Color c = new Color(color).darker(World.RANDOM.nextFloat()*0.3f+.1f);
             new BloodParticle(
                     position.copy(),//position
                     5 + World.RANDOM.nextInt(5),//size
@@ -34,12 +34,12 @@ public class ParticleFactory {
 
     public static void createDeathSplatter(Vector2f position, Color color){
         for (int i = 0; i < 5; i++) {
-            Color c = new Color(color).darker(World.RANDOM.nextFloat()*0.3f+.1f);
+            Color c = new Color(color).darker(World.RANDOM.nextFloat()*0.4f+.2f);
             new BloodParticle(
                     position.copy(),//position
-                    10 + World.RANDOM.nextInt(5),//size
+                    10 + World.RANDOM.nextInt(10),//size
                     World.RANDOM.nextFloat()*360,//rotation
-                    new Vector2f(World.RANDOM.nextFloat() * 360).scale(World.RANDOM.nextFloat() * 20),//velocity
+                    new Vector2f(World.RANDOM.nextFloat() * 360).scale(World.RANDOM.nextFloat() * 25),//velocity
                     World.RANDOM.nextFloat()*2000,//angular velocity
                     400,//time alive
                     c//color
