@@ -2,6 +2,7 @@ package oose2015;
 
 import oose2015.entities.Entity;
 import oose2015.entities.tiles.Tile;
+import oose2015.states.GamePlayState;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -21,8 +22,18 @@ public class Camera {
     public Vector2f halfViewSize;
     public float scale;
 
+
+    //target
     public Vector2f targetPosition;
     public float targetScale;
+
+    //shake
+
+    public int shakeEnd;
+    public int shakeLength;
+    public Vector2f shake;
+    private float oscSpeed = 1;
+
 
     private float halfTileSize;
 
@@ -39,24 +50,22 @@ public class Camera {
         if(World.PLAYERS.size() == 1){
             Vector2f d = World.PLAYERS.get(0).position.copy().sub(position);
             position.add(d.scale(0.1f));
+            addShake();
             return;
         }
 
         //easing
         Vector2f d = targetPosition.sub(position);
-        position.add(d.scale(0.1f));
 
+        position.add(d.scale(0.1f));
         scale += (targetScale - scale) * 0.1f;
 
+        //shake
+        addShake();
 
 
-        Polygon polygon = new Polygon();
-        for (int i = 0; i < World.PLAYERS.size(); i++) {
-            Vector2f pos = World.PLAYERS.get(i).position;
-            polygon.addPoint(pos.x,pos.y);
-        }
-        targetPosition = new Vector2f(polygon.getCenterX(),polygon.getCenterY());
 
+        targetPosition = getCenterOfPlayers();
 
         //find the player the longest away from center and scale until within view
         float dist = position.copy().sub(World.PLAYERS.get(0).position).length();
@@ -83,10 +92,36 @@ public class Camera {
 
             targetScale -= .1f;
         }
+    }
 
+    private Vector2f getCenterOfPlayers(){
+        float x = 0,y = 0;
+        int length = World.PLAYERS.size();
 
+        for (int i = 0; i < length; i++) {
+            x += World.PLAYERS.get(i).position.x;
+            y += World.PLAYERS.get(i).position.y;
+        }
 
+        return new Vector2f(x/length,y/length);
+    }
 
+    private void addShake(){
+        if(shakeEnd > World.TIME){
+            float t = (float)(shakeEnd - World.TIME)/shakeLength;
+
+            Vector2f s = new Vector2f(  t * (float)Math.cos(World.TIME * oscSpeed) * shake.x,
+                    t * (float)Math.sin(World.TIME * oscSpeed) * shake.y);
+
+            position.add(s);
+        }
+    }
+
+    public void shakeScreen(Vector2f shake,int time,float oscillationSpeed){
+        this.shake = shake;
+        shakeLength = time;
+        oscSpeed = oscillationSpeed;
+        shakeEnd = World.TIME + shakeLength;
     }
 
     public boolean entityWithinView(Entity entity){

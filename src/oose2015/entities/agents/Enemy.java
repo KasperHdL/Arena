@@ -33,11 +33,17 @@ public class Enemy extends Agent {
 
     float nextAttackTime;
     float attackDelay = 200f;
+    float nextChargeTime = 0;
+    float chargeDelay = Settings.CHARGE_DELAY;
+    float minChargeDistance = Settings.MIN_CHARGE_DISTANCE;
+    float maxChargeDistance = Settings.MAX_CHARGE_DISTANCE;
 
     public boolean isChasing = false,
     		isShot = false,
-    		isMelee;
-     
+    		isMelee,
+    		isCharging = false;
+    
+    Vector2f chargePoint;
 	
     public Agent target;
     public Player shooter;
@@ -111,13 +117,21 @@ public class Enemy extends Agent {
     private void chasePlayer(Agent agent, float dt){
         Vector2f delta = target.position.copy().sub(position);
         float dist = VectorUtility.getDistanceToEntity(this, agent);
-
+        if(nextChargeTime < World.TIME && dist > minChargeDistance && dist < maxChargeDistance)
+        	isCharging = true;
+        
+    	if(isMelee && isCharging){
+    		System.out.println(nextChargeTime);
+    		chargePlayer(target, dist);
+    	}
+        
         if(dist < attackRadius){
             //attack
         	if(isShot)
                 isShot = false;
-            if(nextAttackTime < World.TIME) {
-            	if(isMelee){
+        	
+        	if(nextAttackTime < World.TIME) {
+            	if(isMelee && !isCharging){
 	                agent.takeDamage(damage);
 	                nextAttackTime = World.TIME + attackDelay;
             	} else {
@@ -137,9 +151,17 @@ public class Enemy extends Agent {
         }
     }
     
-    private void chargePlayer(Agent agent){
-    	Vector2f chargeDirection = new Vector2f(0,1);
-    	
+    private void chargePlayer(Agent agent, float dist){
+    	if(!isCharging){
+	    	chargePoint = new Vector2f(0,1);
+	    	chargePoint.add(rotation);
+	    	chargePoint.add(agent.position);
+    	}
+    	isCharging = true;
+    	speedForce = speedForce*10;
+    	nextChargeTime = chargeDelay+World.TIME;
+    	if(dist < attackRadius)
+    		isCharging = false;
     }
 
     protected void rangedAttack(){

@@ -11,6 +11,7 @@ import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
 import oose2015.EntityHandler;
 import oose2015.Settings;
+import oose2015.gui.PlayerUI;
 import oose2015.utilities.VectorUtility;
 import oose2015.World;
 import oose2015.items.Armor;
@@ -40,13 +41,6 @@ public class Player extends Agent implements ControllerListener{
     public int exp;
     private int lastLevelExp;
     private int nextLevelExp;
-
-    //level attr
-
-    private boolean attributeMenu = false;
-    private int healthLevel;
-    private int damageLevel;
-    private int speedLevel;
 
 
     public Weapon weapon;
@@ -104,9 +98,8 @@ public class Player extends Agent implements ControllerListener{
 	
     public Color color;
 
-    Controller[] ca;
-    Component[] components;
-    Rumbler[] rumblers;
+    public PlayerUI playerUI;
+
     /**
      * Constructor for player [use Input.KEY_X as key arguments]
      * @param position Position
@@ -114,7 +107,9 @@ public class Player extends Agent implements ControllerListener{
      * @param input reference to input
      */
     public Player(Vector2f position,Color color, int controllerIndex, Input input){
+        playerUI = World.playerUIs[World.PLAYERS.size()];
         World.PLAYERS.add(this);
+
         this.input = input;
         this.color = color;
         input.addControllerListener(this);
@@ -139,19 +134,16 @@ public class Player extends Agent implements ControllerListener{
         lastLevelExp = 0;
         nextLevelExp = (level*level)*100;
 
-        attributeMenu = false;
-        healthLevel = 0;
-        speedLevel = 0;
-        damageLevel = 0;
-
         this.controllerIndex = controllerIndex;
 
-        weapon = new Weapon(1);
+        weapon = new Weapon(1,0);
         armor = new Armor(1);
 
         drawAttack = false;
         nextAttackTime = 0f;
-        
+
+        playerUI.setPlayer(this,color);
+
         //load sound clips
         String s = System.getProperty("user.dir");
         String bowDrawPath = s+"\\Assets\\Sounds\\BowDrawCreak.wav";
@@ -171,9 +163,9 @@ public class Player extends Agent implements ControllerListener{
     	for(Enemy enemy : World.ENEMIES){
     		float dist = VectorUtility.getDistanceToEntity(this, enemy);
     		if(dist < weapon.attackRadius){
-    			float enemyAngle = calculateAngleToTarget((Agent)enemy);
+    			float enemyAngle = calculateAngleToTarget(enemy);
 
-    			System.out.println("EnemyAngle: " + enemyAngle + " startArc: " + (startArc + rotation) + " endArc: " + (endArc + rotation));
+    			//System.out.println("EnemyAngle: " + enemyAngle + " startArc: " + (startArc + rotation) + " endArc: " + (endArc + rotation));
     			if(startArc + rotation > 360 && endArc + rotation < 360){
     				if((enemyAngle < (startArc + rotation) % 360 && enemyAngle > 0) || (enemyAngle > endArc+rotation && enemyAngle < 360)){
 		    			if(enemy.takeDamage(weapon.damage)){
@@ -196,7 +188,10 @@ public class Player extends Agent implements ControllerListener{
 		                }
 	    			}
     			}
-    		}
+
+
+
+            }
     	}
     }
     
@@ -220,14 +215,18 @@ public class Player extends Agent implements ControllerListener{
     public void addExp(int value){
         exp += value;
 
+
         if(exp >= nextLevelExp){
             level++;
+            playerUI.updateLevel();
 
             lastLevelExp = nextLevelExp;
             nextLevelExp = (level*level)*100;
 
+            World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*20,World.RANDOM.nextFloat()*20),1000,3f);
 
-        }
+        }else
+            World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*15,World.RANDOM.nextFloat()*15),200,1f);
 
     }
 
@@ -348,6 +347,7 @@ public class Player extends Agent implements ControllerListener{
         if(other instanceof Gold){
             Gold g = (Gold) other;
             gold += g.value;
+            playerUI.updateGold();
 
             EntityHandler.entities.remove(other);
         }
@@ -358,9 +358,14 @@ public class Player extends Agent implements ControllerListener{
         if(!isAlive) return false;
 
         curHealth -= (damage * armor.getDamageModifier());
+        playerUI.updateHealth();
         if(curHealth <= 0){
+            World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*100,World.RANDOM.nextFloat()*100),200,.5f);
+
             die();
             return true;
+        }else{
+            World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*20,World.RANDOM.nextFloat()*20),100,2f);
         }
         return false;
     }
