@@ -55,8 +55,15 @@ public class ShopKeeperMenu {
         int startY = Main.SCREEN_HEIGHT - (interactables.length) * 30;
         for (int i = 0; i < interactables.length-1; i++) {
             ItemElement l;
-            if(i< interactables.length-3)
-                l = new ItemElement(this,new Vector2f(0,startY + i*29),new Vector2f(sizeX,25),new Weapon(player.weapon.level+1));
+
+
+
+            if(i < 2)
+                l = new ItemElement(this,new Vector2f(0,startY + i*29),new Vector2f(sizeX,25),new Weapon(player.weapon.level+1,0));
+            else if(i < 4)
+                l = new ItemElement(this,new Vector2f(0,startY + i*29),new Vector2f(sizeX,25),new Weapon(player.weapon.level+1,1));
+            else if(i < 6)
+                l = new ItemElement(this,new Vector2f(0,startY + i*29),new Vector2f(sizeX,25),new Weapon(player.weapon.level+1,2));
             else
                 l = new ItemElement(this,new Vector2f(0,startY + i*29),new Vector2f(sizeX,25),new Armor(player.armor.level+1));
 

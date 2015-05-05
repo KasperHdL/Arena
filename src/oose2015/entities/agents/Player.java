@@ -131,7 +131,7 @@ public class Player extends Agent implements ControllerListener{
 
         this.controllerIndex = controllerIndex;
 
-        weapon = new Weapon(1);
+        weapon = new Weapon(1,0);
         armor = new Armor(1);
 
         drawAttack = false;

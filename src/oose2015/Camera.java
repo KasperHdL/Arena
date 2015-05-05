@@ -113,7 +113,6 @@ public class Camera {
             Vector2f s = new Vector2f(  t * (float)Math.cos(World.TIME * oscSpeed) * shake.x,
                     t * (float)Math.sin(World.TIME * oscSpeed) * shake.y);
 
-            System.out.println("t: " + t + " s " + s);
             position.add(s);
         }
     }

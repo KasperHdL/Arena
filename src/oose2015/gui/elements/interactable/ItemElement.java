@@ -50,9 +50,15 @@ public class ItemElement extends InteractableElement {
         price = level * 10 + World.RANDOM.nextInt(10) - 5;
 
         //temp until icon
-        if(item instanceof Weapon)
-            type = "weapon";
-        else if(item instanceof Armor)
+        if(item instanceof Weapon){
+          Weapon w = (Weapon) item;
+            if(w.melee)
+                type = "sword";
+            else if(w.ranged)
+                type = "bow";
+            else if(w.magic)
+                type = "nothing yet..";
+        } else if(item instanceof Armor)
             type = "armor";
 
         leftBox = new TextBox(type,new Vector2f(5,0), TextBox.Align.LEFT_ALIGN);
