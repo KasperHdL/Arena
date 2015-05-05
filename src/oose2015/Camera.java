@@ -48,15 +48,7 @@ public class Camera {
 
         scale += (targetScale - scale) * 0.1f;
 
-
-
-        Polygon polygon = new Polygon();
-        for (int i = 0; i < World.PLAYERS.size(); i++) {
-            Vector2f pos = World.PLAYERS.get(i).position;
-            polygon.addPoint(pos.x,pos.y);
-        }
-        targetPosition = new Vector2f(polygon.getCenterX(),polygon.getCenterY());
-
+        targetPosition = getCenterOfPlayers();
 
         //find the player the longest away from center and scale until within view
         float dist = position.copy().sub(World.PLAYERS.get(0).position).length();
@@ -87,6 +79,18 @@ public class Camera {
 
 
 
+    }
+
+    private Vector2f getCenterOfPlayers(){
+        float x = 0,y = 0;
+        int length = World.PLAYERS.size();
+
+        for (int i = 0; i < length; i++) {
+            x += World.PLAYERS.get(i).position.x;
+            y += World.PLAYERS.get(i).position.y;
+        }
+
+        return new Vector2f(x/length,y/length);
     }
 
     public boolean entityWithinView(Entity entity){
