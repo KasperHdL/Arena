@@ -43,7 +43,10 @@ public class Settings {
 									MAX_DRAW_SPEED = 1500;
 	
 		public static final float 	MAX_DRAW_GRAPHIC_SIZE = 10;
-
+		
+		public static final float   SWEETSPOT = 1337;
+		public static final float   SWEETSPOT_RANGE = 100;
+		
 		//melee variables
 		public static final float 	PLAYER_ARC_START = 50,
 				 				  	PLAYER_ARC_END = -50;
@@ -66,7 +69,7 @@ public class Settings {
 									ENEMY_RANGED_RADIUS = 200f;
 
 	//Projectile Variables
-		public static final float 	BASE_PROJECTILE_SPEED = 10; //Base speed of projectiles (before drawtime modifier), this is located in the player script
+		public static final float 	BASE_PROJECTILE_SPEED = 7; //Base speed of projectiles (before drawtime modifier), this is located in the player script
 		
 		public static final float 	PROJECTILE_FLY_TIME = 1500;
 	

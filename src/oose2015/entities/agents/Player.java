@@ -2,6 +2,10 @@ package oose2015.entities.agents;
 
 import java.io.File;
 
+import net.java.games.input.Component;
+import net.java.games.input.Controller;
+import net.java.games.input.ControllerEnvironment;
+import net.java.games.input.Rumbler;
 import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
@@ -60,7 +64,9 @@ public class Player extends Agent implements ControllerListener{
 				 minDrawTime = Settings.MIN_DRAW_SPEED,
 				 maxDrawTime = Settings.MAX_DRAW_SPEED,
 				 maxDrawGraphicSize = Settings.MAX_DRAW_GRAPHIC_SIZE,
-				 drawGraphic = 0;
+				 drawGraphic = 0,
+				 sweetSpot = Settings.SWEETSPOT,
+				 sweetSpotRange = Settings.SWEETSPOT_RANGE;
     
 	//melee
 	public float startArc = Settings.PLAYER_ARC_START,
@@ -95,10 +101,12 @@ public class Player extends Agent implements ControllerListener{
                     rangedKeyDown = false;
 
 	private Input input;
-
+	
     public Color color;
 
-
+    Controller[] ca;
+    Component[] components;
+    Rumbler[] rumblers;
     /**
      * Constructor for player [use Input.KEY_X as key arguments]
      * @param position Position
@@ -195,6 +203,8 @@ public class Player extends Agent implements ControllerListener{
     protected void rangedAttack(){
     	if(drawTime < minDrawTime)
     		return;
+    	else if(drawTime > sweetSpot-sweetSpotRange && drawTime < sweetSpot)
+    		drawTime = 2500;
     	else if(drawTime > maxDrawTime)
     		drawTime = maxDrawTime;
     	float projectileSpeed = Settings.BASE_PROJECTILE_SPEED *(drawTime/1000);
@@ -305,15 +315,16 @@ public class Player extends Agent implements ControllerListener{
                 else if(t > 1) t = 1;
                 graphics.drawLine(size.x / 2, 0, (1 - t) * (size.x / 2), 0);
                 
-                if(World.TIME - startTime >= maxDrawTime - maxDrawGraphicSize*100){
-                	if(World.TIME - startTime <= maxDrawTime)
-                		graphics.setColor(Color.white);
-                	else
+                float timeDrawn = World.TIME - startTime;
+                if(timeDrawn >= maxDrawTime - maxDrawGraphicSize*100){
+                	if(timeDrawn > sweetSpot-sweetSpotRange && timeDrawn < sweetSpot)
                 		graphics.setColor(Color.red);
+                	else
+                		graphics.setColor(Color.white);
                 	graphics.drawOval(-(size.x+drawGraphic)/2, -(size.x+drawGraphic)/2, size.x+drawGraphic, size.y+drawGraphic);
-                	if(drawGraphic < maxDrawGraphicSize && (World.TIME - startTime) % 100 == 0)
+                	if(drawGraphic < maxDrawGraphicSize && (timeDrawn) % 100 == 0)
                 		drawGraphic++;
-                	else if(drawGraphic >= maxDrawGraphicSize && (World.TIME - startTime) % 100 == 0)
+                	else if(drawGraphic >= maxDrawGraphicSize && (timeDrawn) % 100 == 0)
                 		drawGraphic = 7;
                 }
             }

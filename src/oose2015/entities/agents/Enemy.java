@@ -136,6 +136,11 @@ public class Enemy extends Agent {
             move(delta,dt);
         }
     }
+    
+    private void chargePlayer(Agent agent){
+    	Vector2f chargeDirection = new Vector2f(0,1);
+    	
+    }
 
     protected void rangedAttack(){
         nextAttackTime = World.TIME + attackDelay;
