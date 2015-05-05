@@ -2,6 +2,7 @@ package oose2015;
 
 import oose2015.entities.Entity;
 import oose2015.entities.tiles.Tile;
+import oose2015.states.GamePlayState;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -21,8 +22,18 @@ public class Camera {
     public Vector2f halfViewSize;
     public float scale;
 
+
+    //target
     public Vector2f targetPosition;
     public float targetScale;
+
+    //shake
+
+    public int shakeEnd;
+    public int shakeLength;
+    public Vector2f shake;
+    private float oscSpeed = 1;
+
 
     private float halfTileSize;
 
@@ -39,14 +50,20 @@ public class Camera {
         if(World.PLAYERS.size() == 1){
             Vector2f d = World.PLAYERS.get(0).position.copy().sub(position);
             position.add(d.scale(0.1f));
+            addShake();
             return;
         }
 
         //easing
         Vector2f d = targetPosition.sub(position);
-        position.add(d.scale(0.1f));
 
+        position.add(d.scale(0.1f));
         scale += (targetScale - scale) * 0.1f;
+
+        //shake
+        addShake();
+
+
 
         targetPosition = getCenterOfPlayers();
 
@@ -75,10 +92,6 @@ public class Camera {
 
             targetScale -= .1f;
         }
-
-
-
-
     }
 
     private Vector2f getCenterOfPlayers(){
@@ -91,6 +104,25 @@ public class Camera {
         }
 
         return new Vector2f(x/length,y/length);
+    }
+
+    private void addShake(){
+        if(shakeEnd > World.TIME){
+            float t = (float)(shakeEnd - World.TIME)/shakeLength;
+
+            Vector2f s = new Vector2f(  t * (float)Math.cos(World.TIME * oscSpeed) * shake.x,
+                    t * (float)Math.sin(World.TIME * oscSpeed) * shake.y);
+
+            System.out.println("t: " + t + " s " + s);
+            position.add(s);
+        }
+    }
+
+    public void shakeScreen(Vector2f shake,int time,float oscillationSpeed){
+        this.shake = shake;
+        shakeLength = time;
+        oscSpeed = oscillationSpeed;
+        shakeEnd = World.TIME + shakeLength;
     }
 
     public boolean entityWithinView(Entity entity){

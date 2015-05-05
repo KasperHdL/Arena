@@ -158,9 +158,9 @@ public class Player extends Agent implements ControllerListener{
     	for(Enemy enemy : World.ENEMIES){
     		float dist = VectorUtility.getDistanceToEntity(this, enemy);
     		if(dist < weapon.attackRadius){
-    			float enemyAngle = calculateAngleToTarget((Agent)enemy);
+    			float enemyAngle = calculateAngleToTarget(enemy);
 
-    			System.out.println("EnemyAngle: " + enemyAngle + " startArc: " + (startArc + rotation) + " endArc: " + (endArc + rotation));
+    			//System.out.println("EnemyAngle: " + enemyAngle + " startArc: " + (startArc + rotation) + " endArc: " + (endArc + rotation));
     			if(startArc + rotation > 360 && endArc + rotation < 360){
     				if((enemyAngle < (startArc + rotation) % 360 && enemyAngle > 0) || (enemyAngle > endArc+rotation && enemyAngle < 360)){
 		    			if(enemy.takeDamage(weapon.damage)){
@@ -183,7 +183,10 @@ public class Player extends Agent implements ControllerListener{
 		                }
 	    			}
     			}
-    		}
+
+
+
+            }
     	}
     }
     
@@ -205,6 +208,7 @@ public class Player extends Agent implements ControllerListener{
     public void addExp(int value){
         exp += value;
 
+
         if(exp >= nextLevelExp){
             level++;
             playerUI.updateLevel();
@@ -212,8 +216,10 @@ public class Player extends Agent implements ControllerListener{
             lastLevelExp = nextLevelExp;
             nextLevelExp = (level*level)*100;
 
+            World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*20,World.RANDOM.nextFloat()*20),1000,3f);
 
-        }
+        }else
+            World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*15,World.RANDOM.nextFloat()*15),200,1f);
 
     }
 
@@ -346,9 +352,12 @@ public class Player extends Agent implements ControllerListener{
         curHealth -= (damage * armor.getDamageModifier());
         playerUI.updateHealth();
         if(curHealth <= 0){
+            World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*100,World.RANDOM.nextFloat()*100),200,.5f);
+
             die();
             return true;
         }else{
+            World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*20,World.RANDOM.nextFloat()*20),100,2f);
         }
         return false;
     }
