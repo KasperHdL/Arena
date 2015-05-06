@@ -1,5 +1,8 @@
 package oose2015.states;
 
+import net.java.games.input.Controller;
+import net.java.games.input.ControllerEnvironment;
+import net.java.games.input.Rumbler;
 import oose2015.Main;
 
 import oose2015.gui.elements.TextBox;
@@ -57,6 +60,7 @@ public class MainMenuState implements GameState{
             controllerBox[i] = new TextBox("Press Start on the Controller", new Vector2f(sizeX * i + sizeX/2,Main.SCREEN_HEIGHT-20), TextBox.Align.CENTER);
             controllerBox[i].blinkTextLength = 1500;
         }
+
 
 
     }

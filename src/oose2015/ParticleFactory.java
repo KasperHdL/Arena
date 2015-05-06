@@ -33,7 +33,9 @@ public class ParticleFactory {
     }
 
     public static void createDeathSplatter(Vector2f position, Color color){
-        for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 20; j++)
+            createBloodSplatter(position,new Vector2f(World.RANDOM.nextFloat() * 360),color);
+        for (int i = 0; i < 10; i++) {
             Color c = new Color(color).darker(World.RANDOM.nextFloat()*0.4f+.2f);
             new BloodParticle(
                     position.copy(),//position
@@ -64,11 +66,11 @@ public class ParticleFactory {
         }
     }
 
-    public static void createProjectileTrail(Vector2f position,Vector2f area,Vector2f dir){
-        for (int i = 0; i < World.RANDOM.nextInt(2)+1; i++) {
-            Color c = new Color(Color.lightGray).darker(World.RANDOM.nextFloat()*0.2f+.1f);
+    public static void createProjectileTrail(Vector2f position,Vector2f dir){
+        for (int i = 0; i < 1; i++) {
+            Color c = new Color(Color.white);
             new Particle(
-                    position.copy().add(area.scale((World.RANDOM.nextFloat() * 2) - 1)),//position
+                    position.copy(),//position
                     World.RANDOM.nextInt(5)+1,//size
                     World.RANDOM.nextFloat()*360,//rotation
                     dir.copy().scale(World.RANDOM.nextFloat()+1),//velocity
@@ -82,7 +84,7 @@ public class ParticleFactory {
 
     public static void createLevelUpRing(Vector2f position){
         for (int i = 0; i < 120; i++) {
-            Color c = new Color(Color.yellow).brighter(World.RANDOM.nextFloat()*0.2f+.1f);
+            Color c = new Color(Color.yellow).brighter(World.RANDOM.nextFloat() * 0.2f + .1f);
             new Particle(
                     position.copy(),//position
                     World.RANDOM.nextInt(10)+15,//size

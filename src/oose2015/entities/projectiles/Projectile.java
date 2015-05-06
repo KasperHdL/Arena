@@ -97,7 +97,7 @@ public class Projectile extends MovableEntity {
 	@Override
 	public void update(float dt){
 
-		ParticleFactory.createProjectileTrail(position, new Vector2f(0, size.x/2).add(direction.getTheta()), direction.copy().scale(-1f));
+		ParticleFactory.createProjectileTrail(position, direction.copy().scale(-1f));
 
 		move(dt);
 	}
@@ -110,7 +110,7 @@ public class Projectile extends MovableEntity {
 		graphics.rotate(0,0,rotation);
 		graphics.setColor(Color.red);
 	
-		graphics.fillRect(0, 0, size.x*2, size.y/3);
+		graphics.fillRect(-size.x, -size.y/4, size.x*2, size.y/2);
 		graphics.popTransform();
 	}
 	
