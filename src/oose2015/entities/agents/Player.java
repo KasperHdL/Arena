@@ -163,44 +163,41 @@ public class Player extends Agent implements ControllerListener{
     			float enemyAngle = calculateAngleToTarget(enemy);
 
     			//System.out.println("EnemyAngle: " + enemyAngle + " startArc: " + (startArc + rotation) + " endArc: " + (endArc + rotation));
-    			if(startArc + rotation > 360 && endArc + rotation < 360){
-    				if((enemyAngle < (startArc + rotation) % 360 && enemyAngle > 0) || (enemyAngle > endArc+rotation && enemyAngle < 360)){
-		    			if(enemy.takeDamage(this,weapon.damage)){
-		                    //enemy killed
-		                    addExp(enemy.expDrop);
-		                }
-    				}
-    			} else if(startArc + rotation > 360 && endArc + rotation > 360){
-	    			if(enemyAngle < (startArc + rotation) % 360 && enemyAngle > (endArc + rotation) % 360){
-		    			if(enemy.takeDamage(this,weapon.damage)){
-		                    //enemy killed
-		                    addExp(enemy.expDrop);
-		                }
-	    			}
-    			} else if(startArc + rotation < 360 && endArc + rotation < 360){
-	    			if(enemyAngle < startArc + rotation && enemyAngle > endArc + rotation){
-		    			if(enemy.takeDamage(this,weapon.damage)){
-		                    //enemy killed
-		                    addExp(enemy.expDrop);
-		                }
-	    			}
-    			}
-
-
-
+    			if(
+                    ((startArc + rotation > 360 && endArc + rotation < 360) &&
+                           (enemyAngle < (startArc + rotation) % 360 && enemyAngle > 0) ||
+                           (enemyAngle > endArc+rotation && enemyAngle < 360))
+                    ||
+                    (startArc + rotation > 360 && endArc + rotation > 360 &&
+                           enemyAngle < (startArc + rotation) % 360 &&
+                           enemyAngle > (endArc + rotation) % 360)
+                    ||
+                    (startArc + rotation < 360 && endArc + rotation < 360 &&
+                           enemyAngle < startArc + rotation &&
+                           enemyAngle > endArc + rotation)
+                    ){
+                    if(enemy.takeDamage(this,weapon.damage)){
+                        //enemy killed
+                        addExp(enemy.expDrop);
+                    }
+	    		}
             }
     	}
     }
     
     protected void rangedAttack(){
+        boolean hitSweetSpot = false;
+
     	if(drawTime < minDrawTime)
     		return;
     	else if(drawTime > sweetSpot-sweetSpotRange && drawTime < sweetSpot)
-    		drawTime = 2500;
+    		hitSweetSpot = true;
     	else if(drawTime > maxDrawTime)
     		drawTime = maxDrawTime;
-    	float projectileSpeed = Settings.BASE_PROJECTILE_SPEED *(drawTime/1000);
-    	float damage = weapon.damage*(drawTime/1000);
+    	float projectileSpeed = Settings.BASE_PROJECTILE_SPEED *(drawTime/maxDrawTime);
+    	float damage = weapon.damage*(drawTime/maxDrawTime);
+        if(hitSweetSpot)
+            damage *= 2f;
     	
         nextAttackTime = World.TIME + weapon.attackDelay;
         drawGraphic = 0;
@@ -252,9 +249,6 @@ public class Player extends Agent implements ControllerListener{
     		y = 0;	
 
     	axis = new Vector2f(x,y);
-
-
-
         axis.scale((armor.getSpeedModifier() * speedForce) / mass);
 
         if(axis.length() > .5f)

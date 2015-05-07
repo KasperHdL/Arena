@@ -14,8 +14,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class MovableEntity extends Entity{
 
-    public Vector2f velocity;
-    public Vector2f acceleration;
+    public Vector2f velocity = new Vector2f(0,0);
+    public Vector2f acceleration = new Vector2f(0,0);
 
     //limits Entity velocity to set value
     public float maxVelocity = 100f;
@@ -25,11 +25,6 @@ public class MovableEntity extends Entity{
     public float mass = 1f;
     public float friction = .9f;
     public float inertia = .85f;
-
-    public MovableEntity(){
-        velocity = new Vector2f(0,0);
-        acceleration = new Vector2f(0,0);
-    }
 
     /**
      * Moves the Entity according to the correct physical forces of the Entity. applies friction, inertia and limits the velocity. then adds acceleration to velocity and then velocity to position
@@ -43,16 +38,16 @@ public class MovableEntity extends Entity{
         acceleration.scale(inertia);
         velocity.scale(friction);
 
-        acceleration.add(input.scale(dt));
+        acceleration.add(input);
 
-        if(velocity.length() > maxVelocity){
-            velocity = velocity.getNormal().scale(maxVelocity);
-        }
-
-        velocity.scale(dt);
-
+        acceleration.scale(dt);
         velocity.add(acceleration);
 
+        if(velocity.length() > maxVelocity)
+            velocity = velocity.getNormal().scale(maxVelocity);
+
+
+        velocity.scale(dt);
         position.add(velocity);
     }
 }

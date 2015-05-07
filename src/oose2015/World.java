@@ -87,9 +87,9 @@ public class World {
         for (int i = 0; i < 100; i++) {
             for (int j = 0; j < 100; j++) {
                 if(i == 0 || j == 0 || i == 99 || j == 99)
-                    new Wall(new Vector2f(i * Tile.TILE_SIZE,j * Tile.TILE_SIZE));
+                    new Wall(new Vector2f((i-50) * Tile.TILE_SIZE,(j-50) * Tile.TILE_SIZE));
                 else
-                    new Floor(new Vector2f(i * Tile.TILE_SIZE,j * Tile.TILE_SIZE),Color.green);
+                    new Floor(new Vector2f((i-50) * Tile.TILE_SIZE,(j-50) * Tile.TILE_SIZE),Color.green);
             }
 
         }
@@ -131,7 +131,7 @@ public class World {
     public void update(float dt){
         TIME += dt;
         float delta = dt/100;
-        //System.out.println("time: " + time + " dt: " + dt + " delta " + delta);
+        System.out.println("time: " + TIME + " dt: " + dt + " delta " + delta + " FPS: " + gameContainer.getFPS());
 
         //TEMPORARY wave spawn
             boolean allDead = true;
@@ -143,12 +143,11 @@ public class World {
             }
             if(allDead && nextWave == 0){
                 nextWave = TIME + waveDelay;
-            }
-
-            if(allDead && nextWave < TIME){
+            }else if(allDead && nextWave < TIME){
                 nextWave = 0;
                 spawnWave();
             }
+
 
 
         checkExits();
@@ -159,7 +158,7 @@ public class World {
     public void spawnWave(){
         waveCount++;
         for (int i = 0; i < waveCount * 2; i++) {
-            new Enemy(new Vector2f(RANDOM.nextInt(Main.SCREEN_WIDTH),RANDOM.nextInt(Main.SCREEN_HEIGHT)),RANDOM.nextInt(3)+RANDOM.nextInt(waveCount)+2, RANDOM.nextBoolean());
+            new Enemy(new Vector2f(RANDOM.nextFloat()*360).scale(RANDOM.nextFloat()*(1*Tile.TILE_SIZE) + 10*Tile.TILE_SIZE),RANDOM.nextInt(3)+RANDOM.nextInt(waveCount)+2, RANDOM.nextBoolean());
         }
     }
 
