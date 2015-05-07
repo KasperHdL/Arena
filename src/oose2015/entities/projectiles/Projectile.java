@@ -50,7 +50,7 @@ public class Projectile extends MovableEntity {
 		direction = new Vector2f(1,0).add(owner.rotation);
 		position = owner.position.copy().add(direction.copy().scale(owner.size.x/2));
 		spawnPoint = position;
-		size = new Vector2f(10,10);
+		size = new Vector2f(15,15);
 		spawnTime = World.TIME;
 		isMovable = false;
 		isSolid = false;
@@ -116,7 +116,7 @@ public class Projectile extends MovableEntity {
 	@Override
 	public void update(float dt){
 
-		ParticleFactory.createProjectileTrail(position, new Vector2f(0, size.x/2).add(direction.getTheta()), direction.copy().scale(-1f));
+		ParticleFactory.createProjectileTrail(position, direction.copy().scale(-1f));
 
 		move(dt);
 	}
@@ -131,7 +131,7 @@ public class Projectile extends MovableEntity {
 		graphics.rotate(0,0,rotation);
 		graphics.setColor(Color.red);
 	
-		graphics.fillRect(0, -size.x/6, size.x*2, size.y/3);
+		graphics.fillRect(-size.x, -size.y/4, size.x*2, size.y/2);
 		graphics.popTransform();
 	}
 	
