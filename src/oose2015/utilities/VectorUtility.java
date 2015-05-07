@@ -7,10 +7,8 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 18/04/2015
  * <p/>
  * Description:
- * ---
+ * Handles vector calculations.
  * <p/>
- * Usage:
- * ---
  */
 
 public class VectorUtility {
