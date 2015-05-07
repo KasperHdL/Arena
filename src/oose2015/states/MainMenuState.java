@@ -1,8 +1,9 @@
 package oose2015.states;
 
+import oose2015.Assets;
 import oose2015.Main;
-
 import oose2015.gui.elements.TextBox;
+
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
@@ -57,6 +58,8 @@ public class MainMenuState implements GameState{
             controllerBox[i] = new TextBox("Press Start on the Controller", new Vector2f(sizeX * i + sizeX/2,Main.SCREEN_HEIGHT-20), TextBox.Align.CENTER);
             controllerBox[i].blinkTextLength = 1500;
         }
+        
+        new Assets();
 
 
     }

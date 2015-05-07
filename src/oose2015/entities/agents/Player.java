@@ -183,7 +183,7 @@ public class Player extends Agent implements ControllerListener{
     }
     
     /**
-     * Calculates spped and damage of ranged attack, and creates new projectile.
+     * Calculates speed and damage of ranged attack, and creates new projectile.
      */
     protected void rangedAttack(){
     	if(drawTime < minDrawTime)

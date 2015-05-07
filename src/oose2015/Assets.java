@@ -18,8 +18,8 @@ public class Assets {
         String sound_dir = user_dir + "\\Assets\\Sounds\\";
         
 	    try {	
-	    	SOUND_BOW_DRAW = new Sound(sound_dir + "BowDrawCreak.wav");
-	    	SOUND_ARROW_SHOOT = new Sound(sound_dir + "ArrowShootSound.wav"); 	
+	    	SOUND_BOW_DRAW 		= new Sound(sound_dir + "BowDrawCreak.wav");
+	    	SOUND_ARROW_SHOOT 	= new Sound(sound_dir + "ArrowShootSound.wav"); 	
 		} catch (SlickException e) {
 			System.out.println("Error with file path");
 		}
