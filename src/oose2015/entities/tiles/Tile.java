@@ -1,7 +1,6 @@
 package oose2015.entities.tiles;
 
 import oose2015.EntityHandler;
-import oose2015.entities.Entity;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 

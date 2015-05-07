@@ -2,7 +2,6 @@ package oose2015.gui.elements.interactable;
 
 import oose2015.Main;
 import oose2015.gui.ShopKeeperMenu;
-import oose2015.states.ShopKeeperState;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;

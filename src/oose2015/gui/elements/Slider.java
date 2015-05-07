@@ -5,8 +5,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import javax.xml.soap.Text;
-
 /**
  * Created by @Kasper on 04/05/2015
  * <p/>

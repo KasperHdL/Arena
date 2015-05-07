@@ -7,9 +7,7 @@ import oose2015.gui.elements.TextBox;
 import oose2015.items.Armor;
 import oose2015.items.Item;
 import oose2015.items.Weapon;
-import oose2015.states.ShopKeeperState;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
