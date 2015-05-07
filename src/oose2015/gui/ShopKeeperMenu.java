@@ -18,12 +18,9 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 22/04/2015
  * <p/>
  * Description:
- * ---
+ * Creates interactable player shop for upgrading of weapons and armor.
  * <p/>
- * Usage:
- * ---
  */
-
 public class ShopKeeperMenu {
 
     public boolean isReady = false;
@@ -40,6 +37,13 @@ public class ShopKeeperMenu {
     private InteractableElement[] interactables;
     private Element[] elements;
 
+    /**
+     * ShopKeeperMenu Constructor.
+     * Creates new shop box-menu for individual player.
+     * @param position - position on screen
+     * @param sizeX - size of box
+     * @param index - player index
+     */
     public ShopKeeperMenu(Vector2f position,int sizeX,int index){
         this.position = position;
         interactables = new InteractableElement[9];
@@ -93,6 +97,10 @@ public class ShopKeeperMenu {
 
     }
 
+    /**
+     * render shop graphics
+     * @param graphics
+     */
     public void render(Graphics graphics){
         graphics.pushTransform();
         graphics.translate(position.x,position.y);
@@ -106,6 +114,10 @@ public class ShopKeeperMenu {
         graphics.popTransform();
     }
 
+    /**
+     * Handles player input for shop.
+     * @param btn
+     */
     public void handleInput(ShopKeeperState.Button btn){
         switch(btn){
             case Up:{
@@ -121,6 +133,10 @@ public class ShopKeeperMenu {
         }
     }
 
+    /**
+     * Moves chosen shop element.
+     * @param amount
+     */
     public void moveActive(int amount){
         if(active + amount >= 0 && active + amount < interactables.length){
 
@@ -132,6 +148,9 @@ public class ShopKeeperMenu {
         }
     }
 
+    /**
+     * Select active element in shop.
+     */
     public void selectActive(){
         //select item
         if(interactables[active] instanceof ItemElement){
