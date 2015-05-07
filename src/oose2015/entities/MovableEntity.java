@@ -7,13 +7,11 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 26/03/2015
  * <p/>
  * Description:
- * ---
+ * Child of EntityClass. Holds functions and variables for all movable entities.
  * <p/>
- * Usage:
- * ---
  */
 
-public class MovableEntity extends Entity{
+public abstract class MovableEntity extends Entity{
 
     public Vector2f velocity;
     public Vector2f acceleration;
@@ -33,13 +31,21 @@ public class MovableEntity extends Entity{
     }
 
     /**
-     * Moves the Entity according to the correct physical forces of the Entity. applies friction, inertia and limits the velocity. then adds acceleration to velocity and then velocity to position
-     * @param dt delta time
+     * Overloads move function.
+     * Moves the Entity according to the correct physical forces of the Entity. 
+     * Applies friction, inertia and limits the velocity. then adds acceleration to velocity and then velocity to position
+     * @param dt - delta time
      */
-
     protected void move(float dt){
         move(dt,new Vector2f());
     }
+    
+    /**
+     * Moves the Entity according to the correct physical forces of the Entity. 
+     * Applies friction, inertia and limits the velocity. then adds acceleration to velocity and then velocity to position
+     * @param dt
+     * @param input
+     */
     protected void move(float dt,Vector2f input){
         acceleration.scale(inertia);
         velocity.scale(friction);
@@ -56,22 +62,4 @@ public class MovableEntity extends Entity{
 
         position.add(velocity);
     }
-
-	@Override
-	public void update(float dt) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void render(Graphics graphics) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void collides(Entity other) {
-		// TODO Auto-generated method stub
-		
-	}
 }
