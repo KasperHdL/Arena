@@ -16,7 +16,7 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 26/03/2015
  * <p/>
  * Description:
- * Enemy class creates agent that targets players.
+ * Enemy class creates agent that targets players. Child to agent.
  * <p/>
  */
 
