@@ -12,12 +12,13 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 01/05/2015
  * <p/>
  * Description:
- * ---
+ * Camera Class. Controls position of view.
  * <p/>
  * Usage:
- * ---
+ * graphics.scale(camera.scale, camera.scale);
+ * graphics.translate(	-camera.position.x + (camera.halfViewSize.x * (1/camera.scale)), 
+        				-camera.position.y + (camera.halfViewSize.y * (1/camera.scale)));
  */
-
 public class Camera {
 
     public Vector2f position;
@@ -48,6 +49,10 @@ public class Camera {
         targetPosition = new Vector2f(0,0);
     }
 
+    /**
+     * Updates camera position and zoom.
+     * @param dt
+     */
     public void update(float dt){
         if(World.PLAYERS.size() == 1){
             Vector2f d = World.PLAYERS.get(0).position.copy().sub(position);
@@ -96,6 +101,10 @@ public class Camera {
         }
     }
 
+    /**
+     * Finds centre position between players.
+     * @return - Vector2f centre of player.
+     */
     private Vector2f getCenterOfPlayers(){
         float x = 0,y = 0;
         int length = World.PLAYERS.size();
@@ -108,6 +117,9 @@ public class Camera {
         return new Vector2f(x/length,y/length);
     }
 
+    /**
+     * Add screen-shake to position
+     */
     private void addShake(){
         if(shakeEnd > World.TIME){
             float t = (float)(shakeEnd - World.TIME)/shakeLength;
@@ -119,6 +131,12 @@ public class Camera {
         }
     }
 
+    /**
+     * Initiates screen shake
+     * @param shake - direction and magnitude of shake
+     * @param time - length of shake time
+     * @param oscillationSpeed - oscillation-speed of screen shake
+     */
     public void shakeScreen(Vector2f shake,int time,float oscillationSpeed){
         this.shake = shake;
         shakeLength = time;
@@ -126,10 +144,21 @@ public class Camera {
         shakeEnd = World.TIME + shakeLength;
     }
 
+    /**
+     * Returns true if entity is within camera-view
+     * @param entity
+     * @return
+     */
     public boolean entityWithinView(Entity entity){
         return entityWithinView(entity,scale);
     }
 
+    /**
+     * Returns true if entity is within camera view.
+     * @param entity
+     * @param scale - zoom scale (the larger the closer)
+     * @return
+     */
     public boolean entityWithinView(Entity entity,float scale){
         float x = (1/scale) * halfViewSize.x;
         float y = (1/scale) * halfViewSize.y;
@@ -139,6 +168,11 @@ public class Camera {
                 entity.position.y - entity.size.y/2 < position.y + y;
     }
     
+    /**
+     * Return true if tile is within view
+     * @param tile
+     * @return
+     */
     public boolean tileWithinView(Tile tile){
         float x = (1/scale) * halfViewSize.x;
         float y = (1/scale) * halfViewSize.y;
@@ -148,6 +182,11 @@ public class Camera {
                 tile.position.y - halfTileSize < position.y + y;
     }
 
+    /**
+     * Return true if particle is within view
+     * @param particle
+     * @return
+     */
     public boolean particleWithinView(Particle particle){
         float x = (1/scale) * halfViewSize.x;
         float y = (1/scale) * halfViewSize.y;
@@ -157,6 +196,11 @@ public class Camera {
                 particle.position.y - particle.renderSize < position.y + y;
     }
 
+    /**
+     * Return true if particle within view
+     * @param artifact
+     * @return
+     */
     public boolean artifactWithinView(Artifact artifact){
         float x = (1/scale) * halfViewSize.x;
         float y = (1/scale) * halfViewSize.y;

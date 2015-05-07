@@ -10,10 +10,8 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 01/05/2015
  * <p/>
  * Description:
- * ---
+ * Creates impassable wall object.
  * <p/>
- * Usage:
- * ---
  */
 
 public class Wall extends Entity {
@@ -46,6 +44,18 @@ public class Wall extends Entity {
 
         graphics.popTransform();
     }
+
+	@Override
+	public void update(float dt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void collides(Entity other) {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 }

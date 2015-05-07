@@ -1,5 +1,6 @@
 	package oose2015.entities.agents;
 
+import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
 import oose2015.utilities.VectorUtility;
@@ -15,10 +16,8 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 26/03/2015
  * <p/>
  * Description:
- * ---
+ * Enemy class creates agent that targets players. Child to agent.
  * <p/>
- * Usage:
- * ---
  */
 
 public class Enemy extends Agent {
@@ -50,7 +49,6 @@ public class Enemy extends Agent {
 	
     public Agent target;
     public Player shooter;
-
     
     /**
      * Constructor for Enemy
@@ -82,6 +80,9 @@ public class Enemy extends Agent {
       
     }
 
+    /**
+     * Updates enemy state and controls enemy action.
+     */
     @Override
     public void update(float dt){
         if(isAlive){
@@ -117,6 +118,13 @@ public class Enemy extends Agent {
         }
     }
 
+    /**
+     * Checks distance to player, if player is within distance enemy will chase.
+     * If distance to player is within attack range of enemy enemy will attack.
+     * If distance to player is within charge range and charge cooldown is up, then enemy will charge.
+     * @param agent
+     * @param dt
+     */
     private void chasePlayer(Agent agent, float dt){
         Vector2f delta = target.position.copy().sub(position);
         float dist = VectorUtility.getDistanceToEntity(this, agent);
@@ -157,6 +165,9 @@ public class Enemy extends Agent {
         }
     }
     
+    /**
+     * charge function. WORK IN PROGRESS
+     */
     /*private void chargePlayer(Agent agent, float dist){
     	if(!isCharging){
 	    	chargePoint = new Vector2f(0,1);
@@ -170,11 +181,19 @@ public class Enemy extends Agent {
     		isCharging = false;
     }*/
 
+    /**
+     * Creates new projectile and sets new attack delay.
+     */
     protected void rangedAttack(){
         nextAttackTime = World.TIME + attackDelay;
     	new Projectile(this, attackRadius, damage, 10f);
     }
     
+    /**
+     * Moves enemy and sets enemy rotation.
+     * @param input
+     * @param dt
+     */
     protected void move(Vector2f input, float dt){
         input.normalise();
         input.scale(speedForce / mass);
@@ -184,6 +203,9 @@ public class Enemy extends Agent {
         super.move(dt, input);
     }
 
+    /**
+     * Renders enemy graphics.
+     */
     @Override
     public void render(Graphics graphics){
         graphics.pushTransform();
@@ -240,6 +262,10 @@ public class Enemy extends Agent {
     }
 
 
+    /**
+     * Calculates the closest living player
+     * @return - closest player object
+     */
     private Player getClosestPlayer(){
         Vector2f delta = World.PLAYERS.get(0).position.copy().sub(position);
 
@@ -269,5 +295,17 @@ public class Enemy extends Agent {
         new Gold(position,goldDrop);
         super.die();
     }
+
+	@Override
+	public void collides(Entity other) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void attack() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

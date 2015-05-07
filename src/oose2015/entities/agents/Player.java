@@ -6,6 +6,7 @@ import oose2015.ParticleFactory;
 import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
+import oose2015.Assets;
 import oose2015.EntityHandler;
 import oose2015.Settings;
 import oose2015.gui.PlayerUI;
@@ -26,10 +27,8 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 26/03/2015
  * <p/>
  * Description:
- * ---
+ * Child class to agent. Creates controllable player object.
  * <p/>
- * Usage:
- * ---
  */
 
 public class Player extends Agent implements ControllerListener{	
@@ -51,13 +50,13 @@ public class Player extends Agent implements ControllerListener{
 	float startTime;
 	float releaseTime;
 	
-	public float drawTime,
-				 minDrawTime = Settings.MIN_DRAW_SPEED,
-				 maxDrawTime = Settings.MAX_DRAW_SPEED,
-				 maxDrawGraphicSize = Settings.MAX_DRAW_GRAPHIC_SIZE,
-				 drawGraphic = 0,
-				 sweetSpot = Settings.SWEETSPOT,
-				 sweetSpotRange = Settings.SWEETSPOT_RANGE;
+	public float 	drawTime,
+				 	minDrawTime = Settings.MIN_DRAW_SPEED,
+				 	maxDrawTime = Settings.MAX_DRAW_SPEED,
+				 	maxDrawGraphicSize = Settings.MAX_DRAW_GRAPHIC_SIZE,
+				 	drawGraphic = 0,
+				 	sweetSpot = Settings.SWEETSPOT,
+				 	sweetSpotRange = Settings.SWEETSPOT_RANGE;
     
 	//melee
 	public float startArc = Settings.PLAYER_ARC_START,
@@ -79,7 +78,6 @@ public class Player extends Agent implements ControllerListener{
     				rightDeadY = Settings.RIGHT_DEAD_Y;
     
     //sound variables
-    public File file;
     public Sound bowDrawSound;
     public Sound arrowShootSound;
     
@@ -119,13 +117,16 @@ public class Player extends Agent implements ControllerListener{
 
         this.position = position;
 
-        maxVelocity = Settings.PLAYER_MAX_VELOCITY;
-
-        speedForce = Settings.PLAYER_SPEED_FORCE;
-        mass = Settings.PLAYER_MASS;
-
+        maxVelocity 	= 	Settings.PLAYER_MAX_VELOCITY;
+        speedForce 		= 	Settings.PLAYER_SPEED_FORCE;
+        mass 			= 	Settings.PLAYER_MASS;
+        curHealth 		= 	Settings.PLAYER_HEALTH;
+        
+        bowDrawSound 	= 	Assets.SOUND_BOW_DRAW;
+        arrowShootSound = 	Assets.SOUND_ARROW_SHOOT;
+        
         gold = 0;
-        exp = 0;
+        exp	 = 0;
 
         level = 1;
         lastLevelExp = 0;
@@ -140,19 +141,11 @@ public class Player extends Agent implements ControllerListener{
         nextAttackTime = 0f;
 
         playerUI.setPlayer(this,color);
-
-        //load sound clips
-        String s = System.getProperty("user.dir");
-        String bowDrawPath = s+"\\Assets\\Sounds\\BowDrawCreak.wav";
-        String arrowShootPath = s+"\\Assets\\Sounds\\ArrowShootSound.wav";
-	    try {
-			bowDrawSound = new Sound(bowDrawPath);
-			arrowShootSound = new Sound(arrowShootPath);
-		} catch (SlickException e) {
-			System.out.println("Error with file path");
-		}
     }
     
+    /**
+     * Melee attack in given arc.
+     */
     @Override
     protected void attack(){
         nextAttackTime = World.TIME + weapon.attackDelay;
@@ -185,6 +178,9 @@ public class Player extends Agent implements ControllerListener{
     	}
     }
     
+    /**
+     * Calculates speed and damage of ranged attack, and creates new projectile.
+     */
     protected void rangedAttack(){
         boolean hitSweetSpot = false;
 
@@ -206,6 +202,10 @@ public class Player extends Agent implements ControllerListener{
         	new Projectile(this, weapon.attackRadius, damage, projectileSpeed);
     }
 
+    /**
+     * Adds experience to the player.
+     * @param value
+     */
     public void addExp(int value){
         exp += value;
 
@@ -225,6 +225,9 @@ public class Player extends Agent implements ControllerListener{
 
     }
 
+    /**
+     * Moves player object.
+     */
     @Override
     protected void move(float dt){
     	float x = input.getAxisValue(controllerIndex, rightStickX), 
@@ -257,6 +260,10 @@ public class Player extends Agent implements ControllerListener{
     	super.move(dt, axis);
     }
     
+    /**
+     * Updates player state.
+     * Checks for button press booleans, and initiates actions if conditions are true. 
+     */
     @Override
     public void update(float dt){
         if(isAlive) {
@@ -279,6 +286,9 @@ public class Player extends Agent implements ControllerListener{
         }
     }
 
+    /**
+     * Renders player graphics.
+     */
     @Override
     public void render(Graphics graphics){
         graphics.pushTransform();
@@ -339,6 +349,10 @@ public class Player extends Agent implements ControllerListener{
         }
     }
 
+    /**
+     * Checks for collision.
+     * If collision with gold object is true, then adds to gold amount of player.
+     */
     @Override
     public void collides(Entity other){
         //if is colliding with gold then collect
@@ -351,6 +365,11 @@ public class Player extends Agent implements ControllerListener{
         }
     }
 
+    /**
+     * Controls damage taken by player.
+     * Creates screenshake and bloodsplatter particles upon damage taken.
+     * Kills player if player health is 0 or below.
+     */
     @Override
     public boolean takeDamage(Agent attacker, float damage){
         if(!isAlive) return false;
@@ -390,9 +409,16 @@ public class Player extends Agent implements ControllerListener{
 
 	}
     
+	/**
+	 * Returns weapon damage value.
+	 */
     @Override
     public float getDamage(){return weapon.damage;}
 
+    /**
+     * Checks for button press. Sets button booleans true upon button press.
+     * Plays sound on ranged attack.
+     */
 	@Override
 	public void controllerButtonPressed(int controllerIn, int button) {
 		if(controllerIn != controllerIndex)
@@ -410,6 +436,10 @@ public class Player extends Agent implements ControllerListener{
 
 	}
 
+	/**
+	 * Checks for button release. Sets button booleans to false upon button release.
+	 * Stops ranged sound.
+	 */
 	@Override
 	public void controllerButtonReleased(int controllerIn, int button) {
 		if(controllerIn != controllerIndex)

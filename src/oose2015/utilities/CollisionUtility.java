@@ -9,10 +9,8 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 18/04/2015
  * <p/>
  * Description:
- * ---
+ * Handles collision detection.
  * <p/>
- * Usage:
- * ---
  */
 
 public class CollisionUtility {
@@ -67,8 +65,12 @@ public class CollisionUtility {
         }
     }
 
-
-
+    /**
+     * Calculates push strength of objects according to mass.
+     * @param delta
+     * @param entity
+     * @param other
+     */
     private static void pushBasedOnMass(Vector2f delta, MovableEntity entity, MovableEntity other){
         float totalMass = entity.mass + other.mass;
         float eRatio = (other.mass/totalMass);

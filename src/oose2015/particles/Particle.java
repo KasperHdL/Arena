@@ -10,10 +10,8 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 05/05/2015
  * <p/>
  * Description:
- * ---
+ * Particle base class.
  * <p/>
- * Usage:
- * ---
  */
 
 public class Particle {
@@ -37,11 +35,31 @@ public class Particle {
 
 
 
-
+    /**
+     * Overloaded Particle constructor
+     * @param position
+     * @param size
+     * @param rotation
+     * @param velocity
+     * @param angularVelocity
+     * @param time
+     * @param color
+     */
     public Particle(Vector2f position,int size,float rotation,Vector2f velocity,float angularVelocity,int time, Color color) {
         this(position,size,rotation,velocity,angularVelocity,time,false,color);
     }
 
+    /**
+     * Particle constructor
+     * @param position
+     * @param size
+     * @param rotation
+     * @param velocity
+     * @param angularVelocity
+     * @param time
+     * @param fadeOut
+     * @param color
+     */
     public Particle(Vector2f position,int size,float rotation,Vector2f velocity,float angularVelocity,int time,boolean fadeOut, Color color){
         EntityHandler.particles.add(this);
         this.position = position;
@@ -61,6 +79,10 @@ public class Particle {
     }
 
 
+    /**
+     * Update particle state
+     * @param dt
+     */
     public void update(float dt){
         if(endTime < World.TIME)
             destroy();
@@ -74,10 +96,17 @@ public class Particle {
         position.add(velocity.copy().scale(dt));
     }
 
+    /**
+     * Remove particle object from EntityHandler ArrayList
+     */
     protected void destroy(){
         EntityHandler.particles.remove(this);
     }
 
+    /**
+     * Render particle graphics.
+     * @param graphics
+     */
     public void render(Graphics graphics){
         graphics.pushTransform();
         graphics.translate(position.x, position.y);

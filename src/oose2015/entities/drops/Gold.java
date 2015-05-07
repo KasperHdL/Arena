@@ -10,16 +10,15 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 18/04/2015
  * <p/>
  * Description:
- * ---
+ * Child class to Entity. Creates and renders gold object.
  * <p/>
- * Usage:
- * ---
  */
 
 public class Gold extends Entity {
 
     public int value;
 
+    //Constructor
     public Gold(Vector2f position, int value){
         this.position = position;
         this.value = value;
@@ -30,6 +29,9 @@ public class Gold extends Entity {
         isMovable = false;
     }
 
+    /**
+     * Renders object graphics.
+     */
     @Override
     public void render(Graphics graphics){
         graphics.pushTransform();
@@ -41,4 +43,16 @@ public class Gold extends Entity {
 
         graphics.popTransform();
     }
+
+	@Override
+	public void update(float dt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void collides(Entity other) {
+		// TODO Auto-generated method stub
+		
+	}
 }

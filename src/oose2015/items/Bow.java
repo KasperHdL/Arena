@@ -1,5 +1,14 @@
 package oose2015.items;
 
+/**
+ * @author itai.yavin
+ * <p/>
+ * Description:
+ * Child class of weapon.
+ * Creates bow item for player.
+ * <p/>
+ */
+//TODO: WORK I PROGRESS
 public class Bow extends Weapon{
 
 	public Bow(int level) {

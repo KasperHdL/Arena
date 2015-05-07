@@ -1,11 +1,9 @@
 package oose2015.states;
 
-import net.java.games.input.Controller;
-import net.java.games.input.ControllerEnvironment;
-import net.java.games.input.Rumbler;
+import oose2015.Assets;
 import oose2015.Main;
-
 import oose2015.gui.elements.TextBox;
+
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
@@ -15,10 +13,8 @@ import org.newdawn.slick.state.StateBasedGame;
  * Created by @Kasper on 26/03/2015
  * <p/>
  * Description:
- * ---
+ * Sets up main menu state.
  * <p/>
- * Usage:
- * ---
  */
 
 public class MainMenuState implements GameState{
@@ -60,6 +56,8 @@ public class MainMenuState implements GameState{
             controllerBox[i] = new TextBox("Press Start on the Controller", new Vector2f(sizeX * i + sizeX/2,Main.SCREEN_HEIGHT-20), TextBox.Align.CENTER);
             controllerBox[i].blinkTextLength = 1500;
         }
+        
+        new Assets();
 
 
 
@@ -100,6 +98,9 @@ public class MainMenuState implements GameState{
     	
     }
 
+    /**
+     * Starts game.
+     */
     private void startGame(){
         stateBasedGame.enterState(1);
         for(int j = 0; j < controllerIndex.length; j++){
@@ -110,6 +111,11 @@ public class MainMenuState implements GameState{
         }
     }
 
+    /**
+     * Change colour of player.
+     * @param index - playerColour array index
+     * @param goLeft
+     */
     public void changeColor(int index, boolean goLeft){
         boolean foundColor = false;
         int c = playerColors[index] + (goLeft ? -1:1);
@@ -182,6 +188,11 @@ public class MainMenuState implements GameState{
     	
     }
 
+    /**
+     * Upon controller button press will:
+     * if already active: set controller as inactive
+     * if inactive: set controller as active.
+     */
     @Override
     public void controllerButtonPressed(int conIndex, int btnIndex) {
         //System.out.println("con: " + conIndex + ", btn: " + btnIndex);
@@ -205,6 +216,10 @@ public class MainMenuState implements GameState{
     	}
     }
 
+    /**
+     * Adds controller and saves its index.
+     * @param conIndex - Controller index.
+     */
     public void addController(int conIndex){
         int emptyIndex = -1;
         for(int i = controllerIndex.length - 1; i >= 0; i--){

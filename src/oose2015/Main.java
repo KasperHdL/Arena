@@ -6,6 +6,11 @@ import oose2015.states.*;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
+/**
+ * Main
+ * @author itai.yavin
+ *
+ */
 public class Main extends StateBasedGame
 {
 

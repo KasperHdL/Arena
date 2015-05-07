@@ -3,12 +3,24 @@ package oose2015.items;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
+/**
+ * @author itai.yavin
+ * <p/>
+ * Child of Item class.
+ * Creates weapon specification for players.
+ * <P/>
+ */
 public class Weapon extends Item{
 	public float damage, attackRadius, attackDelay, rotation;
 	public boolean  ranged = false,
 				    melee = false,
                     magic = false;
 
+	/**
+	 * Overloaded constructor for weapon class.
+	 * @param level
+	 * @param type
+	 */
     public Weapon(int level,int type){
         if (level < 0)
             throw new IllegalArgumentException("illegal level: " + level + " is less than 0");
@@ -26,8 +38,8 @@ public class Weapon extends Item{
     }
     /**
      * Constructor for weapon
-     * @param damage damage of the weapon
-     * @param attackRadius radius of the weapon
+     * @param damage - damage of the weapon
+     * @param attackRadius - radius of the weapon
      */
     public Weapon(int level, float damage, float attackRadius, float attackDelay,int type) {
         if (level < 0)

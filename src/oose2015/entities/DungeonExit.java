@@ -11,10 +11,8 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 21/04/2015
  * <p/>
  * Description:
- * ---
+ * Dungeon exit object for exiting game level
  * <p/>
- * Usage:
- * ---
  */
 
 public class DungeonExit extends Entity {
@@ -47,4 +45,16 @@ public class DungeonExit extends Entity {
 
         }
     }
+
+	@Override
+	public void update(float dt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void collides(Entity other) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -40,6 +40,10 @@ public class EntityHandler {
         artifacts = new ArrayList<Artifact>(10000);
     }
 
+    /**
+     * Updates objects
+     * @param dt
+     */
     public void update(float dt){
         camera.update(dt);
 
@@ -53,6 +57,10 @@ public class EntityHandler {
         }
     }
 
+    /**
+     * Runs collision for all entities
+     * @param dt
+     */
     public void updatePhysics(float dt){
 
         //Collision
@@ -67,11 +75,15 @@ public class EntityHandler {
         }
     }
 
+    /**
+     * Renders graphics of objects
+     * @param graphics
+     */
     public void render(Graphics graphics){
         graphics.pushTransform();
         graphics.scale(camera.scale,camera.scale);
-        graphics.translate(-camera.position.x + (camera.halfViewSize.x * (1 / camera.scale)), -camera.position.y + (camera.halfViewSize.y * (1/camera.scale)));
-
+        graphics.translate(	-camera.position.x + (camera.halfViewSize.x * (1 / camera.scale)), 
+        					-camera.position.y + (camera.halfViewSize.y * (1/camera.scale)));
         for(Tile tile : tiles){
             if(camera.tileWithinView(tile))
                 tile.render(graphics);
@@ -90,6 +102,9 @@ public class EntityHandler {
             if(camera.entityWithinView(entity))
                 entity.render(graphics);
         }
+
+
+
 
         graphics.popTransform();
     }
