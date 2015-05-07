@@ -11,14 +11,16 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 28/04/2015
  * <p/>
  * Description:
- * ---
+ * Child class of Element.
+ * Creates a text box element on screen.
  * <p/>
- * Usage:
- * ---
  */
 
 public class TextBox extends Element {
 
+	/**
+	 * Textbox alignment.
+	 */
    public enum Align{
        LEFT_ALIGN,
        CENTER,
@@ -27,21 +29,31 @@ public class TextBox extends Element {
 
 
     //blink
-    protected int stopTextBlink = 0;
-    public int blinkTextLength = 500;
+    protected 	int stopTextBlink 	= 0;
+    public 		int blinkTextLength = 500;
 
     protected Color blinkTextColor;
     protected String blinkText;
 
     public Align alignment;
     public String text;
+    
+    /**
+     * TextBox constructor, sets textbox variables.
+     * @param text - String text.
+     * @param position - position of textbox
+     * @param alignment - position relative to centre
+     */
     public TextBox(String text, Vector2f position, Align alignment){
-        this.text = text;
-        this.position = position;
-        this.alignment = alignment;
-        color = Color.white;
+        this.text 		= text;
+        this.position 	= position;
+        this.alignment 	= alignment;
+        color			= Color.white;
     }
 
+    /**
+     * Render textbox graphics.
+     */
     @Override
     public void render(Graphics graphics){
         graphics.pushTransform();
@@ -74,16 +86,29 @@ public class TextBox extends Element {
         graphics.popTransform();
     }
 
+    /**
+     * blinkText overload uses current text string value for textbox.
+     * Set temporary colour for textbox
+     * @param textColor
+     */
     public void blinkText(Color textColor){
         blinkText(text,textColor);
     }
 
+    /**
+     * Set temporary text in colour for textbox
+     * @param text - String text
+     * @param textColor - colour of text
+     */
     public void blinkText(String text,Color textColor){
         stopTextBlink = Main.TIME + blinkTextLength;
         blinkTextColor = textColor;
         blinkText = text;
     }
 
+    /**
+     * Stop text blink.
+     */
     public void stopBlinkText(){
         stopTextBlink = 0;
     }
