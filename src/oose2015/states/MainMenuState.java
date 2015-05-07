@@ -13,10 +13,8 @@ import org.newdawn.slick.state.StateBasedGame;
  * Created by @Kasper on 26/03/2015
  * <p/>
  * Description:
- * ---
+ * Sets up main menu state.
  * <p/>
- * Usage:
- * ---
  */
 
 public class MainMenuState implements GameState{
@@ -99,6 +97,9 @@ public class MainMenuState implements GameState{
     	
     }
 
+    /**
+     * Starts game.
+     */
     private void startGame(){
         stateBasedGame.enterState(1);
         for(int j = 0; j < controllerIndex.length; j++){
@@ -109,6 +110,11 @@ public class MainMenuState implements GameState{
         }
     }
 
+    /**
+     * Change colour of player.
+     * @param index - playerColour array index
+     * @param goLeft
+     */
     public void changeColor(int index, boolean goLeft){
         boolean foundColor = false;
         int c = playerColors[index] + (goLeft ? -1:1);
@@ -181,6 +187,11 @@ public class MainMenuState implements GameState{
     	
     }
 
+    /**
+     * Upon controller button press will:
+     * if already active: set controller as inactive
+     * if inactive: set controller as active.
+     */
     @Override
     public void controllerButtonPressed(int conIndex, int btnIndex) {
         //System.out.println("con: " + conIndex + ", btn: " + btnIndex);
@@ -204,6 +215,10 @@ public class MainMenuState implements GameState{
     	}
     }
 
+    /**
+     * Adds controller and saves its index.
+     * @param conIndex - Controller index.
+     */
     public void addController(int conIndex){
         int emptyIndex = -1;
         for(int i = controllerIndex.length - 1; i >= 0; i--){

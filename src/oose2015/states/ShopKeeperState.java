@@ -12,10 +12,8 @@ import org.newdawn.slick.state.StateBasedGame;
  * Created by @Kasper on 22/04/2015
  * <p/>
  * Description:
- * ---
+ * Sets up shop menu state.
  * <p/>
- * Usage:
- * ---
  */
 
 public class ShopKeeperState implements GameState {
@@ -27,7 +25,7 @@ public class ShopKeeperState implements GameState {
     
     ShopKeeperMenu[] playerMenus;
 
-    //TEMPORARY prolly
+    //TEMPORARY probably
     public enum Button{
         Up,
         Down,
@@ -46,6 +44,9 @@ public class ShopKeeperState implements GameState {
 
     }
 
+    /**
+     * Creates shop menu
+     */
     public void createMenu(){
         playerMenus = new ShopKeeperMenu[World.PLAYERS.size()];
         int sizeX = Main.SCREEN_WIDTH/4;
@@ -54,6 +55,9 @@ public class ShopKeeperState implements GameState {
         }
     }
 
+    /**
+     * Render menu graphics.
+     */
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         graphics.setColor(Color.white);
@@ -74,6 +78,9 @@ public class ShopKeeperState implements GameState {
         }
     }
 
+    /**
+     * Update menu shop state.
+     */
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
         boolean allReady = true;

@@ -11,10 +11,8 @@ import org.newdawn.slick.state.StateBasedGame;
  * Created by @Kasper on 26/03/2015
  * <p/>
  * Description:
- * ---
+ * Sets up gameplay state.
  * <p/>
- * Usage:
- * ---
  */
 
 public class GamePlayState implements GameState {
