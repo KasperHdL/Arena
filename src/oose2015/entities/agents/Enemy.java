@@ -50,7 +50,6 @@ public class Enemy extends Agent {
 	
     public Agent target;
     public Player shooter;
-
     
     /**
      * Constructor for Enemy

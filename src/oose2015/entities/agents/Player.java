@@ -150,7 +150,7 @@ public class Player extends Agent implements ControllerListener{
 			arrowShootSound = new Sound(arrowShootPath);
 		} catch (SlickException e) {
 			System.out.println("Error with file path");
-		}
+		} 
     }
     
     @Override
