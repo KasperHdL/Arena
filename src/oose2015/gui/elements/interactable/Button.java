@@ -12,10 +12,9 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 26/04/2015
  * <p/>
  * Description:
- * ---
+ * Child class to InteractableElement class.
+ * Creates button element GUI.
  * <p/>
- * Usage:
- * ---
  */
 
 public class Button extends InteractableElement {
@@ -34,19 +33,27 @@ public class Button extends InteractableElement {
     protected Color blinkBtnColor;
     protected String blinkText;
 
+    /**
+     * Button constructor. Sets button variables.
+     * @param menu
+     * @param position - position of button
+     * @param size - size of button
+     * @param text - text on button
+     */
     public Button(ShopKeeperMenu menu, Vector2f position, Vector2f size, String text) {
         super(menu,position, size);
 
-
         this.text = text;
 
-
-        color = Color.gray;
-        textColor = Color.white;
-        overColor = Color.lightGray;
-        downColor = Color.black;
+        color 		= Color.gray;
+        textColor 	= Color.white;
+        overColor 	= Color.lightGray;
+        downColor 	= Color.black;
     }
 
+    /**
+     * Render button graphics.
+     */
     @Override
     public void render(Graphics graphics){
         graphics.pushTransform();
@@ -88,7 +95,12 @@ public class Button extends InteractableElement {
         graphics.popTransform();
     }
 
-
+    /**
+     * Set blinking coloured text for button.
+     * @param text - string text
+     * @param textColor - text colour
+     * @param btnColor - button colour
+     */
     public void blinkText(String text,Color textColor,Color btnColor){
         stopTextBlink = Main.TIME + blinkTextLength;
         blinkTextColor = textColor;
@@ -96,6 +108,9 @@ public class Button extends InteractableElement {
         blinkText = text;
     }
 
+    /**
+     * Selects button
+     */
     @Override
     public void select(){
         isDown = true;
@@ -103,12 +118,18 @@ public class Button extends InteractableElement {
         text = "Player " + (menu.playerIndex + 1) + " is ready";
     }
 
+    /**
+     * Handles moving over the button
+     */
     @Override
     public void movedOver(){
         super.movedOver();
         stopTextBlink = 0;
     }
 
+    /**
+     * Handles moving away from the button
+     */
     @Override
     public void movedAway(){
         super.movedAway();

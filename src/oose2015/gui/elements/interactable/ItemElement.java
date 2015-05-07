@@ -17,10 +17,9 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 22/04/2015
  * <p/>
  * Description:
- * ---
+ * Child class of InteractableElement
+ * Creates interactable item element for shop menues.
  * <p/>
- * Usage:
- * ---
  */
 
 public class ItemElement extends InteractableElement {
@@ -43,6 +42,14 @@ public class ItemElement extends InteractableElement {
     public boolean isSelected;
     public boolean hasBeenBought;
 
+    /**
+     * Class constructor.
+     * Sets class variables.
+     * @param menu
+     * @param position - element position
+     * @param size - element size
+     * @param item
+     */
     public ItemElement(ShopKeeperMenu menu,Vector2f position, Vector2f size,Item item) {
         super(menu,position, size);
         this.item = item;
@@ -66,13 +73,16 @@ public class ItemElement extends InteractableElement {
         middleOverlay = new TextBox("buy this item?", new Vector2f(size.x/2,0), TextBox.Align.CENTER);
         rightBox = new TextBox(price + " g",new Vector2f(size.x - 5,0), TextBox.Align.RIGHT_ALIGN);
 
-        color = Color.gray;
-        overColor = Color.lightGray;
-        boughtColor = Color.darkGray;
+        color 			= Color.gray;
+        overColor 		= Color.lightGray;
+        boughtColor 	= Color.darkGray;
         boughtOverColor = Color.gray;
 
     }
 
+    /**
+     * Render element graphics.
+     */
     @Override
     public void render(Graphics graphics){
         graphics.pushTransform();
@@ -118,6 +128,9 @@ public class ItemElement extends InteractableElement {
         graphics.popTransform();
     }
 
+    /**
+     * Handles element selection.
+     */
     @Override
     public void select(){
         if(hasBeenBought)return;
