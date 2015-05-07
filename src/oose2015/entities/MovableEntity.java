@@ -1,5 +1,6 @@
 package oose2015.entities;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -55,4 +56,22 @@ public class MovableEntity extends Entity{
 
         position.add(velocity);
     }
+
+	@Override
+	public void update(float dt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void render(Graphics graphics) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void collides(Entity other) {
+		// TODO Auto-generated method stub
+		
+	}
 }

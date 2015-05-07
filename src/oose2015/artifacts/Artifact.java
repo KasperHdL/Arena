@@ -9,10 +9,8 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 05/05/2015
  * <p/>
  * Description:
- * ---
+ * Background element, that is only rendered.
  * <p/>
- * Usage:
- * ---
  */
 
 public class Artifact {
@@ -35,6 +33,10 @@ public class Artifact {
         renderSize = size.length();
     }
 
+    /**
+     * Renders artifact
+     * @param graphics
+     */
     public void render(Graphics graphics){
         graphics.pushTransform();
         graphics.translate(position.x, position.y);

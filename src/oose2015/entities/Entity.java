@@ -9,13 +9,11 @@ import org.newdawn.slick.opengl.Texture;
  * Created by @Kasper on 26/03/2015
  * <p/>
  * Description:
- * ---
+ * Entity base class. Holds base values for all entities.
  * <p/>
- * Usage:
- * ---
  */
 
-public class Entity {
+public abstract class Entity {
     public String name;
 
     public Vector2f position;
@@ -31,24 +29,21 @@ public class Entity {
 
     //do not send collision messages for this object
 
-    //Completly skips all collision for that entity
+    //Completely skips all collision for that entity
     public boolean ignoreCollision = false;
 
+    /**
+     * Adds entity to the EntityHandlers ArrayList
+     */
     public Entity(){
         EntityHandler.entities.add(this);
     }
 
-    public void update(float dt){
+    public abstract void update(float dt);
 
-    }
+    public abstract void render(Graphics graphics);
 
-    public void render(Graphics graphics){
-
-    }
-
-    public void collides(Entity other){
-
-    }
+    public abstract void collides(Entity other);
 
     @Override
     public String toString(){
