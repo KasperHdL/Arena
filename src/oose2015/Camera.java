@@ -15,7 +15,9 @@ import org.newdawn.slick.geom.Vector2f;
  * Camera Class. Controls position of view.
  * <p/>
  * Usage:
- * ---
+ * graphics.scale(camera.scale, camera.scale);
+ * graphics.translate(	-camera.position.x + (camera.halfViewSize.x * (1/camera.scale)), 
+        				-camera.position.y + (camera.halfViewSize.y * (1/camera.scale)));
  */
 public class Camera {
 
