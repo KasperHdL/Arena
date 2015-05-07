@@ -36,8 +36,8 @@ public class EntityHandler {
         this.camera = camera;
         entities = new ArrayList<Entity>(50);
         tiles = new ArrayList<Tile>(10000);
-        particles = new ArrayList<Particle>();
-        artifacts = new ArrayList<Artifact>();
+        particles = new ArrayList<Particle>(10000);
+        artifacts = new ArrayList<Artifact>(10000);
     }
 
     public void update(float dt){
@@ -71,6 +71,7 @@ public class EntityHandler {
         graphics.pushTransform();
         graphics.scale(camera.scale,camera.scale);
         graphics.translate(-camera.position.x + (camera.halfViewSize.x * (1 / camera.scale)), -camera.position.y + (camera.halfViewSize.y * (1/camera.scale)));
+
         for(Tile tile : tiles){
             if(camera.tileWithinView(tile))
                 tile.render(graphics);
@@ -89,9 +90,6 @@ public class EntityHandler {
             if(camera.entityWithinView(entity))
                 entity.render(graphics);
         }
-
-
-
 
         graphics.popTransform();
     }

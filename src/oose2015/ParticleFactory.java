@@ -33,7 +33,7 @@ public class ParticleFactory {
     }
 
     public static void createDeathSplatter(Vector2f position, Color color){
-        for (int j = 0; j < 20; j++)
+        for (int j = 0; j < 10; j++)
             createBloodSplatter(position,new Vector2f(World.RANDOM.nextFloat() * 360),color);
         for (int i = 0; i < 10; i++) {
             Color c = new Color(color).darker(World.RANDOM.nextFloat()*0.4f+.2f);
