@@ -23,10 +23,8 @@ import java.util.Random;
  * Created by @Kasper on 18/04/2015
  * <p/>
  * Description:
- * ---
+ * Holds game world and objects
  * <p/>
- * Usage:
- * ---
  */
 
 public class World {
@@ -96,10 +94,18 @@ public class World {
 
     }
 
+    /**
+     * Calls the entity handler render function
+     * @param graphics
+     */
     public void render(Graphics graphics){
         entityHandler.render(graphics);
     }
 
+    /**
+     * Renders game interface
+     * @param graphics
+     */
     public void renderInterface(Graphics graphics){
 
         for (int i = 0; i < playerUIs.length; i++) {
@@ -128,6 +134,10 @@ public class World {
         }
     }
 
+    /**
+     * Updates world state
+     * @param dt
+     */
     public void update(float dt){
         TIME += dt;
         float delta = dt/100;
@@ -156,6 +166,9 @@ public class World {
         entityHandler.updatePhysics(delta);
     }
 
+    /**
+     * Creates new wave of enemy objects
+     */
     public void spawnWave(){
         waveCount++;
         for (int i = 0; i < waveCount * 2; i++) {
@@ -163,6 +176,9 @@ public class World {
         }
     }
 
+    /**
+     * Checks whether all players are located on exit
+     */
     public void checkExits(){
 
         for (int i = 0; i < EXITS.size(); i++) {
@@ -184,7 +200,9 @@ public class World {
         }
     }
 
-    
+    /**
+     * Creates player object
+     */
     public void createPlayer(Vector2f v, Color color, int controllerInput){
         new Player(v, color, controllerInput,gameContainer.getInput());
     		
