@@ -15,26 +15,32 @@ import oose2015.entities.agents.Player;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.Color;
+
 /**
- * Created by @Kasper on 26/03/2015
+ * Created by @Itai on 26/03/2015
  * <p/>
  * Description:
- * ---
+ * Creates projectile class. 
  * <p/>
- * Usage:
- * ---
  */
-
 public class Projectile extends MovableEntity {
 	public Agent owner;
+	
 	public Vector2f spawnPoint;
+	public Vector2f direction;
+	
 	public float spawnTime;
 	public float range;
-	public Vector2f direction;
 	public float damage;
 	public float flyTime = Settings.PROJECTILE_FLY_TIME;
 
-	
+	/**
+	 * Projectile constructor
+	 * @param owner - agent that spawned the projectile
+	 * @param range - Projectile range
+	 * @param damage - Projectile damage
+	 * @param speedForce - Speed of projectile
+	 */
 	public Projectile(Agent owner, float range, float damage, float speedForce){
 		name = "projectile";
 		this.owner = owner;
@@ -53,6 +59,9 @@ public class Projectile extends MovableEntity {
 		inertia = Settings.PROJECTILE_INERTIA;
 	}
 	
+	/**
+	 * Moves projectile.
+	 */
 	@Override
 	protected void move(float dt){
 		direction.scale(speedForce/mass);
@@ -64,6 +73,13 @@ public class Projectile extends MovableEntity {
 		super.move(dt,direction);
 	}
 	
+	/**
+	 * Checks for collision.
+	 * If owner is an Enemy then it checks for collisions with players.
+	 * If owner is a player then it checks for collisions with enemies.
+	 * Removes projectile upon collision.
+	 * If collision is a wall then removes projectile.
+	 */
     @Override
     public void collides(Entity other){
     	if(other instanceof Enemy && owner instanceof Player){
@@ -94,6 +110,9 @@ public class Projectile extends MovableEntity {
 		}
     }
 	
+    /**
+     * Updates projectile position and particle effects.
+     */
 	@Override
 	public void update(float dt){
 
@@ -102,7 +121,9 @@ public class Projectile extends MovableEntity {
 		move(dt);
 	}
 
-	
+	/**
+	 * Render projectile graphics.
+	 */
 	@Override
 	public void render(Graphics graphics){
 		graphics.pushTransform();

@@ -50,13 +50,13 @@ public class Player extends Agent implements ControllerListener{
 	float startTime;
 	float releaseTime;
 	
-	public float drawTime,
-				 minDrawTime = Settings.MIN_DRAW_SPEED,
-				 maxDrawTime = Settings.MAX_DRAW_SPEED,
-				 maxDrawGraphicSize = Settings.MAX_DRAW_GRAPHIC_SIZE,
-				 drawGraphic = 0,
-				 sweetSpot = Settings.SWEETSPOT,
-				 sweetSpotRange = Settings.SWEETSPOT_RANGE;
+	public float 	drawTime,
+				 	minDrawTime = Settings.MIN_DRAW_SPEED,
+				 	maxDrawTime = Settings.MAX_DRAW_SPEED,
+				 	maxDrawGraphicSize = Settings.MAX_DRAW_GRAPHIC_SIZE,
+				 	drawGraphic = 0,
+				 	sweetSpot = Settings.SWEETSPOT,
+				 	sweetSpotRange = Settings.SWEETSPOT_RANGE;
     
 	//melee
 	public float startArc = Settings.PLAYER_ARC_START,
@@ -125,7 +125,7 @@ public class Player extends Agent implements ControllerListener{
         arrowShootSound = 	Assets.SOUND_ARROW_SHOOT;
         
         gold = 0;
-        exp = 0;
+        exp	 = 0;
 
         level = 1;
         lastLevelExp = 0;
