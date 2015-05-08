@@ -11,9 +11,9 @@ public class Settings {
 		//general
 	    public static final float 	PLAYER_HEALTH = 100;
 	
-	    public static final float 	PLAYER_MAX_VELOCITY = 50f;
-	
-	    public static final float 	PLAYER_SPEED_FORCE = 500f;
+	    public static final float 	PLAYER_SPEED_FORCE = 30000f;
+	    public static final float 	PLAYER_MAX_VELOCITY = 500f;
+
 	    public static final float 	PLAYER_MASS = 1f;
 	
 		//controls
@@ -63,10 +63,10 @@ public class Settings {
 		public static final int 	ENEMY_GOLD_DROP_PER_LVL = 5,
 									ENEMY_EXP_DROP_PER_LVL = 10;
 
-		public static final float 	ENEMY_MASS_PER_LVL = 1;
+		public static final float 	ENEMY_MASS_PER_LVL = .05f;
 
-		public static final float 	ENEMY_SPEED_FORCE = 400f,
-									ENEMY_MAX_VELOCITY = 40f;
+		public static final float 	ENEMY_SPEED_FORCE = 20000f,
+									ENEMY_MAX_VELOCITY = 400f;
 		
 		public static final float 	ENEMY_ENGAGE_RADIUS = 200f,
 									ENEMY_DISENGAGE_RADIUS = 500f,
@@ -77,13 +77,13 @@ public class Settings {
 		public static final float 	CHARGE_DELAY = 3000;
 		public static final float 	MIN_CHARGE_DISTANCE = 50;
 		public static final float 	MAX_CHARGE_DISTANCE = 200;
-		public static final float	CHARGE_TIME = 200;		
+		public static final float	CHARGE_TIME = 200;
 
-		public static final int		CHARGE_SCALAR = 7;
+		public static final int		CHARGE_SCALAR = 2;
 		
 		//Projectile Variables
-		public static final float 	PROJECTILE_SPEED_FORCE = 1000f; //Base speed of projectiles (before drawtime modifier), this is located in the player script
-		public static final float 	PROJECTILE_MAX_SPEED = 50f;
+		public static final float 	PROJECTILE_SPEED_FORCE = 30000f; //Base speed of projectiles (before drawtime modifier), this is located in the player script
+		public static final float 	PROJECTILE_MAX_SPEED = 1000f;
 		
 		public static final float 	PROJECTILE_FLY_TIME = 2000;
 	

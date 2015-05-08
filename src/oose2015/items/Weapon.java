@@ -35,7 +35,7 @@ public class Weapon extends Item{
             	attackDelay		= 4 * 200;
             
             if(level < 3)
-            	this.attackRadius = level * 20;
+            	this.attackRadius = level * 10+20;
             else
             	this.attackRadius = 5 * 30;
         }else if(type == 1){

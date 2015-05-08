@@ -54,10 +54,10 @@ public class Camera {
     public void update(float dt){
 
         //easing
-        Vector2f d = targetPosition.sub(position);
+        Vector2f d = targetPosition.sub(position).scale(5f * dt);
 
-        position.add(d.scale(0.2f*dt));
-        scale += (targetScale - scale) * 0.2f * dt;
+        position.add(d);
+        scale += (targetScale - scale) * 5f * dt;
 
         //shake
         addShake();

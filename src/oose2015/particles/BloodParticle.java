@@ -25,7 +25,7 @@ public class BloodParticle extends Particle {
 	 * @param color
 	 */
 	public BloodParticle(Vector2f position,int size,float rotation,Vector2f velocity,float angularVelocity,int time, Color color) {
-        super(position, size, rotation, velocity, angularVelocity, time, false, color);
+        super(position, size, rotation, velocity, angularVelocity, time, true, color);
     }
 
 	/**
@@ -35,7 +35,6 @@ public class BloodParticle extends Particle {
     protected void destroy() {
         //create blood splatter
 
-        new Artifact(position,size,rotation,color);
         super.destroy();
     }
 }

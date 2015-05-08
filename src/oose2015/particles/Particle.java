@@ -91,8 +91,9 @@ public class Particle {
             color.a = (float)(endTime - World.TIME)/length;
         }
 
-
+        angularVelocity *= 0.9f;
         rotation += angularVelocity * dt;
+        velocity.scale(0.9f);
         position.add(velocity.copy().scale(dt));
     }
 
