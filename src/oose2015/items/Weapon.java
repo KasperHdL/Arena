@@ -46,7 +46,7 @@ public class Weapon extends Item{
             	this.attackRadius = 60;
         }else if(type == 1){
             ranged = true;
-            this.damage			= 3*level;
+            this.damage			= 8*level+5;
             attackDelay			= 2;
         }else if(type == 2){
             magic = true;
