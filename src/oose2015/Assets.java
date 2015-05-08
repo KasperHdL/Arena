@@ -23,7 +23,7 @@ public class Assets {
 	    	SOUND_BOW_DRAW 		= new Sound(sound_dir + "BowDrawCreak.wav");
 	    	SOUND_ARROW_SHOOT 	= new Sound(sound_dir + "ArrowShootSound.wav");
 	    	SOUND_WEAPON_SWING	= new Sound(sound_dir + "WeaponSwing.wav");
-	    	SOUND_KILL			= new Sound(sound_dir + "HitSound.wav");
+	    	SOUND_KILL			= new Sound(sound_dir + "KillSound.wav");
 		} catch (SlickException e) {
 			System.out.println("Error with file path");
 		}
