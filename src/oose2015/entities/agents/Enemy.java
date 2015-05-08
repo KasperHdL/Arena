@@ -189,7 +189,7 @@ public class Enemy extends Agent {
      */
     protected void rangedAttack(){
         nextAttackTime = World.TIME + attackDelay;
-    	new Projectile(this, attackRadius, damage, 10f);
+    	new Projectile(this, damage);
     }
     
     /**

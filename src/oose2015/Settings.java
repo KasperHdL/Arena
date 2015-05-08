@@ -81,12 +81,13 @@ public class Settings {
 		public static final int		CHARGE_SCALAR = 5;
 		
 		//Projectile Variables
-		public static final float 	BASE_PROJECTILE_SPEED = 7; //Base speed of projectiles (before drawtime modifier), this is located in the player script
+		public static final float 	PROJECTILE_SPEED_FORCE = 1000f; //Base speed of projectiles (before drawtime modifier), this is located in the player script
+		public static final float 	PROJECTILE_MAX_SPEED = 50f;
 		
 		public static final float 	PROJECTILE_FLY_TIME = 2000;
 	
-		public static final float 	PROJECTILE_FRICTION = 0.9f,
-									PROJECTILE_INERTIA = 1f;
+		public static final float 	PROJECTILE_FRICTION = .9f,
+									PROJECTILE_INERTIA = .85f;
 	//Shake Variables
 
 

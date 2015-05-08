@@ -182,7 +182,7 @@ public class Player extends Agent implements ControllerListener{
     		hitSweetSpot = true;
     	else if(drawTime > maxDrawTime)
     		drawTime = maxDrawTime;
-    	float projectileSpeed = Settings.BASE_PROJECTILE_SPEED *(drawTime/maxDrawTime);
+    	float projectileSpeed = Settings.PROJECTILE_SPEED_FORCE *(drawTime/maxDrawTime);
     	float damage = weapon.damage*(drawTime/maxDrawTime);
         if(hitSweetSpot)
             damage *= 2f;
@@ -191,7 +191,7 @@ public class Player extends Agent implements ControllerListener{
         drawGraphic = 0;
 
         //System.out.println("Time: " + World.TIME + " attackDelay: " + nextAttackTime);
-        	new Projectile(this, weapon.attackRadius, damage, projectileSpeed);
+        	new Projectile(this, damage,projectileSpeed);
     }
 
     /**
