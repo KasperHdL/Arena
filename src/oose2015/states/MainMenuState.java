@@ -27,7 +27,7 @@ public class MainMenuState implements GameState{
             new Color(189,122,246),
             new Color(255,105,180),
             new Color(139,69,19),
-            new Color(125,125,125)
+            new Color(175,175,175)
     };
 
     public TextBox instructionBox;

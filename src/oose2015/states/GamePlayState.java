@@ -44,6 +44,8 @@ public class GamePlayState implements GameState {
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        for (int i = 0; i < World.PLAYERS.size(); i++)
+            World.PLAYERS.get(i).playerUI.updateGold();
     }
 
     @Override

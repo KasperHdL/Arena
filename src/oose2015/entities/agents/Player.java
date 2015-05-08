@@ -62,7 +62,7 @@ public class Player extends Agent implements ControllerListener{
     //controls
     public int		controllerIndex,
                     attackButton = Settings.ATTACK_BUTTON,
-                    rangedButton = Settings.RANGED_BUTTON,
+                    rangedButton = Settings.ATTACK_BUTTON,
                     leftStickX = Settings.LEFT_STICK_X,
                     leftStickY = Settings.LEFT_STICK_Y,
     				rightStickX = Settings.RIGHT_STICK_X,
@@ -107,8 +107,6 @@ public class Player extends Agent implements ControllerListener{
         this.position = position;
         size = new Vector2f(50.0f, 50.0f);
 
-        this.position = position;
-
         curHealth       =   Settings.PLAYER_HEALTH;
         maxHealth       =   curHealth;
 
@@ -120,7 +118,7 @@ public class Player extends Agent implements ControllerListener{
         arrowShootSound = Assets.SOUND_ARROW_SHOOT;
         weaponSwing 	= Assets.SOUND_WEAPON_SWING;
         
-        gold 			= 0;
+        gold 			= 1;
         exp	 			= 0;
 
         level 			= 1;
@@ -249,7 +247,7 @@ public class Player extends Agent implements ControllerListener{
     		y = 0;	
 
     	axis = new Vector2f(x,y);
-        axis.scale((armor.getSpeedModifier() * speedForce));
+        axis.scale((armor.getSpeedModifier() * (attackKeyDown || rangedKeyDown ? 0.7f:1f) * speedForce));
 
         if(axis.length() > .5f)
             ParticleFactory.createSmokeTrail(position.copy(),new Vector2f(0,size.y/2-20).add(velocity.getTheta()),velocity.copy().scale(-1f));
@@ -355,8 +353,13 @@ public class Player extends Agent implements ControllerListener{
         //if is colliding with gold then collect
         if(other instanceof Gold){
             Gold g = (Gold) other;
-            gold += g.value;
-            playerUI.updateGold();
+            for (int i = 0; i < World.PLAYERS.size(); i++) {
+                Player p = World.PLAYERS.get(i);
+                if(!p.isAlive)
+                    continue;
+                p.gold += Math.round((float)g.value / World.PLAYERS.size());
+                p.playerUI.updateGold();
+            }
 
             EntityHandler.entities.remove(other);
         }

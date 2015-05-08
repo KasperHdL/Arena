@@ -61,7 +61,7 @@ public class Enemy extends Agent {
     public Enemy(Vector2f position, int level, boolean isMelee){
         World.ENEMIES.add(this);
 
-        curHealth 		= Settings.ENEMY_HEALTH;
+        curHealth 		= Settings.ENEMY_HEALTH * level * 2;
         maxHealth 		= curHealth;
 
         this.level 		= level;
