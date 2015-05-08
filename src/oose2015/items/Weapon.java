@@ -6,6 +6,7 @@ package oose2015.items;
  * <p/>
  * Child of Item class.
  * Creates weapon specification for players.
+ * Controls how the player attacks
  * <P/>
  */
 public class Weapon extends Item{

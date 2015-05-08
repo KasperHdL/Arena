@@ -13,7 +13,7 @@ import oose2015.gui.Element;
  * <p/>
  * Description:
  * Child class of Element.
- * Base class for all interactable elements
+ * Base class for all interactable UI elements
  * <p/>
  */
 

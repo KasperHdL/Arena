@@ -24,7 +24,7 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 26/03/2015
  * <p/>
  * Description:
- * Child class to agent. Creates controllable player object.
+ * Child class of agent. Creates controllable player object.
  * <p/>
  */
 

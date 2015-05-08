@@ -6,7 +6,8 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 26/03/2015
  * <p/>
  * Description:
- * Child of EntityClass. Holds functions and variables for all movable entities.
+ * Child of Entity Class. Holds functions and variables for all movable entities.
+ * A MoveableEntity is any entity that can move.
  * <p/>
  */
 

@@ -10,7 +10,8 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 01/05/2015
  * <p/>
  * Description:
- * Creates impassable wall object.
+ * Child class of entity class.
+ * Creates impassable wall entity.
  * <p/>
  */
 

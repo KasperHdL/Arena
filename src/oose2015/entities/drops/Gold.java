@@ -10,7 +10,7 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 18/04/2015
  * <p/>
  * Description:
- * Child class to Entity. Creates and renders gold object.
+ * Child class of Entity. Creates and renders gold object.
  * <p/>
  */
 

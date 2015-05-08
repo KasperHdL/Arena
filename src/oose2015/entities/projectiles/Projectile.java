@@ -20,7 +20,9 @@ import org.newdawn.slick.Color;
  * Created by @Itai on 26/03/2015
  * <p/>
  * Description:
- * Creates projectile class. 
+ * Child class of MoveableEntity. Creates projectile entity.
+ * Projectiles will damage agents in accordance to who shot it. 
+ * (Enemies will hit players, players will hit enemies)
  * <p/>
  */
 public class Projectile extends MovableEntity {

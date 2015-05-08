@@ -10,6 +10,7 @@ import org.newdawn.slick.opengl.Texture;
  * <p/>
  * Description:
  * Entity base class. Holds base values for all entities.
+ * An entity is any interactable ingame object.
  * <p/>
  */
 

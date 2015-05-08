@@ -12,6 +12,7 @@ import org.newdawn.slick.geom.Vector2f;
  * <p/>
  * Description:
  * Dungeon exit object for exiting game level
+ * Will make players enter shop menu state.
  * <p/>
  */
 

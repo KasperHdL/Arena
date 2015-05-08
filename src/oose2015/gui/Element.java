@@ -8,7 +8,7 @@ import org.newdawn.slick.geom.Vector2f;
  * Created by @Kasper on 26/04/2015
  * <p/>
  * Description:
- * Class for GUI elements.
+ * Base class for GUI elements.
  * <p/>
  */
 public class Element {

@@ -87,7 +87,7 @@ public class Settings {
 	
 		public static final float 	PROJECTILE_FRICTION = 0.9f,
 									PROJECTILE_INERTIA = 1f;
-	//Shake Variables
+		//Shake Variables
 
 
 

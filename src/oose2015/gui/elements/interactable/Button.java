@@ -12,7 +12,7 @@ import org.newdawn.slick.geom.Vector2f;
  * <p/>
  * Description:
  * Child class to InteractableElement class.
- * Creates button element GUI.
+ * Creates interactable button element for the UI.
  * <p/>
  */
 

@@ -9,7 +9,7 @@ import org.newdawn.slick.geom.Vector2f;
  * <p/>
  * Description:
  * Tile base class.
- * Adds tile to EntityHandler ArrayList.
+ * Tiles are background elements.
  * <p/>
  */
 public class Tile {

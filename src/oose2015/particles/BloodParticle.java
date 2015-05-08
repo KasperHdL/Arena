@@ -9,7 +9,7 @@ import org.newdawn.slick.geom.Vector2f;
  * <p/>
  * Description:
  * Child of Particle class.
- * Creates blood particle artifact.
+ * Creates blood particle effect.
  * <p/>
  */
 public class BloodParticle extends Particle {
