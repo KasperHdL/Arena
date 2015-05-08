@@ -1,5 +1,6 @@
 	package oose2015.entities.agents;
 
+import oose2015.EntityHandler;
 import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
@@ -303,6 +304,9 @@ public class Enemy extends Agent {
     public void die(){
         new Gold(position,goldDrop);
         super.die();
+
+        EntityHandler.entities.remove(this);
+        World.ENEMIES.remove(this);
     }
 
 	@Override

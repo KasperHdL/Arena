@@ -56,8 +56,7 @@ public abstract class Agent extends MovableEntity {
      */
     protected float calculateAngleToTarget(Agent other){
     // Calculates rotation from target position and own position.
-    	Vector2f tVector = new Vector2f(other.position.x-position.x, other.position.y-position.y);
-    	return (float)tVector.getTheta();
+    	return (float)other.position.copy().sub(position).getTheta();
     }
     
     public abstract float getDamage();
