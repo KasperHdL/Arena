@@ -14,8 +14,7 @@ public class Assets {
 	
 	public Assets(){
         //load sound clips
-        String user_dir = System.getProperty("user.dir");
-        String sound_dir = user_dir + "\\Assets\\Sounds\\";
+        String sound_dir = "assets\\sounds\\";
         
 	    try {	
 	    	SOUND_BOW_DRAW 		= new Sound(sound_dir + "BowDrawCreak.wav");

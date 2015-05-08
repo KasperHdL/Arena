@@ -1,8 +1,10 @@
 package oose2015;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import oose2015.states.*;
+import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 

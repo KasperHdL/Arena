@@ -141,7 +141,7 @@ public class World {
     public void update(float dt){
         TIME += dt;
         float delta = dt/100;
-        System.out.println("time: " + TIME + " dt: " + dt + " delta " + delta + " FPS: " + gameContainer.getFPS());
+        //System.out.println("time: " + TIME + " dt: " + dt + " delta " + delta + " FPS: " + gameContainer.getFPS());
 
         //TEMPORARY wave spawn
             boolean allDead = true;
