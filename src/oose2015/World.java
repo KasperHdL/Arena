@@ -89,9 +89,12 @@ public class World {
                     new Wall(new Vector2f((i-50) * Tile.TILE_SIZE,(j-50) * Tile.TILE_SIZE));
                 else
                     new Floor(new Vector2f((i-50) * Tile.TILE_SIZE,(j-50) * Tile.TILE_SIZE),Color.green);
+
             }
 
         }
+      //  for(int i = 0;i<120;i++)
+       //     ParticleFactory.createDeathSplatter(new Vector2f(new Vector2f(i*10).scale(100)),Color.cyan);
 
     }
 
@@ -141,7 +144,7 @@ public class World {
      */
     public void update(float dt){
         TIME += dt;
-        float delta = dt/100;
+        float delta = dt/1000;
         //System.out.println("time: " + TIME + " dt: " + dt + " delta " + delta + " FPS: " + gameContainer.getFPS());
 
         //TEMPORARY wave spawn

@@ -28,7 +28,8 @@ public class Main extends StateBasedGame
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
-		gameContainer.setTargetFrameRate(120);
+		gameContainer.setTargetFrameRate(60);
+		gameContainer.setSmoothDeltas(true);
 		addState(new MainMenuState());
 		addState(new GamePlayState());
 		addState(new ShopKeeperState());

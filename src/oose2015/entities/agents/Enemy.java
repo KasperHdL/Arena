@@ -201,7 +201,7 @@ public class Enemy extends Agent {
     @Override
     protected void move(float dt,Vector2f input){
         input.normalise();
-        input.scale(speedForce / mass);
+        input.scale(speedForce);
 
         rotation = (float)acceleration.getTheta();
 

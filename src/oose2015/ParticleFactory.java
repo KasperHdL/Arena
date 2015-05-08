@@ -29,9 +29,9 @@ public class ParticleFactory {
                     position.copy(),//position
                     5 + World.RANDOM.nextInt(5),//size
                     World.RANDOM.nextFloat()*360,//rotation
-                    dir.copy().add((World.RANDOM.nextFloat() * 90) - 45).scale(World.RANDOM.nextFloat()*15),//velocity
+                    dir.copy().add((World.RANDOM.nextFloat() * 90) - 45).scale(World.RANDOM.nextFloat()*150),//velocity
                     World.RANDOM.nextFloat()*2000,//angular velocity
-                    400,//time alive
+                    8000,//time alive
                     c//Colour
             );
         }
@@ -51,9 +51,9 @@ public class ParticleFactory {
                     position.copy(),//position
                     10 + World.RANDOM.nextInt(10),//size
                     World.RANDOM.nextFloat()*360,//rotation
-                    new Vector2f(World.RANDOM.nextFloat() * 360).scale(World.RANDOM.nextFloat() * 25),//velocity
-                    World.RANDOM.nextFloat()*2000,//angular velocity
-                    400,//time alive
+                    new Vector2f(World.RANDOM.nextFloat() * 360).scale(World.RANDOM.nextFloat() * 250),//velocity
+                    World.RANDOM.nextFloat()*200,//angular velocity
+                    10000,//time alive
                     c//Colour
             );
         }
@@ -73,7 +73,7 @@ public class ParticleFactory {
                     position.copy().add(area.scale((World.RANDOM.nextFloat() * 2) - 1)),//position
                     World.RANDOM.nextInt(5)+5,//size
                     World.RANDOM.nextFloat()*360,//rotation
-                    dir.copy().scale(World.RANDOM.nextFloat() + 1),//velocity
+                    dir.copy().scale(World.RANDOM.nextFloat()*10 + 10),//velocity
                     World.RANDOM.nextFloat()*2000,//angular velocity
                     300,//time Alive
                     true,//fade out
@@ -114,9 +114,9 @@ public class ParticleFactory {
                     position.copy(),//position
                     World.RANDOM.nextInt(10)+15,//size
                     World.RANDOM.nextFloat()*360,//rotation
-                    new Vector2f(i*3).scale(World.RANDOM.nextFloat()*10+20),//velocity
+                    new Vector2f(i*3).scale(World.RANDOM.nextFloat()*1000+700),//velocity
                     World.RANDOM.nextFloat()*2000,//angular velocity
-                    500,//time Alive
+                    700,//time Alive
                     true,//fade out
                     c//Colour
             );

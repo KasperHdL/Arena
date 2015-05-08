@@ -95,25 +95,25 @@ public class Player extends Agent implements ControllerListener{
      * @param input reference to input
      */
     public Player(Vector2f position,Color color, int controllerIndex, Input input){
+        name = "Player";
+
         playerUI = World.playerUIs[World.PLAYERS.size()];
         World.PLAYERS.add(this);
 
         this.input = input;
         this.color = color;
         input.addControllerListener(this);
-        name = "Player";
-
-        curHealth = Settings.PLAYER_HEALTH;
-        maxHealth = curHealth;
-
-        size = new Vector2f(50.0f, 50.0f);
 
         this.position = position;
+        size = new Vector2f(50.0f, 50.0f);
 
-        maxVelocity 	= Settings.PLAYER_MAX_VELOCITY;
-        speedForce 		= Settings.PLAYER_SPEED_FORCE;
-        mass 			= Settings.PLAYER_MASS;
-        curHealth 		= Settings.PLAYER_HEALTH;
+
+        curHealth       =   Settings.PLAYER_HEALTH;
+        maxHealth       =   curHealth;
+
+        maxVelocity 	= 	Settings.PLAYER_MAX_VELOCITY;
+        speedForce 		= 	Settings.PLAYER_SPEED_FORCE;
+        mass 			= 	Settings.PLAYER_MASS;
         
         bowDrawSound 	= Assets.SOUND_BOW_DRAW;
         arrowShootSound = Assets.SOUND_ARROW_SHOOT;
@@ -245,7 +245,7 @@ public class Player extends Agent implements ControllerListener{
     		y = 0;	
 
     	axis = new Vector2f(x,y);
-        axis.scale((armor.getSpeedModifier() * speedForce) / mass);
+        axis.scale((armor.getSpeedModifier() * speedForce));
 
         if(axis.length() > .5f)
             ParticleFactory.createSmokeTrail(position.copy(),new Vector2f(0,size.y/2-20).add(velocity.getTheta()),velocity.copy().scale(-1f));
