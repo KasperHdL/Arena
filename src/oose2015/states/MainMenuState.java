@@ -23,8 +23,7 @@ public class MainMenuState implements GameState{
 
     public Color[] colors = {
             new Color(255,116,56),
-            new Color(22,221,53),
-            new Color(0,255,255),
+            new Color(0,155,155),
             new Color(189,122,246),
             new Color(255,105,180),
             new Color(139,69,19),
