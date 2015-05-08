@@ -5,11 +5,13 @@ import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
 import oose2015.utilities.VectorUtility;
+import oose2015.Assets;
 import oose2015.Settings;
 import oose2015.World;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
 
@@ -23,7 +25,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Enemy extends Agent {
     float damage = Settings.ENEMY_DAMAGE;
-
+    Sound arrowSound;
+    
     public int goldDrop;
     public int expDrop;
 
@@ -78,6 +81,7 @@ public class Enemy extends Agent {
         if(!isMelee){
         	attackRadius = Settings.ENEMY_RANGED_RADIUS;
         }
+        arrowSound = Assets.SOUND_ARROW_SHOOT;
       
     }
 
@@ -191,6 +195,7 @@ public class Enemy extends Agent {
     protected void rangedAttack(){
         nextAttackTime = World.TIME + attackDelay;
     	new Projectile(this, damage);
+    	arrowSound.play();
     }
     
     /**

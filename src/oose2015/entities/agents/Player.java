@@ -77,7 +77,8 @@ public class Player extends Agent implements ControllerListener{
     //sound variables
     public Sound bowDrawSound;
     public Sound arrowShootSound;
-    
+    public Sound weaponSwing;
+    public Sound killSound;
 
     private boolean attackKeyDown = false,
                     rangedKeyDown = false;
@@ -108,7 +109,7 @@ public class Player extends Agent implements ControllerListener{
 
         size = new Vector2f(50.0f, 50.0f);
 
-        this.position = position;
+        this.position 	= position;
 
         maxVelocity 	= Settings.PLAYER_MAX_VELOCITY;
         speedForce 		= Settings.PLAYER_SPEED_FORCE;
@@ -117,6 +118,8 @@ public class Player extends Agent implements ControllerListener{
         
         bowDrawSound 	= Assets.SOUND_BOW_DRAW;
         arrowShootSound = Assets.SOUND_ARROW_SHOOT;
+        weaponSwing 	= Assets.SOUND_WEAPON_SWING;
+        killSound		= Assets.SOUND_KILL;
         
         gold 			= 0;
         exp	 			= 0;
@@ -142,7 +145,8 @@ public class Player extends Agent implements ControllerListener{
     @Override
     protected void attack(){
         nextAttackTime = World.TIME + weapon.attackDelay;
-
+        weaponSwing.play();
+        
         for (int i = World.ENEMIES.size()-1; i >= 0; i--) {
             Enemy enemy = World.ENEMIES.get(i);
     		float dist = VectorUtility.getDistanceToEntity(this, enemy);
@@ -163,8 +167,10 @@ public class Player extends Agent implements ControllerListener{
                 }else
                     attacksEnemy = (enemyAngle > endAngle && enemyAngle < startAngle);
 
-                if(attacksEnemy && enemy.takeDamage(this,weapon.damage))
+                if(attacksEnemy && enemy.takeDamage(this,weapon.damage)){
                     addExp(enemy.expDrop);
+                    killSound.play();
+                }
 
 
             }
