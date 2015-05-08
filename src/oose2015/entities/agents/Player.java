@@ -1,7 +1,5 @@
 package oose2015.entities.agents;
 
-import java.io.File;
-
 import oose2015.ParticleFactory;
 import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
@@ -19,7 +17,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -82,11 +79,7 @@ public class Player extends Agent implements ControllerListener{
     public Sound arrowShootSound;
     
 
-    private boolean upKeyDown = false,
-                    leftKeyDown = false,
-                    rightKeyDown= false,
-                    downKeyDown = false,
-                    attackKeyDown = false,
+    private boolean attackKeyDown = false,
                     rangedKeyDown = false;
 
 	private Input input;
@@ -462,55 +455,47 @@ public class Player extends Agent implements ControllerListener{
 	public void controllerDownPressed(int controllerIn) {
 		if(controllerIn != controllerIndex)
 			return;
-        downKeyDown = true;
 	}
 
 	@Override
 	public void controllerDownReleased(int controllerIn) {
 		if(controllerIn != controllerIndex)
 			return;
-        downKeyDown = false;
 	}
 
 	@Override
 	public void controllerLeftPressed(int controllerIn) {
 		if(controllerIn != controllerIndex)
 			return;
-        leftKeyDown = true;
 	}
 
 	@Override
 	public void controllerLeftReleased(int controllerIn) {
 		if(controllerIn != controllerIndex)
 			return;
-        leftKeyDown = false;
 	}
 
 	@Override
 	public void controllerRightPressed(int controllerIn) {
 		if(controllerIn != controllerIndex)
 			return;
-        rightKeyDown = true;
 	}
 
 	@Override
 	public void controllerRightReleased(int controllerIn) {
 		if(controllerIn != controllerIndex)
 			return;
-        rightKeyDown = false;
 	}
 
 	@Override
 	public void controllerUpPressed(int controllerIn) {
 		if(controllerIn != controllerIndex)
 			return;
-        upKeyDown = true;
 	}
 
 	@Override
 	public void controllerUpReleased(int controllerIn) {
 		if(controllerIn != controllerIndex)
 			return;
-        upKeyDown = false;
 	}
 }

@@ -1,6 +1,5 @@
 package oose2015.items;
 
-import org.newdawn.slick.Graphics;
 
 /**
  * @author itai.yavin

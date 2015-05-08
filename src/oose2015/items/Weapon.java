@@ -1,7 +1,5 @@
 package oose2015.items;
 
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Vector2f;
 
 /**
  * @author itai.yavin

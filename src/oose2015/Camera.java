@@ -4,8 +4,6 @@ import oose2015.artifacts.Artifact;
 import oose2015.entities.Entity;
 import oose2015.entities.tiles.Tile;
 import oose2015.particles.Particle;
-import oose2015.states.GamePlayState;
-import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
