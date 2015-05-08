@@ -2,6 +2,7 @@ package oose2015;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.opengl.Texture;
 
 /**
  * Assets class loads assets.
@@ -22,5 +23,6 @@ public class Assets {
 		} catch (SlickException e) {
 			System.out.println("Error with file path");
 		}
+
 	}
 }

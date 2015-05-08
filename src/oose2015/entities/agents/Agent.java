@@ -32,11 +32,11 @@ public abstract class Agent extends MovableEntity {
         curHealth -= damage;
         if(curHealth <= 0){
             die();
-            ParticleFactory.createDeathSplatter(position.copy(), Color.red);
+            ParticleFactory.createDeathSplatter(position.copy(), new Color(200,50,50));
 
             return true;
         }else
-            ParticleFactory.createBloodSplatter(position.copy(),new Vector2f((World.RANDOM.nextFloat()*2)-1,(World.RANDOM.nextFloat()*2)-1), Color.red);
+            ParticleFactory.createBloodSplatter(position.copy(),new Vector2f((World.RANDOM.nextFloat()*2)-1,(World.RANDOM.nextFloat()*2)-1), new Color(200,50,50));
 
         return false;
     }

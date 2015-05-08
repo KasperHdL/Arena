@@ -307,14 +307,10 @@ public class Enemy extends Agent {
 
 	@Override
 	public void collides(Entity other) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	protected void attack() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

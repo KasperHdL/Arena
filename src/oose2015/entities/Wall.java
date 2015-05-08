@@ -47,14 +47,10 @@ public class Wall extends Entity {
 
 	@Override
 	public void update(float dt) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void collides(Entity other) {
-		// TODO Auto-generated method stub
-		
 	}
 
 

@@ -148,25 +148,24 @@ public class Player extends Agent implements ControllerListener{
     		if(dist < weapon.attackRadius){
     			float enemyAngle = calculateAngleToTarget(enemy);
 
-    			//System.out.println("EnemyAngle: " + enemyAngle + " startArc: " + (startArc + rotation) + " endArc: " + (endArc + rotation));
-    			if(
-                    ((startArc + rotation > 360 && endArc + rotation < 360) &&
-                           (enemyAngle < (startArc + rotation) % 360 && enemyAngle > 0) ||
-                           (enemyAngle > endArc+rotation && enemyAngle < 360))
-                    ||
-                    (startArc + rotation > 360 && endArc + rotation > 360 &&
-                           enemyAngle < (startArc + rotation) % 360 &&
-                           enemyAngle > (endArc + rotation) % 360)
-                    ||
-                    (startArc + rotation < 360 && endArc + rotation < 360 &&
-                           enemyAngle < startArc + rotation &&
-                           enemyAngle > endArc + rotation)
-                    ){
-                    if(enemy.takeDamage(this,weapon.damage)){
-                        //enemy killed
-                        addExp(enemy.expDrop);
-                    }
-	    		}
+                float startAngle = startArc + rotation;
+                float endAngle = endArc + rotation;
+
+                boolean attacksEnemy = false;
+
+                if(startAngle > 360 || endAngle < 0){
+
+                    if(endAngle < 0)enemyAngle += 360;
+                    if(startAngle > 360) startAngle -= 360;
+
+                    attacksEnemy = (enemyAngle > endAngle && enemyAngle < 360) || (endAngle > 0 && endAngle < startAngle);
+                }else
+                    attacksEnemy = (enemyAngle > endAngle && enemyAngle < startAngle);
+
+                if(attacksEnemy && enemy.takeDamage(this,weapon.damage))
+                    addExp(enemy.expDrop);
+
+
             }
     	}
     }
