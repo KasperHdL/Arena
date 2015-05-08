@@ -1,8 +1,11 @@
 package oose2015.entities.agents;
 
+import oose2015.Assets;
 import oose2015.ParticleFactory;
 import oose2015.World;
+
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
 import oose2015.entities.MovableEntity;
@@ -21,6 +24,8 @@ public abstract class Agent extends MovableEntity {
 
     public boolean isAlive = true;
     public int level;
+
+    public Sound killSound = Assets.SOUND_KILL;	
 
     /**
      * The Agent takes damage ie. subtracts damage from health and checks if it is still alive
@@ -47,6 +52,7 @@ public abstract class Agent extends MovableEntity {
     public void die(){
         isAlive = false;
         isSolid = false;
+        killSound.play();
     }
 
     /**

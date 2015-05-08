@@ -78,7 +78,6 @@ public class Player extends Agent implements ControllerListener{
     public Sound bowDrawSound;
     public Sound arrowShootSound;
     public Sound weaponSwing;
-    public Sound killSound;
 
     private boolean attackKeyDown = false,
                     rangedKeyDown = false;
@@ -120,7 +119,6 @@ public class Player extends Agent implements ControllerListener{
         bowDrawSound 	= Assets.SOUND_BOW_DRAW;
         arrowShootSound = Assets.SOUND_ARROW_SHOOT;
         weaponSwing 	= Assets.SOUND_WEAPON_SWING;
-        killSound		= Assets.SOUND_KILL;
         
         gold 			= 0;
         exp	 			= 0;
@@ -170,7 +168,6 @@ public class Player extends Agent implements ControllerListener{
 
                 if(attacksEnemy && enemy.takeDamage(this,weapon.damage)){
                     addExp(enemy.expDrop);
-                    killSound.play();
                 }
 
 
@@ -451,9 +448,9 @@ public class Player extends Agent implements ControllerListener{
         else if(rangedButton == button && weapon.ranged && startedBowDraw){
         	releaseTime = World.TIME;
         	drawTime = releaseTime - startTime;
-            startedBowDraw = false;
         	rangedKeyDown = true;
         	bowDrawSound.stop();
+            startedBowDraw = false;
         }
 
 	}
