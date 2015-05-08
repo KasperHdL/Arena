@@ -27,24 +27,24 @@ public class Enemy extends Agent {
     public int goldDrop;
     public int expDrop;
 
-    float engageRadius = Settings.ENEMY_ENGAGE_RADIUS;
-    float disengageRadius = Settings.ENEMY_DISENGAGE_RADIUS;
-    float attackRadius = Settings.ENEMY_MELEE_RADIUS;
+    float engageRadius 			= Settings.ENEMY_ENGAGE_RADIUS;
+    float disengageRadius 		= Settings.ENEMY_DISENGAGE_RADIUS;
+    float attackRadius 			= Settings.ENEMY_MELEE_RADIUS;
 
     float nextAttackTime;
-    float attackDelay = 200f;
-    float nextChargeTime = 0;
-    float chargeDelay = Settings.CHARGE_DELAY;
-    float minChargeDistance = Settings.MIN_CHARGE_DISTANCE;
-    float maxChargeDistance = Settings.MAX_CHARGE_DISTANCE;
-    float chargeTime = Settings.CHARGE_TIME;
-    float chargeEndTime = 0;
-    int chargeScalar = Settings.CHARGE_SCALAR;
+    float attackDelay 			= 200f;
+    float nextChargeTime 		= 0;
+    float chargeDelay 			= Settings.CHARGE_DELAY;
+    float minChargeDistance 	= Settings.MIN_CHARGE_DISTANCE;
+    float maxChargeDistance 	= Settings.MAX_CHARGE_DISTANCE;
+    float chargeTime 			= Settings.CHARGE_TIME;
+    float chargeEndTime 		= 0;
+    int chargeScalar 			= Settings.CHARGE_SCALAR;
 
-    public boolean isChasing = false,
-    		isShot = false,
-    		isMelee = false,
-    		isCharging = false;
+    public boolean 	isChasing 	= false,
+    				isShot 		= false,
+    				isMelee 	= false,
+    				isCharging 	= false;
     
     Vector2f chargePoint;
 	
@@ -136,7 +136,7 @@ public class Enemy extends Agent {
     		chargeEndTime = chargeTime + World.TIME;
     		nextChargeTime = chargeDelay + World.TIME;
     		isCharging = true;
-    	} else if(isCharging && chargeEndTime == World.TIME){
+    	} else if(isCharging && chargeEndTime <= World.TIME){
     		speedForce = Settings.ENEMY_SPEED_FORCE;
     		isCharging = false;
     	}
