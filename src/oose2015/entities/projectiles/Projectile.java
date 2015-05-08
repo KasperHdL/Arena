@@ -70,7 +70,6 @@ public class Projectile extends MovableEntity {
 		direction.normalise();
 		direction.scale(speedForce/mass);
     	if(World.TIME > spawnTime + flyTime){
-			System.out.println("spawn artifact");
 			new Artifact(position,new Vector2f(size.x*2, size.y/3),rotation,Color.red.darker(0.3f));
 			EntityHandler.entities.remove(this);
     	}
@@ -87,7 +86,6 @@ public class Projectile extends MovableEntity {
 	 */
     @Override
     public void collides(Entity other){
-		System.out.println("collided " + other);
     	if(other instanceof Enemy && owner instanceof Player){
     		Enemy enemy = (Enemy) other;
         	if(enemy.isAlive) {

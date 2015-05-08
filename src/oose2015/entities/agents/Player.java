@@ -142,8 +142,9 @@ public class Player extends Agent implements ControllerListener{
     @Override
     protected void attack(){
         nextAttackTime = World.TIME + weapon.attackDelay;
-        
-    	for(Enemy enemy : World.ENEMIES){
+
+        for (int i = World.ENEMIES.size()-1; i >= 0; i--) {
+            Enemy enemy = World.ENEMIES.get(i);
     		float dist = VectorUtility.getDistanceToEntity(this, enemy);
     		if(dist < weapon.attackRadius){
     			float enemyAngle = calculateAngleToTarget(enemy);
@@ -151,14 +152,14 @@ public class Player extends Agent implements ControllerListener{
                 float startAngle = startArc + rotation;
                 float endAngle = endArc + rotation;
 
-                boolean attacksEnemy = false;
+                boolean attacksEnemy;
 
                 if(startAngle > 360 || endAngle < 0){
 
-                    if(endAngle < 0)enemyAngle += 360;
+                    if(endAngle < 0)endAngle += 360;
                     if(startAngle > 360) startAngle -= 360;
 
-                    attacksEnemy = (enemyAngle > endAngle && enemyAngle < 360) || (endAngle > 0 && endAngle < startAngle);
+                    attacksEnemy = (enemyAngle > endAngle && enemyAngle < 361) || (enemyAngle > -1 && enemyAngle < startAngle);
                 }else
                     attacksEnemy = (enemyAngle > endAngle && enemyAngle < startAngle);
 
