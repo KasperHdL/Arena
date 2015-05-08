@@ -15,7 +15,6 @@ public class Bow extends Weapon{
 		super(level,1);
 		if (level < 0)
             throw new IllegalArgumentException("illegal level: " + level + " is less than 0");
-		// TODO Auto-generated constructor stub
 		ranged = true;
 		melee = false;
 	}

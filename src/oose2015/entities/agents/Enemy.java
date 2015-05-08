@@ -189,7 +189,7 @@ public class Enemy extends Agent {
      */
     protected void rangedAttack(){
         nextAttackTime = World.TIME + attackDelay;
-    	new Projectile(this, attackRadius, damage, 10f);
+    	new Projectile(this, damage);
     }
     
     /**
@@ -307,14 +307,10 @@ public class Enemy extends Agent {
 
 	@Override
 	public void collides(Entity other) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	protected void attack() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

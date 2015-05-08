@@ -24,16 +24,28 @@ public class Weapon extends Item{
         if (level < 0)
             throw new IllegalArgumentException("illegal level: " + level + " is less than 0");
 
-        this.level = level;
-        this.damage = level;
-        this.attackRadius = level * 20;
-        this.attackDelay = level * 2;
-        if(type == 0)
+        this.level 				= level;
+        if(type == 0){
             melee = true;
-        else if(type == 1)
+            this.damage			= level * 3;
+            
+            if(attackDelay < 4 * 200)
+            	attackDelay		= 20 * 200;
+            else
+            	attackDelay		= 4 * 200;
+            
+            if(this.attackRadius < 3 * 20)
+            	this.attackRadius 	= level * 20;
+            else
+            	this.attackRadius = 5 * 30;
+        }else if(type == 1){
             ranged = true;
-        else if(type == 2)
+            this.damage			= 2*level;
+            attackDelay			= level * 2;
+            this.attackRadius 	= level * 20;
+        }else if(type == 2){
             magic = true;
+        }
     }
     /**
      * Constructor for weapon

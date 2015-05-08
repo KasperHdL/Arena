@@ -39,7 +39,7 @@ public class CollisionUtility {
             return;
 
         Vector2f delta = other.position.copy().sub(entity.position);
-        float dist = delta.length() - entity.size.x/2 - other.size.x/2;
+        float dist = delta.length() - (entity.size.x/2) - (other.size.x/2);
         if(dist > 0) {
             return;
         }

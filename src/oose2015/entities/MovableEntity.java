@@ -51,7 +51,7 @@ public abstract class MovableEntity extends Entity{
         velocity.add(acceleration);
 
         if(velocity.length() > maxVelocity)
-            velocity = velocity.getNormal().scale(maxVelocity);
+            velocity.getNormal().scale(maxVelocity);
 
 
         velocity.scale(dt);

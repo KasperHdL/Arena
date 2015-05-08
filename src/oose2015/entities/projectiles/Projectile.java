@@ -32,31 +32,32 @@ public class Projectile extends MovableEntity {
 	public Vector2f direction;
 	
 	public float spawnTime;
-	public float range;
 	public float damage;
 	public float flyTime = Settings.PROJECTILE_FLY_TIME;
+
+	public Projectile(Agent owner, float damage){
+		this(owner,damage,Settings.PROJECTILE_SPEED_FORCE);
+	}
 
 	/**
 	 * Projectile constructor
 	 * @param owner - agent that spawned the projectile
-	 * @param range - Projectile range
 	 * @param damage - Projectile damage
-	 * @param speedForce - Speed of projectile
 	 */
-	public Projectile(Agent owner, float range, float damage, float speedForce){
+	public Projectile(Agent owner, float damage,float speedForce){
 		name = "projectile";
 		this.owner = owner;
-		this.range = range;
 		this.damage = damage;
 		rotation = owner.rotation;
 		direction = new Vector2f(1,0).add(owner.rotation);
-		position = owner.position.copy().add(direction.copy().scale(owner.size.x/2));
+		position = owner.position.copy().add(direction.copy().scale(owner.size.x / 2));
 		spawnPoint = position;
 		size = new Vector2f(15,15);
 		spawnTime = World.TIME;
 		isMovable = false;
 		isSolid = false;
 		this.speedForce = speedForce;
+		maxVelocity = Settings.PROJECTILE_MAX_SPEED;
 		friction = Settings.PROJECTILE_FRICTION;
 		inertia = Settings.PROJECTILE_INERTIA;
 	}
@@ -66,8 +67,10 @@ public class Projectile extends MovableEntity {
 	 */
 	@Override
 	protected void move(float dt){
+		direction.normalise();
 		direction.scale(speedForce/mass);
-    	if(World.TIME > spawnTime+flyTime){
+    	if(World.TIME > spawnTime + flyTime){
+			System.out.println("spawn artifact");
 			new Artifact(position,new Vector2f(size.x*2, size.y/3),rotation,Color.red.darker(0.3f));
 			EntityHandler.entities.remove(this);
     	}
@@ -84,6 +87,7 @@ public class Projectile extends MovableEntity {
 	 */
     @Override
     public void collides(Entity other){
+		System.out.println("collided " + other);
     	if(other instanceof Enemy && owner instanceof Player){
     		Enemy enemy = (Enemy) other;
         	if(enemy.isAlive) {
@@ -133,7 +137,7 @@ public class Projectile extends MovableEntity {
 		graphics.rotate(0,0,rotation);
 		graphics.setColor(Color.red);
 	
-		graphics.fillRect(-size.x, -size.y/4, size.x*2, size.y/2);
+		graphics.fillOval(-size.x / 2, -size.y / 2, size.x, size.y);
 		graphics.popTransform();
 	}
 	

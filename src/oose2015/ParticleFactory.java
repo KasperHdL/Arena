@@ -85,7 +85,6 @@ public class ParticleFactory {
     /**
      * Creates projectile trail particles
      * @param position - centre spawn position of particles
-     * @param area - area around position that particles spawn
      * @param dir - direction for particle flow
      */
     public static void createProjectileTrail(Vector2f position,Vector2f dir){
@@ -95,7 +94,7 @@ public class ParticleFactory {
                     position.copy(),//position
                     World.RANDOM.nextInt(5)+1,//size
                     World.RANDOM.nextFloat()*360,//rotation
-                    dir.copy().scale(World.RANDOM.nextFloat()+1),//velocity
+                    new Vector2f(0,0),//velocity
                     World.RANDOM.nextFloat()*2000,//angular velocity
                     300,//time Alive
                     true,//fade out
