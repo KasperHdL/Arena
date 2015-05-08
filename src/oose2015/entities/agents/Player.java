@@ -159,8 +159,6 @@ public class Player extends Agent implements ControllerListener{
                     if(endAngle < 0)endAngle += 360;
                     if(startAngle > 360) startAngle -= 360;
 
-                    System.out.println("Enemy Angle: " + enemyAngle + ".. eA: " + endAngle + " sA: " + startAngle);
-
                     attacksEnemy = (enemyAngle > endAngle && enemyAngle < 361) || (enemyAngle > -1 && enemyAngle < startAngle);
                 }else
                     attacksEnemy = (enemyAngle > endAngle && enemyAngle < startAngle);
