@@ -29,19 +29,19 @@ public class Weapon extends Item{
             melee = true;
             this.damage			= level * 3;
             
-            if(attackDelay < 4 * 200)
-            	attackDelay		= 20 * 200;
+            if(level < 4)
+            	attackDelay		= level * 200;
             else
             	attackDelay		= 4 * 200;
             
-            if(this.attackRadius < 3 * 20)
-            	this.attackRadius 	= level * 20;
+            if(level < 3)
+            	this.attackRadius = level * 20;
             else
             	this.attackRadius = 5 * 30;
         }else if(type == 1){
             ranged = true;
             this.damage			= 2*level;
-            attackDelay			= level * 2;
+            attackDelay			= 2;
             this.attackRadius 	= level * 20;
         }else if(type == 2){
             magic = true;

@@ -76,9 +76,9 @@ public class Settings {
 		public static final float 	CHARGE_DELAY = 3000;
 		public static final float 	MIN_CHARGE_DISTANCE = 50;
 		public static final float 	MAX_CHARGE_DISTANCE = 200;
-		public static final float	CHARGE_TIME = 100;		
+		public static final float	CHARGE_TIME = 200;		
 
-		public static final int		CHARGE_SCALAR = 5;
+		public static final int		CHARGE_SCALAR = 7;
 		
 		//Projectile Variables
 		public static final float 	PROJECTILE_SPEED_FORCE = 1000f; //Base speed of projectiles (before drawtime modifier), this is located in the player script
