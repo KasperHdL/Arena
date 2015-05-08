@@ -71,8 +71,9 @@ public class Settings {
 		public static final float 	ENEMY_ENGAGE_RADIUS = 200f,
 									ENEMY_DISENGAGE_RADIUS = 500f,
 									ENEMY_MELEE_RADIUS = 20f,
-									ENEMY_RANGED_RADIUS = 200f;
-
+									ENEMY_RANGED_RADIUS = 200f,
+									ENEMY_ATTACK_DELAY = 800;
+		
 		public static final float 	CHARGE_DELAY = 3000;
 		public static final float 	MIN_CHARGE_DISTANCE = 50;
 		public static final float 	MAX_CHARGE_DISTANCE = 200;
@@ -89,6 +90,7 @@ public class Settings {
 		public static final float 	PROJECTILE_FRICTION = .9f,
 									PROJECTILE_INERTIA = .85f;
 		//Shake Variables
+
 
 
 

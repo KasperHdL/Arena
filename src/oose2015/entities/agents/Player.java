@@ -110,28 +110,28 @@ public class Player extends Agent implements ControllerListener{
 
         this.position = position;
 
-        maxVelocity 	= 	Settings.PLAYER_MAX_VELOCITY;
-        speedForce 		= 	Settings.PLAYER_SPEED_FORCE;
-        mass 			= 	Settings.PLAYER_MASS;
-        curHealth 		= 	Settings.PLAYER_HEALTH;
+        maxVelocity 	= Settings.PLAYER_MAX_VELOCITY;
+        speedForce 		= Settings.PLAYER_SPEED_FORCE;
+        mass 			= Settings.PLAYER_MASS;
+        curHealth 		= Settings.PLAYER_HEALTH;
         
-        bowDrawSound 	= 	Assets.SOUND_BOW_DRAW;
-        arrowShootSound = 	Assets.SOUND_ARROW_SHOOT;
+        bowDrawSound 	= Assets.SOUND_BOW_DRAW;
+        arrowShootSound = Assets.SOUND_ARROW_SHOOT;
         
-        gold = 0;
-        exp	 = 0;
+        gold 			= 0;
+        exp	 			= 0;
 
-        level = 1;
-        lastLevelExp = 0;
-        nextLevelExp = (level*level)*100;
+        level 			= 1;
+        lastLevelExp 	= 0;
+        nextLevelExp 	= (level*level)*100;
 
         this.controllerIndex = controllerIndex;
 
-        weapon = new Weapon(1,0);
-        armor = new Armor(1);
+        weapon 			= new Weapon(1,0);
+        armor 			= new Armor(1);
 
-        drawAttack = false;
-        nextAttackTime = 0f;
+        drawAttack 		= false;
+        nextAttackTime 	= 0f;
 
         playerUI.setPlayer(this,color);
     }

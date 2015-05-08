@@ -32,7 +32,7 @@ public class Enemy extends Agent {
     float attackRadius 			= Settings.ENEMY_MELEE_RADIUS;
 
     float nextAttackTime;
-    float attackDelay 			= 200f;
+    float attackDelay 			= Settings.ENEMY_ATTACK_DELAY;
     float nextChargeTime 		= 0;
     float chargeDelay 			= Settings.CHARGE_DELAY;
     float minChargeDistance 	= Settings.MIN_CHARGE_DISTANCE;
@@ -58,22 +58,22 @@ public class Enemy extends Agent {
     public Enemy(Vector2f position, int level, boolean isMelee){
         World.ENEMIES.add(this);
 
-        curHealth = Settings.ENEMY_HEALTH;
-        maxHealth = curHealth;
+        curHealth 		= Settings.ENEMY_HEALTH;
+        maxHealth 		= curHealth;
 
-        this.level = level;
-        this.position = position;
-        this.isMelee = isMelee;
+        this.level 		= level;
+        this.position 	= position;
+        this.isMelee 	= isMelee;
         
-        size = new Vector2f(level * 5f + 15f,level * 5f + 15f );
+        size 			= new Vector2f(level * 5f + 15f,level * 5f + 15f );
 
 
-        maxVelocity = Settings.ENEMY_MAX_VELOCITY;
+        maxVelocity 	= Settings.ENEMY_MAX_VELOCITY;
 
-        speedForce = Settings.ENEMY_SPEED_FORCE;
-        mass = level + Settings.ENEMY_MASS_PER_LVL;
-        goldDrop = level * Settings.ENEMY_GOLD_DROP_PER_LVL;
-        expDrop = level * Settings.ENEMY_EXP_DROP_PER_LVL;
+        speedForce 		= Settings.ENEMY_SPEED_FORCE;
+        mass 			= level + Settings.ENEMY_MASS_PER_LVL;
+        goldDrop 		= level * Settings.ENEMY_GOLD_DROP_PER_LVL;
+        expDrop 		= level * Settings.ENEMY_EXP_DROP_PER_LVL;
 
         if(!isMelee){
         	attackRadius = Settings.ENEMY_RANGED_RADIUS;
