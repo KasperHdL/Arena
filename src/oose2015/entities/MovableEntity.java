@@ -37,8 +37,8 @@ public abstract class MovableEntity extends Entity{
     /**
      * Moves the Entity according to the correct physical forces of the Entity. 
      * Applies friction, inertia and limits the velocity. then adds acceleration to velocity and then velocity to position
-     * @param dt
-     * @param input
+     * @param dt - delta time
+     * @param input Vector added to the acceleration of the entity
      */
     protected void move(float dt,Vector2f input){
         acceleration.scale(inertia);

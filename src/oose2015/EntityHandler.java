@@ -42,7 +42,7 @@ public class EntityHandler {
 
     /**
      * Updates objects
-     * @param dt
+     * @param dt - delta time
      */
     public void update(float dt){
         camera.update(dt);
@@ -59,7 +59,7 @@ public class EntityHandler {
 
     /**
      * Runs collision for all entities
-     * @param dt
+     * @param dt - delta time
      */
     public void updatePhysics(float dt){
 
@@ -77,7 +77,7 @@ public class EntityHandler {
 
     /**
      * Renders graphics of objects
-     * @param graphics
+     * @param graphics Graphics reference
      */
     public void render(Graphics graphics){
         graphics.pushTransform();

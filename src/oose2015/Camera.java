@@ -49,54 +49,53 @@ public class Camera {
 
     /**
      * Updates camera position and zoom.
-     * @param dt
+     * @param dt - delta time
      */
     public void update(float dt){
-        if(World.PLAYERS.size() == 1){
-            Vector2f d = World.PLAYERS.get(0).position.copy().sub(position);
-            position.add(d.scale(0.1f));
-            addShake();
-            return;
-        }
 
         //easing
         Vector2f d = targetPosition.sub(position);
 
-        position.add(d.scale(0.1f));
-        scale += (targetScale - scale) * 0.1f;
+        position.add(d.scale(0.2f*dt));
+        scale += (targetScale - scale) * 0.2f * dt;
 
         //shake
         addShake();
 
-
-
         targetPosition = getCenterOfPlayers();
 
         //find the player the longest away from center and scale until within view
-        float dist = position.copy().sub(World.PLAYERS.get(0).position).length();
-        int index = 0;
+        float dist = -1;
+        int index = -1;
         for (int i = 0; i < World.PLAYERS.size(); i++) {
+            if(!World.PLAYERS.get(i).isAlive)continue;
             Vector2f delta = position.copy().sub(World.PLAYERS.get(i).position);
             if (dist < delta.length()) {
                 index = i;
                 dist = delta.length();
             }
         }
-
-        if(entityWithinView(World.PLAYERS.get(index))){
-            //check if need to get closer
-            while(entityWithinView(World.PLAYERS.get(index),targetScale)){
-                if(targetScale > 1f)break;
-                targetScale += .01f;
-            }
-            targetScale -= .1f;
-
-        }else{
-            while(!entityWithinView(World.PLAYERS.get(index),targetScale))
-                targetScale -= .01f;
-
-            targetScale -= .1f;
+        if(index == -1){
+            //no players found
+            targetScale = 1;
+            return;
         }
+
+        //check if it can get closer
+        while(entityWithinView(World.PLAYERS.get(index),targetScale)) {
+            if (targetScale > .98f) break;
+            targetScale += .02f;
+        }
+
+
+        while(!entityWithinView(World.PLAYERS.get(index),targetScale + .15f)) {
+            if (targetScale <= 0.001f) break;
+            targetScale -= .02f;
+        }
+
+
+
+
     }
 
     /**
@@ -108,10 +107,13 @@ public class Camera {
         int length = World.PLAYERS.size();
 
         for (int i = 0; i < length; i++) {
+            if(!World.PLAYERS.get(i).isAlive)
+                continue;
+
             x += World.PLAYERS.get(i).position.x;
             y += World.PLAYERS.get(i).position.y;
         }
-
+        length = length-World.deadPlayers;
         return new Vector2f(x/length,y/length);
     }
 
@@ -144,8 +146,8 @@ public class Camera {
 
     /**
      * Returns true if entity is within camera-view
-     * @param entity
-     * @return
+     * @param entity Entity checked
+     * @return boolean
      */
     public boolean entityWithinView(Entity entity){
         return entityWithinView(entity,scale);
@@ -153,9 +155,9 @@ public class Camera {
 
     /**
      * Returns true if entity is within camera view.
-     * @param entity
+     * @param entity Entity checked
      * @param scale - zoom scale (the larger the closer)
-     * @return
+     * @return boolean
      */
     public boolean entityWithinView(Entity entity,float scale){
         float x = (1/scale) * halfViewSize.x;
@@ -168,8 +170,8 @@ public class Camera {
     
     /**
      * Return true if tile is within view
-     * @param tile
-     * @return
+     * @param tile Tile checked
+     * @return boolean
      */
     public boolean tileWithinView(Tile tile){
         float x = (1/scale) * halfViewSize.x;
@@ -182,8 +184,8 @@ public class Camera {
 
     /**
      * Return true if particle is within view
-     * @param particle
-     * @return
+     * @param particle Particle being checked
+     * @return boolean
      */
     public boolean particleWithinView(Particle particle){
         float x = (1/scale) * halfViewSize.x;
@@ -196,8 +198,8 @@ public class Camera {
 
     /**
      * Return true if particle within view
-     * @param artifact
-     * @return
+     * @param artifact Artifact being checked
+     * @return boolean
      */
     public boolean artifactWithinView(Artifact artifact){
         float x = (1/scale) * halfViewSize.x;

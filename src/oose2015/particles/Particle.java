@@ -37,13 +37,13 @@ public class Particle {
 
     /**
      * Overloaded Particle constructor
-     * @param position
-     * @param size
-     * @param rotation
-     * @param velocity
-     * @param angularVelocity
-     * @param time
-     * @param color
+     * @param position Position
+     * @param size size
+     * @param rotation rotation
+     * @param velocity velocity
+     * @param angularVelocity angular velocity
+     * @param time time
+     * @param color color
      */
     public Particle(Vector2f position,int size,float rotation,Vector2f velocity,float angularVelocity,int time, Color color) {
         this(position,size,rotation,velocity,angularVelocity,time,false,color);
@@ -51,14 +51,14 @@ public class Particle {
 
     /**
      * Particle constructor
-     * @param position
-     * @param size
-     * @param rotation
-     * @param velocity
-     * @param angularVelocity
-     * @param time
-     * @param fadeOut
-     * @param color
+     * @param position Position
+     * @param size size
+     * @param rotation rotation
+     * @param velocity velocity
+     * @param angularVelocity angular velocity
+     * @param time time
+     * @param fadeOut if true particle will fade to be transparent
+     * @param color color
      */
     public Particle(Vector2f position,int size,float rotation,Vector2f velocity,float angularVelocity,int time,boolean fadeOut, Color color){
         EntityHandler.particles.add(this);
@@ -81,7 +81,7 @@ public class Particle {
 
     /**
      * Update particle state
-     * @param dt
+     * @param dt - delta time
      */
     public void update(float dt){
         if(endTime < World.TIME)
@@ -105,7 +105,7 @@ public class Particle {
 
     /**
      * Render particle graphics.
-     * @param graphics
+     * @param graphics Graphics reference
      */
     public void render(Graphics graphics){
         graphics.pushTransform();
