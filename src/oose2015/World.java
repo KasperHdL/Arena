@@ -53,6 +53,7 @@ public class World {
 
     private TextBox dungeonExitText;
     private int numPlayersOnExit = 0;
+    public static int deadPlayers = 0;
     private boolean playerOnExit = false;
     private boolean justExitedShop = false;
     private int dungeonExitTime = -1;
@@ -96,7 +97,7 @@ public class World {
 
     /**
      * Calls the entity handler render function
-     * @param graphics
+     * @param graphics Graphics reference
      */
     public void render(Graphics graphics){
         entityHandler.render(graphics);
@@ -104,7 +105,7 @@ public class World {
 
     /**
      * Renders game interface
-     * @param graphics
+     * @param graphics Graphics reference
      */
     public void renderInterface(Graphics graphics){
 
@@ -117,7 +118,7 @@ public class World {
 
             if(dungeonExitTime == -1) {
                 //waiting for other players
-                dungeonExitText.text = "Waiting for " + (PLAYERS.size() - numPlayersOnExit) + " players";
+                dungeonExitText.text = "Waiting for " + ((PLAYERS.size()-deadPlayers) - numPlayersOnExit) + " players";
                 dungeonExitText.render(graphics);
             }else if(dungeonExitTime < TIME){
                 //exit dungeon
@@ -136,7 +137,7 @@ public class World {
 
     /**
      * Updates world state
-     * @param dt
+     * @param dt - delta time
      */
     public void update(float dt){
         TIME += dt;
@@ -171,7 +172,7 @@ public class World {
     public void spawnWave(){
         waveCount++;
         for (int i = 0; i < waveCount * 2; i++) {
-            new Enemy(new Vector2f(RANDOM.nextFloat()*360).scale(RANDOM.nextFloat()*(1*Tile.TILE_SIZE) + 10*Tile.TILE_SIZE),RANDOM.nextInt(3)+RANDOM.nextInt(waveCount)+2, RANDOM.nextBoolean());
+            new Enemy(new Vector2f(RANDOM.nextFloat()*360).scale(RANDOM.nextFloat()*(Tile.TILE_SIZE) + 10*Tile.TILE_SIZE),RANDOM.nextInt(3)+RANDOM.nextInt(waveCount)+2, RANDOM.nextBoolean());
         }
     }
 
@@ -183,6 +184,9 @@ public class World {
         for (int i = 0; i < EXITS.size(); i++) {
             numPlayersOnExit = 0;
             for (int j = 0; j < PLAYERS.size(); j++) {
+                if(!PLAYERS.get(j).isAlive)
+                    continue;
+
                 if (CollisionUtility.checkCollision(PLAYERS.get(j), EXITS.get(i)))
                     numPlayersOnExit++;
             }
@@ -192,7 +196,7 @@ public class World {
 
             if(justExitedShop && !playerOnExit)
                     justExitedShop = false;
-            else if(numPlayersOnExit != PLAYERS.size())
+            else if(numPlayersOnExit != PLAYERS.size() - deadPlayers)
                 dungeonExitTime = -1;
             else if(dungeonExitTime == -1)
                 dungeonExitTime = TIME + dungeonExitLength;

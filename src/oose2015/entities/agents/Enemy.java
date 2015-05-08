@@ -42,7 +42,7 @@ public class Enemy extends Agent {
 
     public boolean isChasing = false,
     		isShot = false,
-    		isMelee,
+    		isMelee = false,
     		isCharging = false;
     
     Vector2f chargePoint;
@@ -86,22 +86,26 @@ public class Enemy extends Agent {
     @Override
     public void update(float dt){
         if(isAlive){
-            Player player = getClosestPlayer();
+            Player player;
             if(isShot){
-            	player = shooter;
-            	isChasing = true;
+                player = shooter;
+                isChasing = true;
+            }else {
+                player = getClosestPlayer();
             }
+
+            if(player == null)
+                return;
+
             if(isChasing){
 
                 if(player != target)
                     target = player;
 
-                if(target != null)
-                    chasePlayer(target,dt);
-            }else if(player != null){
+                chasePlayer(target,dt);
+            }else{
 
                 float dist = VectorUtility.getDistanceToEntity(this, player);
-
 
                 //check distance
                 if(dist < engageRadius){
@@ -112,9 +116,6 @@ public class Enemy extends Agent {
                     //TODO move a bit around randomly when not chasing any one
                 }
             }
-        }else{
-            //dead
-            //do dead stuff...
         }
     }
 
@@ -122,8 +123,8 @@ public class Enemy extends Agent {
      * Checks distance to player, if player is within distance enemy will chase.
      * If distance to player is within attack range of enemy enemy will attack.
      * If distance to player is within charge range and charge cooldown is up, then enemy will charge.
-     * @param agent
-     * @param dt
+     * @param agent Agent to chase
+     * @param dt - delta time
      */
     private void chasePlayer(Agent agent, float dt){
         Vector2f delta = target.position.copy().sub(position);
@@ -145,9 +146,11 @@ public class Enemy extends Agent {
                 isShot = false;
 
             if(nextAttackTime < World.TIME) {
-            	if(isMelee && !isCharging){
-	                agent.takeDamage(this,damage);
-	                nextAttackTime = World.TIME + attackDelay;
+            	if(isMelee){
+                    if(!isCharging) {
+                        agent.takeDamage(this, damage);
+                        nextAttackTime = World.TIME + attackDelay;
+                    }
             	} else {
             		rotation = calculateAngleToTarget(target);
             		//System.out.println(rotation);
@@ -161,7 +164,7 @@ public class Enemy extends Agent {
             isChasing = false;
         }else{
             //move
-            move(delta,dt);
+            move(dt,delta);
         }
     }
     
@@ -191,10 +194,11 @@ public class Enemy extends Agent {
     
     /**
      * Moves enemy and sets enemy rotation.
-     * @param input
-     * @param dt
+     * @param dt - delta time
+     * @param input Vector passed to super class at that point added to the acceleration of the entity
      */
-    protected void move(Vector2f input, float dt){
+    @Override
+    protected void move(float dt,Vector2f input){
         input.normalise();
         input.scale(speedForce / mass);
 
@@ -267,12 +271,12 @@ public class Enemy extends Agent {
      * @return - closest player object
      */
     private Player getClosestPlayer(){
-        Vector2f delta = World.PLAYERS.get(0).position.copy().sub(position);
+        Vector2f delta;
 
-        float minDistance = delta.distance(position);
-        int minIndex = 0;
+        float minDistance = Float.MAX_VALUE;
+        int minIndex = -1;
 
-        for (int i = 1; i < World.PLAYERS.size(); i++) {
+        for (int i = 0; i < World.PLAYERS.size(); i++) {
             Player p = World.PLAYERS.get(i);
             if(!p.isAlive)continue;
             delta = p.position.copy().sub(position);
@@ -282,6 +286,11 @@ public class Enemy extends Agent {
                 minDistance = dist;
                 minIndex = i;
             }
+        }
+
+        if(minIndex == -1){
+            //all players dead
+            return null;
         }
 
         return World.PLAYERS.get(minIndex);

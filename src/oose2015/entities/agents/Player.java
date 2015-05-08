@@ -197,7 +197,7 @@ public class Player extends Agent implements ControllerListener{
 
     /**
      * Adds experience to the player.
-     * @param value
+     * @param value amount of experience
      */
     public void addExp(int value){
         exp += value;
@@ -372,7 +372,7 @@ public class Player extends Agent implements ControllerListener{
         if(curHealth <= 0){
             World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*100,World.RANDOM.nextFloat()*100),200,.5f);
             ParticleFactory.createDeathSplatter(position.copy(), color);
-
+            World.deadPlayers++;
             die();
             return true;
         }else{
@@ -453,49 +453,33 @@ public class Player extends Agent implements ControllerListener{
 
 	@Override
 	public void controllerDownPressed(int controllerIn) {
-		if(controllerIn != controllerIndex)
-			return;
 	}
 
 	@Override
 	public void controllerDownReleased(int controllerIn) {
-		if(controllerIn != controllerIndex)
-			return;
 	}
 
 	@Override
 	public void controllerLeftPressed(int controllerIn) {
-		if(controllerIn != controllerIndex)
-			return;
 	}
 
 	@Override
 	public void controllerLeftReleased(int controllerIn) {
-		if(controllerIn != controllerIndex)
-			return;
 	}
 
 	@Override
 	public void controllerRightPressed(int controllerIn) {
-		if(controllerIn != controllerIndex)
-			return;
 	}
 
 	@Override
 	public void controllerRightReleased(int controllerIn) {
-		if(controllerIn != controllerIndex)
-			return;
 	}
 
 	@Override
 	public void controllerUpPressed(int controllerIn) {
-		if(controllerIn != controllerIndex)
-			return;
 	}
 
 	@Override
 	public void controllerUpReleased(int controllerIn) {
-		if(controllerIn != controllerIndex)
-			return;
 	}
 }
