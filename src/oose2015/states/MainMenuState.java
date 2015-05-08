@@ -22,14 +22,13 @@ public class MainMenuState implements GameState{
     public int[] playerColors = {-1,-1,-1,-1};
 
     public Color[] colors = {
-            new Color(105,210,231),
-            new Color(167,219,216),
-            new Color(224,228,204),
-            new Color(243,134,48),
-            new Color(250,105,0),
-            new Color(237,201,81),
-            new Color(108,102,128),
-            new Color(168,117,113)
+            new Color(255,116,56),
+            new Color(22,221,53),
+            new Color(0,255,255),
+            new Color(189,122,246),
+            new Color(255,105,180),
+            new Color(139,69,19),
+            new Color(125,125,125)
     };
 
     public TextBox instructionBox;
