@@ -17,29 +17,10 @@ public class Settings {
 	    public static final float 	PLAYER_MASS = 1f;
 	
 		//controls
-	    
-	  /*L1 = 5
-	    R1 = 6
-	    Triangle = 4
-	    Cross = 1
-	    Circle = 2
-	    Square = 3
-	    Left stick = 9
-	    Right stick = 10
-	    Select = 7
-	    Start = 8*/
-
-	    public static final int 	ATTACK_BUTTON = 6,
-									LEFT_STICK_X = 1,
-									LEFT_STICK_Y = 0,
-									RIGHT_STICK_X = 3,
-									RIGHT_STICK_Y = 2;
-
-	    //deadzones
-	    public static final float 	LEFT_DEAD_X = 0.1f,
-				    				LEFT_DEAD_Y = 0.1f,
-				    				RIGHT_DEAD_X = 0.6f,
-				    				RIGHT_DEAD_Y = 0.6f;
+	    public static final int 	LEFT_KEY = 30,
+									RIGHT_KEY = 32,
+									UP_KEY = 17,
+									DOWN_KEY = 31;
 
 	
 		//player bowdraw Variables
@@ -88,9 +69,5 @@ public class Settings {
 	
 		public static final float 	PROJECTILE_FRICTION = .9f,
 									PROJECTILE_INERTIA = .85f;
-		//Shake Variables
-
-
-
 
 }

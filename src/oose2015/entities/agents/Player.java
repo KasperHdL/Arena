@@ -1,23 +1,15 @@
 package oose2015.entities.agents;
 
-import oose2015.ParticleFactory;
+import oose2015.*;
 import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
-import oose2015.Assets;
-import oose2015.EntityHandler;
-import oose2015.Settings;
 import oose2015.gui.PlayerUI;
 import oose2015.utilities.VectorUtility;
-import oose2015.World;
 import oose2015.items.Armor;
 import oose2015.items.Weapon;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.ControllerListener;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.Sound;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -28,7 +20,7 @@ import org.newdawn.slick.geom.Vector2f;
  * <p/>
  */
 
-public class Player extends Agent implements ControllerListener{	
+public class Player extends Agent {
     public int gold;
 
     public int exp;
@@ -56,23 +48,14 @@ public class Player extends Agent implements ControllerListener{
 				 	sweetSpotRange = Settings.SWEETSPOT_RANGE;
     
 	//melee
-	public float startArc = Settings.PLAYER_ARC_START,
-				 endArc = Settings.PLAYER_ARC_END;
+	public float    startArc = Settings.PLAYER_ARC_START,
+				    endArc = Settings.PLAYER_ARC_END;
 	
     //controls
-    public int		controllerIndex,
-                    attackButton = Settings.ATTACK_BUTTON,
-                    rangedButton = Settings.ATTACK_BUTTON,
-                    leftStickX = Settings.LEFT_STICK_X,
-                    leftStickY = Settings.LEFT_STICK_Y,
-    				rightStickX = Settings.RIGHT_STICK_X,
-    				rightStickY = Settings.RIGHT_STICK_Y;
-
-    //deadzones
-    public float 	leftDeadX = Settings.LEFT_DEAD_X,
-    				leftDeadY = Settings.LEFT_DEAD_Y,
-    				rightDeadX = Settings.RIGHT_DEAD_X,
-    				rightDeadY = Settings.RIGHT_DEAD_Y;
+    public int      leftKey = Settings.LEFT_KEY,
+                    rightKey = Settings.RIGHT_KEY,
+                    upKey = Settings.UP_KEY,
+                    downKey = Settings.DOWN_KEY;
     
     //sound variables
     public Sound bowDrawSound;
@@ -83,7 +66,7 @@ public class Player extends Agent implements ControllerListener{
                     rangedKeyDown = false;
 
 	private Input input;
-	
+
     public Color color;
 
     public PlayerUI playerUI;
@@ -91,18 +74,15 @@ public class Player extends Agent implements ControllerListener{
     /**
      * Constructor for player [use Input.KEY_X as key arguments]
      * @param position Position
-     * @param controllerIndex index for the controller
      * @param input reference to input
      */
-    public Player(Vector2f position,Color color, int controllerIndex, Input input){
+    public Player(Vector2f position,Color color, Input input){
         name = "Player";
 
-        playerUI = World.playerUIs[World.PLAYERS.size()];
-        World.PLAYERS.add(this);
+        playerUI = World.playerUI;
 
         this.input = input;
         this.color = color;
-        input.addControllerListener(this);
 
         this.position = position;
         size = new Vector2f(50.0f, 50.0f);
@@ -124,8 +104,6 @@ public class Player extends Agent implements ControllerListener{
         level 			= 1;
         lastLevelExp 	= 0;
         nextLevelExp 	= (level*level)*100;
-
-        this.controllerIndex = controllerIndex;
 
         weapon 			= new Weapon(1,1);
         armor 			= new Armor(1);
@@ -225,29 +203,32 @@ public class Player extends Agent implements ControllerListener{
      */
     @Override
     protected void move(float dt){
-    	float x = input.getAxisValue(controllerIndex, rightStickX), 
-    		  y = input.getAxisValue(controllerIndex, rightStickY);
-    
-    	if(Math.abs(x) < rightDeadX && Math.abs(y) < rightDeadY){
-    		x = 0;
-    		y = 0;
-    	}
-    	
-    	Vector2f axis = new Vector2f(x,y);
-    	
-    	if(axis.length() != 0)
-    		rotation = (float)axis.getTheta();
-    	
-    	x = input.getAxisValue(controllerIndex, leftStickX);
-    	y = input.getAxisValue(controllerIndex, leftStickY);
 
-    	if(Math.abs(x) < leftDeadX)
-    		x = 0;
-    	if(Math.abs(y) < leftDeadY)
-    		y = 0;	
+    	float x = input.getMouseX(),y = input.getMouseY();
+    	
+    	Vector2f axis = World.camera.screenPointToWorldPoint(new Vector2f(x, y)).sub(position);
+        rotation = (float)axis.getTheta();
+
+
+        if(input.isKeyDown(leftKey))
+            x = -1;
+        else if(input.isKeyDown(rightKey))
+            x = 1;
+        else
+            x = 0;
+
+        if(input.isKeyDown(upKey))
+            y = -1;
+        else if(input.isKeyDown(downKey))
+            y = 1;
+        else
+            y = 0;
+
 
     	axis = new Vector2f(x,y);
-        axis.scale((armor.getSpeedModifier() * (attackKeyDown || rangedKeyDown ? 0.7f:1f) * speedForce));
+        axis.normalise();
+
+        axis.scale((armor.getSpeedModifier() * (attackKeyDown || rangedKeyDown ? 0.7f : 1f) * speedForce));
 
         if(axis.length() > .5f)
             ParticleFactory.createSmokeTrail(position.copy(),new Vector2f(0,size.y/2-20).add(velocity.getTheta()),velocity.copy().scale(-1f));
@@ -262,22 +243,43 @@ public class Player extends Agent implements ControllerListener{
     @Override
     public void update(float dt){
         if(isAlive) {
-            move(dt);
+            //update
 
-            if(rangedKeyDown && nextAttackTime < World.TIME){
+            move(dt);
+            if(input.isMouseButtonDown(0))
+                attackKeyDown = true;
+            else
+                attackKeyDown = false;
+
+            if(weapon.ranged) {
+                if (!rangedKeyDown && attackKeyDown) {
+                    startTime = World.TIME;
+                    bowDrawSound.play();
+                    startedBowDraw = true;
+                    rangedKeyDown = true;
+                }
+            }else if(weapon.melee){
+                if (attackKeyDown && nextAttackTime < World.TIME) {
+                    drawAttack = true;
+                    attack();
+                } else if (nextAttackTime - weapon.attackDelay / 2 < World.TIME) //mini hack.. should be fixed with animation implementation
+                    drawAttack = false;
+            }
+
+            if(!attackKeyDown && rangedKeyDown && nextAttackTime < World.TIME){
+                releaseTime = World.TIME;
+                drawTime = releaseTime - startTime;
                 rangedAttack();
+                bowDrawSound.stop();
+                startedBowDraw = false;
+
                 rangedKeyDown = false;
                 drawTime = 0;
                 startedBowDraw = false;
             	arrowShootSound.play();
-            } else if(rangedKeyDown && nextAttackTime > World.TIME)
-            	rangedKeyDown = false;
+            }
             	
-            if (attackKeyDown && nextAttackTime < World.TIME) {
-                drawAttack = true;
-                attack();
-            } else if (nextAttackTime - weapon.attackDelay / 2 < World.TIME) //mini hack.. should be fixed with animation implementation
-                drawAttack = false;
+
         }
     }
 
@@ -331,7 +333,7 @@ public class Player extends Agent implements ControllerListener{
                 }
             }
         }
-        
+
         graphics.popTransform();
 
 
@@ -353,13 +355,10 @@ public class Player extends Agent implements ControllerListener{
         //if is colliding with gold then collect
         if(other instanceof Gold){
             Gold g = (Gold) other;
-            for (int i = 0; i < World.PLAYERS.size(); i++) {
-                Player p = World.PLAYERS.get(i);
-                if(!p.isAlive)
-                    continue;
-                p.gold += Math.round((float)g.value / World.PLAYERS.size());
-                p.playerUI.updateGold();
-            }
+
+            gold += Math.round((float)g.value);
+            playerUI.updateGold();
+
 
             EntityHandler.entities.remove(other);
         }
@@ -388,105 +387,10 @@ public class Player extends Agent implements ControllerListener{
         }
         return false;
     }
-
-
-    @Override
-	public void inputEnded() {
-
-	}
-
-	@Override
-	public void inputStarted() {
-	}
-
-	@Override
-	public boolean isAcceptingInput() {
-		return true;
-	}
-
-	@Override
-	public void setInput(Input arg0) {
-
-	}
-    
 	/**
 	 * Returns weapon damage value.
 	 */
     @Override
     public float getDamage(){return weapon.damage;}
 
-    /**
-     * Checks for button press. Sets button booleans true upon button press.
-     * Plays sound on ranged attack.
-     */
-	@Override
-	public void controllerButtonPressed(int controllerIn, int button) {
-		if(controllerIn != controllerIndex)
-			return;
-		
-		if(attackButton == button && weapon.melee)
-            attackKeyDown = true;
-        
-        else if(rangedButton == button && weapon.ranged && nextAttackTime < World.TIME){
-        	startTime = World.TIME;
-        	bowDrawSound.play();
-            startedBowDraw = true;
-        	//rangedKeyDown = true;
-        }
-
-	}
-
-	/**
-	 * Checks for button release. Sets button booleans to false upon button release.
-	 * Stops ranged sound.
-	 */
-	@Override
-	public void controllerButtonReleased(int controllerIn, int button) {
-		if(controllerIn != controllerIndex)
-			return;
-
-        if(attackButton == button && weapon.melee)
-            attackKeyDown = false;
-
-        else if(rangedButton == button && weapon.ranged && startedBowDraw){
-        	releaseTime = World.TIME;
-        	drawTime = releaseTime - startTime;
-        	rangedKeyDown = true;
-        	bowDrawSound.stop();
-            startedBowDraw = false;
-        }
-
-	}
-
-	@Override
-	public void controllerDownPressed(int controllerIn) {
-	}
-
-	@Override
-	public void controllerDownReleased(int controllerIn) {
-	}
-
-	@Override
-	public void controllerLeftPressed(int controllerIn) {
-	}
-
-	@Override
-	public void controllerLeftReleased(int controllerIn) {
-	}
-
-	@Override
-	public void controllerRightPressed(int controllerIn) {
-	}
-
-	@Override
-	public void controllerRightReleased(int controllerIn) {
-	}
-
-	@Override
-	public void controllerUpPressed(int controllerIn) {
-	}
-
-	@Override
-	public void controllerUpReleased(int controllerIn) {
-	}
 }

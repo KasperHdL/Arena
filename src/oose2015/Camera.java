@@ -57,79 +57,13 @@ public class Camera {
         Vector2f d = targetPosition.sub(position).scale(5f * dt);
 
         position.add(d);
-        scale += (targetScale - scale) * 5f * dt;
 
         //shake
         addShake();
 
-        targetPosition = getCenterOfPlayers();
-
-        //find the player the longest away from center and scale until within view
-        float dist = -1;
-        int index = -1;
-        for (int i = 0; i < World.PLAYERS.size(); i++) {
-            if(!World.PLAYERS.get(i).isAlive)continue;
-            Vector2f delta = position.copy().sub(World.PLAYERS.get(i).position);
-            if (dist < delta.length()) {
-                index = i;
-                dist = delta.length();
-            }
-        }
-        if(index == -1){
-            //no players found
-
-            float x = 0,y = 0;
-            int length = World.PLAYERS.size();
-
-            for (int i = 0; i < length; i++) {
-                x += World.PLAYERS.get(i).position.x;
-                y += World.PLAYERS.get(i).position.y;
-            }
-            targetPosition = new Vector2f(x/length,y/length);
-
-            for (int i = 0; i < World.PLAYERS.size(); i++) {
-                Vector2f delta = position.copy().sub(World.PLAYERS.get(i).position);
-                if (dist < delta.length()) {
-                    index = i;
-                    dist = delta.length();
-                }
-            }
-        }
-
-        //check if it can get closer
-        while(entityWithinView(World.PLAYERS.get(index),targetScale)) {
-            if (targetScale > .98f) break;
-            targetScale += .02f;
-        }
+        targetPosition = World.PLAYER.position.copy();
 
 
-        while(!entityWithinView(World.PLAYERS.get(index),targetScale + .15f)) {
-            if (targetScale <= 0.001f) break;
-            targetScale -= .02f;
-        }
-
-
-
-
-    }
-
-    /**
-     * Finds centre position between players.
-     * @return - Vector2f centre of player.
-     */
-    private Vector2f getCenterOfPlayers(){
-        float x = 0,y = 0;
-        int length = World.PLAYERS.size();
-
-        for (int i = 0; i < length; i++) {
-            if(!World.PLAYERS.get(i).isAlive)
-                continue;
-
-            x += World.PLAYERS.get(i).position.x;
-            y += World.PLAYERS.get(i).position.y;
-        }
-        length = length-World.deadPlayers;
-        return new Vector2f(x/length,y/length);
     }
 
     /**
@@ -144,6 +78,13 @@ public class Camera {
 
             position.add(s);
         }
+    }
+
+    public Vector2f screenPointToWorldPoint(Vector2f input){
+        input = input.copy().add(new Vector2f(-Main.SCREEN_WIDTH/2,-Main.SCREEN_HEIGHT/2));
+        input.scale(scale);
+        input.add(position);
+        return input;
     }
 
     /**

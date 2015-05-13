@@ -30,7 +30,7 @@ import java.util.Random;
 public class World {
     public static boolean DEBUG_MODE = false;
     
-    public static ArrayList<Player> PLAYERS; //for reference
+    public static Player PLAYER; //for reference
     public static ArrayList<Enemy> ENEMIES; //for reference
     public static ArrayList<DungeonExit> EXITS; //for reference
 
@@ -39,7 +39,7 @@ public class World {
     GameContainer gameContainer;
     static StateBasedGame stateBasedGame;
 
-    public static PlayerUI[] playerUIs;
+    public static PlayerUI playerUI;
 
     EntityHandler entityHandler;
 
@@ -63,15 +63,13 @@ public class World {
 
         camera = new Camera();
 
-        PLAYERS = new ArrayList<Player>();
         ENEMIES = new ArrayList<Enemy>(20);
         EXITS = new ArrayList<DungeonExit>(1);
 
-        playerUIs = new PlayerUI[4];
         int sizeX = Main.SCREEN_WIDTH/4;
-        for (int i = 0; i < playerUIs.length; i++) {
-            playerUIs[i] = new PlayerUI(i*sizeX,sizeX);
-        }
+
+        playerUI = new PlayerUI(Main.SCREEN_WIDTH/2 - sizeX/2,sizeX);
+
 
         this.gameContainer = gameContainer;
         World.stateBasedGame = stateBasedGame;
@@ -112,18 +110,13 @@ public class World {
      */
     public void renderInterface(Graphics graphics){
 
-        for (int i = 0; i < playerUIs.length; i++) {
-            playerUIs[i].render(graphics);
-        }
+        playerUI.render(graphics);
+
 
         //dungeon exiting
         if(!justExitedShop && playerOnExit){
 
-            if(dungeonExitTime == -1) {
-                //waiting for other players
-                dungeonExitText.text = "Waiting for " + ((PLAYERS.size()-deadPlayers) - numPlayersOnExit) + " players";
-                dungeonExitText.render(graphics);
-            }else if(dungeonExitTime < TIME){
+            if(dungeonExitTime < TIME){
                 //exit dungeon
                 justExitedShop = true;
                 dungeonExitTime = -1;
@@ -174,7 +167,7 @@ public class World {
      */
     public void spawnWave(){
         waveCount++;
-        for (int i = 0; i < waveCount * 2 * PLAYERS.size(); i++) {
+        for (int i = 0; i < waveCount * 2; i++) {
             new Enemy(new Vector2f(RANDOM.nextFloat()*360).scale(RANDOM.nextFloat()*(Tile.TILE_SIZE) + 10*Tile.TILE_SIZE),RANDOM.nextInt(3)+RANDOM.nextInt(waveCount)+2, RANDOM.nextBoolean());
         }
     }
@@ -186,20 +179,16 @@ public class World {
 
         for (int i = 0; i < EXITS.size(); i++) {
             numPlayersOnExit = 0;
-            for (int j = 0; j < PLAYERS.size(); j++) {
-                if(!PLAYERS.get(j).isAlive)
-                    continue;
 
-                if (CollisionUtility.checkCollision(PLAYERS.get(j), EXITS.get(i)))
-                    numPlayersOnExit++;
-            }
+            if (CollisionUtility.checkCollision(PLAYER, EXITS.get(i)))
+                numPlayersOnExit++;
 
             playerOnExit = numPlayersOnExit != 0;
 
 
             if(justExitedShop && !playerOnExit)
                     justExitedShop = false;
-            else if(numPlayersOnExit != PLAYERS.size() - deadPlayers)
+            else if(numPlayersOnExit != 1)
                 dungeonExitTime = -1;
             else if(dungeonExitTime == -1)
                 dungeonExitTime = TIME + dungeonExitLength;
@@ -209,8 +198,8 @@ public class World {
     /**
      * Creates player object
      */
-    public void createPlayer(Vector2f v, Color color, int controllerInput){
-        new Player(v, color, controllerInput,gameContainer.getInput());
+    public void createPlayer(Vector2f v, Color color){
+        PLAYER = new Player(v, color ,gameContainer.getInput());
     		
     }
 }

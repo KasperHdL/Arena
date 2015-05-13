@@ -1,6 +1,7 @@
 package oose2015.states;
 
 import oose2015.Main;
+import oose2015.Settings;
 import oose2015.gui.ShopKeeperMenu;
 import oose2015.World;
 import org.newdawn.slick.*;
@@ -23,7 +24,7 @@ public class ShopKeeperState implements GameState {
 
     StateBasedGame stateBasedGame;
     
-    ShopKeeperMenu[] playerMenus;
+    ShopKeeperMenu playerMenu;
 
     //TEMPORARY probably
     public enum Button{
@@ -48,11 +49,10 @@ public class ShopKeeperState implements GameState {
      * Creates shop menu
      */
     public void createMenu(){
-        playerMenus = new ShopKeeperMenu[World.PLAYERS.size()];
         int sizeX = Main.SCREEN_WIDTH/4;
-        for (int i = 0; i < playerMenus.length; i++) {
-            playerMenus[i] = new ShopKeeperMenu(new Vector2f(i*sizeX,0),sizeX,i);
-        }
+
+        playerMenu = new ShopKeeperMenu(new Vector2f(Main.SCREEN_WIDTH/2 - sizeX/2,0),sizeX);
+
     }
 
     /**
@@ -73,9 +73,7 @@ public class ShopKeeperState implements GameState {
             }
         }
 
-        for (int i = 0; i < playerMenus.length; i++) {
-            playerMenus[i].render(graphics);
-        }
+            playerMenu.render(graphics);
     }
 
     /**
@@ -85,13 +83,9 @@ public class ShopKeeperState implements GameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
         boolean allReady = true;
 
-        for (int i = 0; i < playerMenus.length; i++) {
-            playerMenus[i].update();
-            if(!playerMenus[i].isReady)
-                allReady = false;
-        }
+        playerMenu.update();
 
-        if(!allReady)
+        if(!playerMenu.isReady)
             allReadyTime = -1;
         else{
             if(allReadyTime == -1){
@@ -134,11 +128,6 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void controllerUpPressed(int i) {
-        for (int j = 0; j < World.PLAYERS.size(); j++) {
-           if(World.PLAYERS.get(j).controllerIndex == i){
-               playerMenus[j].handleInput(Button.Up);
-           }
-        }
     }
 
     @Override
@@ -148,11 +137,6 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void controllerDownPressed(int i) {
-        for (int j = 0; j < World.PLAYERS.size(); j++) {
-            if(World.PLAYERS.get(j).controllerIndex == i){
-                playerMenus[j].handleInput(Button.Down);
-            }
-        }
     }
 
     @Override
@@ -162,11 +146,6 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void controllerButtonPressed(int i, int btnIndex) {
-        for (int j = 0; j < World.PLAYERS.size(); j++) {
-            if(World.PLAYERS.get(j).controllerIndex == i && (btnIndex == 1 || btnIndex == 3)){
-                playerMenus[j].handleInput(Button.Select);
-            }
-        }
     }
 
     @Override
@@ -176,7 +155,12 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void keyPressed(int key, char c) {
-
+        if(key == Settings.UP_KEY)
+            playerMenu.handleInput(Button.Up);
+        else if(key == Settings.DOWN_KEY)
+            playerMenu.handleInput(Button.Down);
+        else if(key == Input.KEY_SPACE)
+            playerMenu.handleInput(Button.Select);
     }
 
     @Override
@@ -191,7 +175,7 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void mouseClicked(int i, int i1, int i2, int i3) {
-
+        playerMenu.handleInput(Button.Select);
     }
 
     @Override

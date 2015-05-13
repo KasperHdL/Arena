@@ -48,13 +48,11 @@ public class ShopKeeperMenu {
      * Creates new shop box-menu for individual player.
      * @param position - position on screen
      * @param sizeX - size of box
-     * @param index - player index
      */
-    public ShopKeeperMenu(Vector2f position,int sizeX,int index){
+    public ShopKeeperMenu(Vector2f position,int sizeX){
         this.position = position;
         interactables = new InteractableElement[9];
-        playerIndex = index;
-        player = World.PLAYERS.get(playerIndex);
+        player = World.PLAYER;
 
          color = player.color;
          overColor = color.brighter(.2f);

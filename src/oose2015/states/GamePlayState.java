@@ -44,8 +44,7 @@ public class GamePlayState implements GameState {
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        for (int i = 0; i < World.PLAYERS.size(); i++)
-            World.PLAYERS.get(i).playerUI.updateGold();
+            World.PLAYER.playerUI.updateGold();
     }
 
     @Override
@@ -105,7 +104,7 @@ public class GamePlayState implements GameState {
 
     @Override
     public void keyPressed(int i, char c) {
-        if(i == Input.KEY_D){
+        if(i == Input.KEY_P){
             //toggle debug mode
             World.DEBUG_MODE = !World.DEBUG_MODE;
         }

@@ -2,6 +2,7 @@ package oose2015.states;
 
 import oose2015.Assets;
 import oose2015.Main;
+import oose2015.Settings;
 import oose2015.gui.elements.TextBox;
 
 import org.newdawn.slick.*;
@@ -18,8 +19,7 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 
 public class MainMenuState implements GameState{
-	public int[] controllerIndex = {-1,-1,-1,-1};
-    public int[] playerColors = {-1,-1,-1,-1};
+
 
     public Color[] colors = {
             new Color(255,116,56),
@@ -31,7 +31,7 @@ public class MainMenuState implements GameState{
     };
 
     public TextBox instructionBox;
-    public TextBox[] controllerBox;
+    public int colorIndex = 0;
 	
     StateBasedGame stateBasedGame;
 
@@ -47,17 +47,9 @@ public class MainMenuState implements GameState{
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         this.stateBasedGame = stateBasedGame;
 
-        controllerBox = new TextBox[4];
+        instructionBox = new TextBox("Press Start to start the game", new Vector2f(Main.SCREEN_WIDTH/2,100), TextBox.Align.CENTER);
 
-        instructionBox = new TextBox("Press Select to start the game", new Vector2f(Main.SCREEN_WIDTH/2,100), TextBox.Align.CENTER);
-        for (int i = 0; i < controllerBox.length; i++) {
-            controllerBox[i] = new TextBox("Press Start on the Controller", new Vector2f(sizeX * i + sizeX/2,Main.SCREEN_HEIGHT-20), TextBox.Align.CENTER);
-            controllerBox[i].blinkTextLength = 1500;
-        }
-        
         new Assets();
-
-
 
     }
 
@@ -66,19 +58,15 @@ public class MainMenuState implements GameState{
         graphics.setColor(Color.white);
         instructionBox.render(graphics);
 
-        for (int i = 0; i < controllerIndex.length; i++) {
-            if(controllerIndex[i] != -1) {
-                for (int j = 0; j < colors.length; j++) {
-                    int miniX = (sizeX/colors.length);
-                    graphics.setColor(colors[j]);
-                    graphics.fillRect(sizeX * i + miniX*j, Main.SCREEN_HEIGHT - 70, miniX, 20);
-                }
-                graphics.setColor(colors[playerColors[i]]);
-                graphics.fillRect(sizeX * i, Main.SCREEN_HEIGHT - 50, sizeX, 20);
-            }
-            controllerBox[i].render(graphics);
 
+        for (int j = 0; j < colors.length; j++) {
+            int miniX = (sizeX/colors.length);
+            graphics.setColor(colors[j]);
+            graphics.fillRect((Main.SCREEN_WIDTH/2) - (sizeX/2) + miniX*j, Main.SCREEN_HEIGHT - 70, miniX, 20);
         }
+        graphics.setColor(colors[colorIndex]);
+        graphics.fillRect((Main.SCREEN_WIDTH/2) - (sizeX/2), Main.SCREEN_HEIGHT - 50, sizeX, 20);
+
 
     }
 
@@ -101,50 +89,25 @@ public class MainMenuState implements GameState{
      */
     private void startGame(){
         stateBasedGame.enterState(1);
-        for(int j = 0; j < controllerIndex.length; j++){
-            if(controllerIndex[j] != -1){
-                GamePlayState g = (GamePlayState)stateBasedGame.getState(1);
-                g.world.createPlayer(new Vector2f(Main.SCREEN_WIDTH/2,Main.SCREEN_HEIGHT/2),colors[playerColors[j]],controllerIndex[j]);
-            }
-        }
+        GamePlayState g = (GamePlayState)stateBasedGame.getState(1);
+        g.world.createPlayer(new Vector2f(0,0),colors[colorIndex]);
     }
 
     /**
      * Change colour of player.
-     * @param index - playerColour array index
      * @param goLeft
      */
-    public void changeColor(int index, boolean goLeft){
-        boolean foundColor = false;
-        int c = playerColors[index] + (goLeft ? -1:1);
-        while(!foundColor){
-            if(c < 0)c = colors.length - 1;
-            else if(c >= colors.length) c = 0;
+    public void changeColor(boolean goLeft){
+        int c = colorIndex + (goLeft ? -1:1);
 
-            boolean otherPlayerHasColor = false;
+        if(c < 0)c = colors.length - 1;
+        else if(c >= colors.length) c = 0;
 
-            for (int i = 0; i < playerColors.length; i++) {
-                if(c == playerColors[i]){
-                    c += (goLeft ? -1:1);
-                    otherPlayerHasColor = true;
-                    break;
-                }
-            }
-            if(!otherPlayerHasColor){
-                foundColor = true;
-            }
-
-        }
-        playerColors[index] = c;
+        colorIndex = c;
     }
     
     @Override
     public void controllerLeftPressed(int i) {
-        for (int j = 0; j < controllerIndex.length; j++) {
-            if(i == controllerIndex[j]){
-                changeColor(j, true);
-            }
-        }
     }
 
     @Override
@@ -154,11 +117,6 @@ public class MainMenuState implements GameState{
 
     @Override
     public void controllerRightPressed(int i) {
-        for (int j = 0; j < controllerIndex.length; j++) {
-            if(i == controllerIndex[j]){
-                changeColor(j, false);
-            }
-        }
     }
 
     @Override
@@ -186,58 +144,8 @@ public class MainMenuState implements GameState{
     	
     }
 
-    /**
-     * Upon controller button press will:
-     * if already active: set controller as inactive
-     * if inactive: set controller as active.
-     */
     @Override
     public void controllerButtonPressed(int conIndex, int btnIndex) {
-        //System.out.println("con: " + conIndex + ", btn: " + btnIndex);
-
-        //select
-        if(btnIndex == 7){
-            boolean noControllers = true;
-            for(int i = controllerIndex.length - 1; i >= 0; i--)
-                if(controllerIndex[i] != -1){
-                    noControllers = false;
-                    break;
-                }
-            if(noControllers)
-                addController(conIndex);
-            startGame();
-        }
-
-        //start == 8
-        if(btnIndex == 8){
-            addController(conIndex);
-    	}
-    }
-
-    /**
-     * Adds controller and saves its index.
-     * @param conIndex - Controller index.
-     */
-    public void addController(int conIndex){
-        int emptyIndex = -1;
-        for(int i = controllerIndex.length - 1; i >= 0; i--){
-            if(controllerIndex[i] == -1){
-                emptyIndex = i;
-            } else if(controllerIndex[i] == conIndex) {
-                controllerIndex[i] = -1;
-                emptyIndex = -1;
-                playerColors[i] = -1;
-                controllerBox[i].blinkText("Player " + (i+1) + " is disconnected", Color.red);
-                controllerBox[i].text = "Press Start on the Controller";
-                break;
-            }
-        }
-        if(emptyIndex != -1){
-            controllerIndex[emptyIndex] = conIndex;
-            controllerBox[emptyIndex].stopBlinkText();
-            controllerBox[emptyIndex].text = "Player " + (emptyIndex + 1) + " is connected";
-            changeColor(emptyIndex,false);
-        }
     }
 
     @Override
@@ -247,6 +155,13 @@ public class MainMenuState implements GameState{
 
     @Override
     public void keyPressed(int i, char c) {
+        if(i == Input.KEY_LEFT || i == Settings.LEFT_KEY){
+            changeColor(true);
+        }else if(i == Input.KEY_RIGHT || i == Settings.RIGHT_KEY){
+            changeColor(false);
+        }else if(i == Input.KEY_SPACE){
+            startGame();
+        }
     }
 
     @Override

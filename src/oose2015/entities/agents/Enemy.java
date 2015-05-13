@@ -96,7 +96,7 @@ public class Enemy extends Agent {
                 player = shooter;
                 isChasing = true;
             }else {
-                player = getClosestPlayer();
+                player = World.PLAYER;
             }
 
             if(player == null)
@@ -269,37 +269,6 @@ public class Enemy extends Agent {
             graphics.drawString(curHealth + " / " + maxHealth, position.x + 10, position.y + 10);
             graphics.drawString("level " + level, position.x + 10, position.y - 10);
         }
-    }
-
-
-    /**
-     * Calculates the closest living player
-     * @return - closest player object
-     */
-    private Player getClosestPlayer(){
-        Vector2f delta;
-
-        float minDistance = Float.MAX_VALUE;
-        int minIndex = -1;
-
-        for (int i = 0; i < World.PLAYERS.size(); i++) {
-            Player p = World.PLAYERS.get(i);
-            if(!p.isAlive)continue;
-            delta = p.position.copy().sub(position);
-            float dist = delta.length();
-
-            if(minDistance > dist){
-                minDistance = dist;
-                minIndex = i;
-            }
-        }
-
-        if(minIndex == -1){
-            //all players dead
-            return null;
-        }
-
-        return World.PLAYERS.get(minIndex);
     }
 
     @Override
