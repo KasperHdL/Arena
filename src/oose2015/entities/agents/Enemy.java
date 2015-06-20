@@ -1,4 +1,4 @@
-	package oose2015.entities.agents;
+package oose2015.entities.agents;
 
 import oose2015.EntityHandler;
 import oose2015.entities.Entity;
@@ -25,29 +25,16 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Enemy extends Agent {
     float damage = Settings.ENEMY_DAMAGE;
-    Sound arrowSound;
     
     public int goldDrop;
     public int expDrop;
 
     float engageRadius 			= Settings.ENEMY_ENGAGE_RADIUS;
     float disengageRadius 		= Settings.ENEMY_DISENGAGE_RADIUS;
-    float attackRadius 			= Settings.ENEMY_MELEE_RADIUS;
-
-    float nextAttackTime;
-    float attackDelay 			= Settings.ENEMY_ATTACK_DELAY;
-    float nextChargeTime 		= 0;
-    float chargeDelay 			= Settings.CHARGE_DELAY;
-    float minChargeDistance 	= Settings.MIN_CHARGE_DISTANCE;
-    float maxChargeDistance 	= Settings.MAX_CHARGE_DISTANCE;
-    float chargeTime 			= Settings.CHARGE_TIME;
-    float chargeEndTime 		= 0;
-    int chargeScalar 			= Settings.CHARGE_SCALAR;
 
     public boolean 	isChasing 	= false,
     				isShot 		= false,
-    				isMelee 	= false,
-    				isCharging 	= false;
+    				isAttacking = false;
     
     Vector2f chargePoint;
 	
@@ -58,7 +45,7 @@ public class Enemy extends Agent {
      * Constructor for Enemy
      * @param position spawn position
      */
-    public Enemy(Vector2f position, int level, boolean isMelee){
+    public Enemy(Vector2f position, int level/*, boolean isMelee*/){
         World.ENEMIES.add(this);
 
         curHealth 		= Settings.ENEMY_HEALTH;
@@ -66,7 +53,6 @@ public class Enemy extends Agent {
 
         this.level 		= level;
         this.position 	= position;
-        this.isMelee 	= isMelee;
         
         size 			= new Vector2f(level * 5f + 15f,level * 5f + 15f );
 
@@ -77,11 +63,6 @@ public class Enemy extends Agent {
         mass 			= level + Settings.ENEMY_MASS_PER_LVL;
         goldDrop 		= level * Settings.ENEMY_GOLD_DROP_PER_LVL;
         expDrop 		= level * Settings.ENEMY_EXP_DROP_PER_LVL;
-
-        if(!isMelee){
-        	attackRadius = Settings.ENEMY_RANGED_RADIUS;
-        }
-        arrowSound = Assets.SOUND_ARROW_SHOOT;
       
     }
 
@@ -103,67 +84,26 @@ public class Enemy extends Agent {
                 return;
 
             if(isChasing){
-
                 if(player != target)
                     target = player;
-
-                chasePlayer(target,dt);
+                if(!isAttacking)
+                	chasePlayer(target,dt);
             }else{
-
                 float dist = VectorUtility.getDistanceToEntity(this, player);
-
-                //check distance
-                if(dist < engageRadius){
-                    isChasing = true;
-                    target = player;
-                }else {
-                    //idle
-                    //TODO move a bit around randomly when not chasing any one
-                }
             }
         }
     }
 
     /**
      * Checks distance to player, if player is within distance enemy will chase.
-     * If distance to player is within attack range of enemy enemy will attack.
-     * If distance to player is within charge range and charge cooldown is up, then enemy will charge.
      * @param agent Agent to chase
      * @param dt - delta time
      */
-    private void chasePlayer(Agent agent, float dt){
+    protected void chasePlayer(Agent agent, float dt){
         Vector2f delta = target.position.copy().sub(position);
         float dist = VectorUtility.getDistanceToEntity(this, agent);
     	
-        if(isMelee && nextChargeTime < World.TIME && !isCharging && dist > minChargeDistance && dist < maxChargeDistance){
-    		speedForce = speedForce*chargeScalar;
-    		chargeEndTime = chargeTime + World.TIME;
-    		nextChargeTime = chargeDelay + World.TIME;
-    		isCharging = true;
-    	} else if(isCharging && chargeEndTime <= World.TIME){
-    		speedForce = Settings.ENEMY_SPEED_FORCE;
-    		isCharging = false;
-    	}
-        
-        if(dist < attackRadius){
-            //attack
-        	if(isShot)
-                isShot = false;
-
-            if(nextAttackTime < World.TIME) {
-            	if(isMelee){
-                    if(!isCharging) {
-                        agent.takeDamage(this, damage);
-                        nextAttackTime = World.TIME + attackDelay;
-                    }
-            	} else {
-            		rotation = calculateAngleToTarget(target);
-            		//System.out.println(rotation);
-            		//rotation = (float)target.position.getTheta();
-            		rangedAttack();
-            	}
-            }
-        }else if(dist > disengageRadius && !isShot){
+        if(dist > disengageRadius && !isShot){
             //disengage
             target = null;
             isChasing = false;
@@ -172,31 +112,21 @@ public class Enemy extends Agent {
             move(dt,delta);
         }
     }
-    
-    /**
-     * charge function. WORK IN PROGRESS
-     */
-    /*private void chargePlayer(Agent agent, float dist){
-    	if(!isCharging){
-	    	chargePoint = new Vector2f(0,1);
-	    	chargePoint.add(rotation);
-	    	chargePoint.add(agent.position);
-    	}
-    	isCharging = true;
-    	speedForce = speedForce*10;
-    	nextChargeTime = chargeDelay+World.TIME;
-    	if(dist < attackRadius)
-    		isCharging = false;
-    }*/
-
-    /**
-     * Creates new projectile and sets new attack delay.
-     */
-    protected void rangedAttack(){
-        nextAttackTime = World.TIME + attackDelay;
-    	new Projectile(this, damage);
-    	arrowSound.play();
+    //Overload
+    protected void chasePlayer(Agent agent, float dt, boolean isAttacking){
+        Vector2f delta = target.position.copy().sub(position);
+        float dist = VectorUtility.getDistanceToEntity(this, agent);
+    	
+        if(dist > disengageRadius && !isShot){
+            //disengage
+            target = null;
+            isChasing = false;
+        }else if(!isAttacking){
+            //move
+            move(dt,delta);
+        }
     }
+    
     
     /**
      * Moves enemy and sets enemy rotation.
@@ -252,14 +182,6 @@ public class Enemy extends Agent {
                 }
             }
 
-            //attack radius
-            halfRadius = attackRadius + size.x/2;
-            if(isMelee && nextAttackTime - 50 < World.TIME && dist < attackRadius) {
-                graphics.setColor(Color.red);
-                graphics.fillOval(-halfRadius, -halfRadius, halfRadius*2, halfRadius*2);
-            }else if(World.DEBUG_MODE)
-                graphics.drawOval(-halfRadius, -halfRadius, halfRadius * 2, halfRadius * 2);
-
         }
 
         graphics.popTransform();
@@ -276,7 +198,7 @@ public class Enemy extends Agent {
      * Calculates the closest living player
      * @return - closest player object
      */
-    private Player getClosestPlayer(){
+    protected Player getClosestPlayer(){
         Vector2f delta;
 
         float minDistance = Float.MAX_VALUE;
