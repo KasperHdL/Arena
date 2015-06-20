@@ -3,7 +3,6 @@ package oose2015.states;
 import oose2015.Assets;
 import oose2015.Main;
 import oose2015.gui.elements.TextBox;
-
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
@@ -84,7 +83,6 @@ public class MainMenuState implements GameState{
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
-
     }
 
     @Override
@@ -112,7 +110,7 @@ public class MainMenuState implements GameState{
     /**
      * Change colour of player.
      * @param index - playerColour array index
-     * @param goLeft
+     * @param goLeft - direction of color to be picked
      */
     public void changeColor(int index, boolean goLeft){
         boolean foundColor = false;
@@ -193,10 +191,10 @@ public class MainMenuState implements GameState{
      */
     @Override
     public void controllerButtonPressed(int conIndex, int btnIndex) {
-        //System.out.println("con: " + conIndex + ", btn: " + btnIndex);
+        System.out.println("con: " + conIndex + ", btn: " + btnIndex);
 
         //select
-        if(btnIndex == 7){
+        if (btnIndex == -1) {
             boolean noControllers = true;
             for(int i = controllerIndex.length - 1; i >= 0; i--)
                 if(controllerIndex[i] != -1){
@@ -209,7 +207,7 @@ public class MainMenuState implements GameState{
         }
 
         //start == 8
-        if(btnIndex == 8){
+        if (btnIndex == -1) {
             addController(conIndex);
     	}
     }
