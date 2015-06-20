@@ -40,7 +40,7 @@ public class DungeonExit extends Entity {
             graphics.setColor(Color.magenta);
             graphics.fillOval(-size.x / 2, -size.x / 2, size.x, size.y);
             graphics.setColor(Color.white);
-            graphics.drawString("exit", 0, 0);
+            graphics.drawString("Shop", 0, 0);
 
             graphics.popTransform();
 

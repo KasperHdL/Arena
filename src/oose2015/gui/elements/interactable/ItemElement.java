@@ -52,7 +52,7 @@ public class ItemElement extends InteractableElement {
         super(menu,position, size);
         this.item = item;
         level = item.level;
-        price = level * 10 + World.RANDOM.nextInt(10) - 5;
+        price = level * level * 10 + World.RANDOM.nextInt(level * 10);
 
         //temp until icon
         if(item instanceof Weapon){
@@ -131,8 +131,6 @@ public class ItemElement extends InteractableElement {
      */
     @Override
     public void select(){
-        if(hasBeenBought)return;
-
         if(isSelected){
             //buy
             hasBeenBought = true;

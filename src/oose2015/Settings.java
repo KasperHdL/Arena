@@ -29,8 +29,7 @@ public class Settings {
 	    Select = 7
 	    Start = 8*/
 
-	    public static final int 	ATTACK_BUTTON = 5,
-									RANGED_BUTTON = 6,
+	    public static final int 	ATTACK_BUTTON = 6,
 									LEFT_STICK_X = 1,
 									LEFT_STICK_Y = 0,
 									RIGHT_STICK_X = 3,

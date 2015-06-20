@@ -19,8 +19,20 @@ public class Armor extends Item{
      */
     public Armor(int level){
         this.level = level;
-        speedReduction = level * 0.04f;
-        damageReduction = level * 0.02f;
+
+        if(level < 10)
+            speedReduction = level * 0.03f;
+        else if(level <= 20)
+            speedReduction = .30f + (level - 10) * 0.02f;
+        else if(level > 20)
+            speedReduction = 0.50f;
+
+        if(level < 10)
+            damageReduction = level * 0.02f;
+        else if(level <= 20)
+            damageReduction = .20f + (level - 10) * 0.01f;
+        else if(level > 20)
+            damageReduction = 0.30f;
     }
 
     /**

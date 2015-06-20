@@ -83,7 +83,7 @@ public class World {
 
         dungeonExitText = new TextBox("dungeon exit", new Vector2f(Main.SCREEN_WIDTH/2,(Main.SCREEN_HEIGHT*3)/4), TextBox.Align.CENTER);
 
-        new DungeonExit(new Vector2f(100,10));
+        new DungeonExit(new Vector2f(0,0));
 
         for (int i = 0; i < 100; i++) {
             for (int j = 0; j < 100; j++) {

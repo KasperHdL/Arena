@@ -77,8 +77,23 @@ public class Camera {
         }
         if(index == -1){
             //no players found
-            targetScale = 1;
-            return;
+
+            float x = 0,y = 0;
+            int length = World.PLAYERS.size();
+
+            for (int i = 0; i < length; i++) {
+                x += World.PLAYERS.get(i).position.x;
+                y += World.PLAYERS.get(i).position.y;
+            }
+            targetPosition = new Vector2f(x/length,y/length);
+
+            for (int i = 0; i < World.PLAYERS.size(); i++) {
+                Vector2f delta = position.copy().sub(World.PLAYERS.get(i).position);
+                if (dist < delta.length()) {
+                    index = i;
+                    dist = delta.length();
+                }
+            }
         }
 
         //check if it can get closer

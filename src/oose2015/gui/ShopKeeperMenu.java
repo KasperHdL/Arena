@@ -37,6 +37,12 @@ public class ShopKeeperMenu {
     private InteractableElement[] interactables;
     private Element[] elements;
 
+
+    Color color ;
+    Color overColor;
+    Color boughtColor;
+    Color boughtOverColor ;
+
     /**
      * ShopKeeperMenu Constructor.
      * Creates new shop box-menu for individual player.
@@ -50,10 +56,10 @@ public class ShopKeeperMenu {
         playerIndex = index;
         player = World.PLAYERS.get(playerIndex);
 
-        Color color = player.color;
-        Color overColor = color.brighter(.2f);
-        Color boughtColor = color.darker(.4f);
-        Color boughtOverColor = boughtColor.brighter(.2f);
+         color = player.color;
+         overColor = color.brighter(.2f);
+         boughtColor = color.darker(.4f);
+         boughtOverColor = boughtColor.brighter(.2f);
 
         //Create List
         int startY = Main.SCREEN_HEIGHT - (interactables.length) * 30;
@@ -155,7 +161,7 @@ public class ShopKeeperMenu {
         //select item
         if(interactables[active] instanceof ItemElement){
             ItemElement ie = (ItemElement) interactables[active];
-            if(ie.hasBeenBought)return;
+            //if(ie.hasBeenBought)return;
             if(player.gold < ie.price){
                 goldBox.blinkText(Color.red);
                 return;
@@ -169,9 +175,35 @@ public class ShopKeeperMenu {
 
                 }
                 player.gold -= ie.price;
+
+
+                for (int i = 0; i < interactables.length-1; i++) {
+                    ItemElement l = (ItemElement)interactables[i];
+
+                    if(i < 2)
+                        l = new ItemElement(this,l.position,l.size,new Weapon(player.weapon.level+1,0));
+                    else if(i < 4)
+                        l = new ItemElement(this,l.position,l.size,new Weapon(player.weapon.level+1,1));
+                    else if(i < 6)
+                        l = new ItemElement(this,l.position,l.size,new Weapon(player.weapon.level+1,2));
+                    else
+                        l = new ItemElement(this,l.position,l.size,new Armor(player.armor.level+1));
+
+                    l.color = color;
+                    l.overColor = overColor;
+                    l.boughtColor = boughtColor;
+                    l.boughtOverColor = boughtOverColor;
+
+                    interactables[i] = l;
+                }
+
+                interactables[active].movedOver();
+                ie.hasBeenBought = false;
             }
         }else
             interactables[active].select();
     }
+
+
 
 }
