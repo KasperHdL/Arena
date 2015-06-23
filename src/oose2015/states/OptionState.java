@@ -42,42 +42,6 @@ public class OptionState implements GameState {
     public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 
     }
-
-    @Override
-    public void controllerLeftPressed(int i) {
-
-    }
-
-    @Override
-    public void controllerLeftReleased(int i) {
-
-    }
-
-    @Override
-    public void controllerRightPressed(int i) {
-
-    }
-
-    @Override
-    public void controllerRightReleased(int i) {
-
-    }
-
-    @Override
-    public void controllerUpPressed(int i) {
-
-    }
-
-    @Override
-    public void controllerUpReleased(int i) {
-
-    }
-
-    @Override
-    public void controllerDownPressed(int i) {
-
-    }
-
     @Override
     public void controllerDownReleased(int i) {
 
@@ -140,7 +104,7 @@ public class OptionState implements GameState {
 
     @Override
     public boolean isAcceptingInput() {
-        return false;
+        return true;
     }
 
     @Override
@@ -152,4 +116,41 @@ public class OptionState implements GameState {
     public void inputStarted() {
 
     }
+
+
+    @Override
+    public void controllerLeftPressed(int i) {
+
+    }
+
+    @Override
+    public void controllerLeftReleased(int i) {
+
+    }
+
+    @Override
+    public void controllerRightPressed(int i) {
+
+    }
+
+    @Override
+    public void controllerRightReleased(int i) {
+
+    }
+
+    @Override
+    public void controllerUpPressed(int i) {
+
+    }
+
+    @Override
+    public void controllerUpReleased(int i) {
+
+    }
+
+    @Override
+    public void controllerDownPressed(int i) {
+
+    }
+
 }

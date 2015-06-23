@@ -1,8 +1,8 @@
 package oose2015.states;
 
 import oose2015.Main;
-import oose2015.gui.ShopKeeperMenu;
 import oose2015.World;
+import oose2015.gui.ShopKeeperMenu;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
@@ -24,14 +24,6 @@ public class ShopKeeperState implements GameState {
     StateBasedGame stateBasedGame;
     
     ShopKeeperMenu[] playerMenus;
-
-    //TEMPORARY probably
-    public enum Button{
-        Up,
-        Down,
-        Select
-    }
-
 
     @Override
     public int getID() {
@@ -134,11 +126,11 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void controllerUpPressed(int i) {
-        for (int j = 0; j < World.PLAYERS.size(); j++) {
+        /*for (int j = 0; j < World.PLAYERS.size(); j++) {
            if(World.PLAYERS.get(j).controllerIndex == i){
                playerMenus[j].handleInput(Button.Up);
            }
-        }
+        }*/
     }
 
     @Override
@@ -148,11 +140,11 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void controllerDownPressed(int i) {
-        for (int j = 0; j < World.PLAYERS.size(); j++) {
+       /* for (int j = 0; j < World.PLAYERS.size(); j++) {
             if(World.PLAYERS.get(j).controllerIndex == i){
                 playerMenus[j].handleInput(Button.Down);
             }
-        }
+        }*/
     }
 
     @Override
@@ -162,11 +154,11 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void controllerButtonPressed(int i, int btnIndex) {
-        for (int j = 0; j < World.PLAYERS.size(); j++) {
+      /*  for (int j = 0; j < World.PLAYERS.size(); j++) {
             if(World.PLAYERS.get(j).controllerIndex == i && (btnIndex == 1 || btnIndex == 3)){
                 playerMenus[j].handleInput(Button.Select);
             }
-        }
+        }*/
     }
 
     @Override
@@ -232,5 +224,12 @@ public class ShopKeeperState implements GameState {
     @Override
     public void inputStarted() {
 
+    }
+
+    //TEMPORARY probably
+    public enum Button {
+        Up,
+        Down,
+        Select
     }
 }
