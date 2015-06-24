@@ -15,4 +15,8 @@ public class ControllerScheme {
         }
         return s;
     }
+
+    public String toPrint() {
+        return null;
+    }
 }

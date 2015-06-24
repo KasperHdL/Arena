@@ -11,7 +11,11 @@ public abstract class InputWrapper {
 
     public abstract float getActionAsFloat(Action action);
 
+    public abstract Vector2f getDirection();
+
+    public abstract Vector2f getMovement();
+
     public Vector2f getActionAsVector(Action x, Action y) {
-        return new Vector2f(getActionAsFloat(x), getActionAsFloat(y));
+        return new Vector2f(getActionAsFloat(x), getActionAsFloat(y)).normalise();
     }
 }

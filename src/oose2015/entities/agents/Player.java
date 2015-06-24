@@ -190,12 +190,12 @@ public class Player extends Agent {
     @Override
     protected void move(float dt){
 
-        Vector2f axis = inputWrapper.getActionAsVector(Action.Direction_X, Action.Direction_Y);
+        Vector2f axis = inputWrapper.getDirection();
 
         if (axis.length() != 0)
             rotation = (float) axis.getTheta();
 
-        axis = inputWrapper.getActionAsVector(Action.Movement_X, Action.Movement_Y);
+        axis = inputWrapper.getMovement();
 
         axis.scale((armor.getSpeedModifier() * (inputWrapper.getActionAsBoolean(Action.Attack) ? 0.7f : 1f) * speedForce));
 

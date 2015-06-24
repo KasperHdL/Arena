@@ -7,6 +7,7 @@ import oose2015.gui.elements.TextBox;
 import oose2015.input.Action;
 import oose2015.input.ControllerScheme;
 import oose2015.input.ControllerWrapper;
+import org.lwjgl.input.Controllers;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
@@ -101,8 +102,14 @@ public class MainMenuState implements GameState{
                 startGame();
             }
 
+            String s = "";
+            for (int j = 0; j < controllerWrappers[i].controller.getAxisCount(); j++) {
+                s += " " + controllerWrappers[i].controller.getAxisName(j);
+            }
+            //System.out.println(s);
+
             if (Settings.DEBUG_CONTROLLER) {
-                String s = i + ": ";
+                s = i + ": ";
                 for (int j = 0; j < Settings.NUM_ACTIONS; j++)
                     s += actions[j].name() + "(" + controllerWrappers[i].getActionAsBoolean(actions[j]) + "," + controllerWrappers[i].getActionAsFloat(actions[j]) + ") ";
                 System.out.println(s);
@@ -138,11 +145,14 @@ public class MainMenuState implements GameState{
     /**
      * Start calibration for a controller creating a new controller scheme
      */
-    public void prepCalibration(int controllerIndex) {
-        ((CalibrationState) stateBasedGame.getState(4)).controllerIndex = controllerIndex;
+    public void prepCalibration(int controllerIndex, int index) {
+        CalibrationState calibration = (CalibrationState) stateBasedGame.getState(4);
+
+        calibration.controllerIndex = controllerIndex;
+        calibration.playerIndex = index;
         calibrateIndex = controllerIndex;
 
-        instructionBox.text = "Controller Scheme not found for controller. Press Any key to initiate Calibration for that controller";
+        instructionBox.text = "Controller Scheme not found for controller. Press Any key to initiate Calibration for " + Controllers.getController(controllerIndex).getName();
 
 
     }
@@ -328,7 +338,7 @@ public class MainMenuState implements GameState{
             }
 
             if (!schemeExists) {
-                prepCalibration(conIndex);
+                prepCalibration(conIndex, emptyIndex);
                 controllerScheme[emptyIndex] = Settings.CONTROLLER_SCHEMES.size();
             } else {
                 System.out.println(Settings.CONTROLLER_SCHEMES.get(controllerScheme[emptyIndex]).name + " assigned to player " + emptyIndex + " - controller index " + conIndex);

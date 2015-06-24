@@ -2,13 +2,14 @@ package oose2015.input;
 
 import oose2015.Settings;
 import org.lwjgl.input.Controller;
+import org.newdawn.slick.geom.Vector2f;
 
 /**
  * Created by kaholi on 6/23/15.
  */
 public class ControllerWrapper extends InputWrapper {
 
-    Controller controller;
+    public Controller controller;
     int index;
     ControllerScheme scheme;
 
@@ -17,6 +18,11 @@ public class ControllerWrapper extends InputWrapper {
 
         this.index = index;
         this.scheme = scheme;
+
+        System.out.print(scheme.name + ": ");
+        System.out.print(controller.getButtonCount() + " buttons, ");
+        System.out.print(controller.getAxisCount() + " axis, ");
+        System.out.println(controller.getRumblerCount() + " rumblers");
     }
 
     public ControllerScheme getScheme() {
@@ -51,6 +57,16 @@ public class ControllerWrapper extends InputWrapper {
             return controller.getAxisValue(scheme.axis[index]);
         else
             return controller.isButtonPressed(scheme.buttons[index]) ? 1f : 0f;
+    }
+
+    @Override
+    public Vector2f getDirection() {
+        return new Vector2f(controller.getZAxisValue(), controller.getRZAxisValue()).normalise();
+    }
+
+    @Override
+    public Vector2f getMovement() {
+        return new Vector2f(controller.getXAxisValue(), controller.getYAxisValue()).normalise();
     }
 
     public void printActions() {
