@@ -15,6 +15,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.ArrayList;
 
 /**
  * Created by @Kasper on 26/03/2015
@@ -60,9 +61,9 @@ public class MainMenuState implements GameState{
         actions = Action.values();
         controllerBox = new TextBox[4];
 
-        instructionBox = new TextBox("Press Select to start the game", new Vector2f(Main.SCREEN_WIDTH/2,100), TextBox.Align.CENTER);
+        instructionBox = new TextBox("Press Pause(/Start) to start the game", new Vector2f(Main.SCREEN_WIDTH / 2, 100), TextBox.Align.CENTER);
         for (int i = 0; i < controllerBox.length; i++) {
-            controllerBox[i] = new TextBox("Press Start on the Controller", new Vector2f(sizeX * i + sizeX/2,Main.SCREEN_HEIGHT-20), TextBox.Align.CENTER);
+            controllerBox[i] = new TextBox("Press Any Button to join", new Vector2f(sizeX * i + sizeX / 2, Main.SCREEN_HEIGHT - 20), TextBox.Align.CENTER);
             controllerBox[i].blinkTextLength = 1500;
         }
         
@@ -98,9 +99,14 @@ public class MainMenuState implements GameState{
         for (int i = 0; i < controllerWrappers.length; i++) {
             if (controllerWrappers[i] == null) continue;
 
-            if (controllerWrappers[i].getActionAsBoolean(Action.Pause)) {
+            if (controllerWrappers[i].getActionAsBoolean(Action.Pause))
                 startGame();
-            }
+            else if (controllerWrappers[i].getActionAsBoolean(Action.Left))
+                changeColor(i, true);
+            else if (controllerWrappers[i].getActionAsBoolean(Action.Right))
+                changeColor(i, false);
+            else if (controllerWrappers[i].getActionAsBoolean(Action.Down))
+                toggleController(controllerWrappers[i].getControllerIndex());
 
             String s = "";
             for (int j = 0; j < controllerWrappers[i].controller.getAxisCount(); j++) {
@@ -130,7 +136,6 @@ public class MainMenuState implements GameState{
      * Starts game.
      */
     private void startGame(){
-        stateBasedGame.enterState(1);
         for (int j = 0; j < inputIndices.length; j++) {
             if (inputIndices[j] == -2) {
                 //keyboard
@@ -140,6 +145,10 @@ public class MainMenuState implements GameState{
                 g.world.createPlayer(new Vector2f(Main.SCREEN_WIDTH / 2, Main.SCREEN_HEIGHT / 2), colors[playerColors[j]], controllerWrappers[j]);
             }
         }
+
+        createSettingsFile(Settings.CONTROLLER_SCHEMES);
+
+        stateBasedGame.enterState(1);
     }
 
     /**
@@ -166,32 +175,33 @@ public class MainMenuState implements GameState{
             try {
                 InputStream in = Files.newInputStream(settings.toPath());
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                String line = null;
-                String name = null;
-                int[] btnIndices;
-                int[] axisIndices;
+                String line;
                 while ((line = reader.readLine()) != null) {
                     if (!(line.isEmpty() || line.startsWith("|"))) {
                         int i = 0;
-                        name = line;
-                        btnIndices = new int[Settings.NUM_ACTIONS];
-                        axisIndices = new int[Settings.NUM_ACTIONS];
-
-                        while ((line = reader.readLine()) != null && !line.startsWith("|")) {
-                            if (line.startsWith("a")) {
-                                axisIndices[i] = Integer.parseInt(line.substring(1));
-                                btnIndices[i] = -1;
-                            } else if (line.startsWith("b")) {
-                                btnIndices[i] = Integer.parseInt(line.substring(1));
-                                axisIndices[i] = -1;
-                            }
-                            i++;
-                        }
 
                         ControllerScheme scheme = new ControllerScheme();
-                        scheme.name = name;
-                        scheme.buttons = btnIndices;
-                        scheme.axis = axisIndices;
+                        scheme.name = line;
+                        scheme.buttons = new int[Settings.NUM_ACTIONS];
+                        scheme.axis = new int[Settings.NUM_ACTIONS];
+
+                        //fill with -1
+                        for (int j = 0; j < Settings.NUM_ACTIONS; j++) {
+                            scheme.buttons[j] = -1;
+                            scheme.axis[j] = -1;
+                        }
+
+                        while ((line = reader.readLine()) != null && !line.startsWith("|")) {
+                            int comma = line.indexOf(",");
+                            if (comma != -1) {
+                                convertLineToIndicis(line.substring(0, comma), i, scheme);
+                                line = line.substring(comma + 1);
+                            }
+
+                            convertLineToIndicis(line, i, scheme);
+
+                            i++;
+                        }
 
                         Settings.CONTROLLER_SCHEMES.add(scheme);
 
@@ -208,40 +218,78 @@ public class MainMenuState implements GameState{
         }
     }
 
-    private void createSettingsFile(ControllerScheme[] schemes) {
+    private void convertLineToIndicis(String line, int i, ControllerScheme scheme) {
+        if (line.startsWith("a"))
+            scheme.axis[i] = Integer.parseInt(line.substring(1));
+        else if (line.startsWith("b"))
+            scheme.buttons[i] = Integer.parseInt(line.substring(1));
+
+            //special cases for x, y, z, rz
+        else if (line.startsWith("x"))
+            scheme.axis[i] = -2;
+        else if (line.startsWith("y"))
+            scheme.axis[i] = -3;
+        else if (line.startsWith("z"))
+            scheme.axis[i] = -4;
+        else if (line.startsWith("rz"))
+            scheme.axis[i] = -5;
+    }
+
+    private void createSettingsFile(ArrayList<ControllerScheme> schemes) {
         try {
             BufferedWriter settingsOut = new BufferedWriter(new FileWriter("settings.txt"));
             settingsOut.write("|Arena Settings\n" +
-                    "|Made by Itai Yavin & Kasper HdL\n" +
-                    "|2015\n" +
-                    "|\n" +
-                    "| lines with \"|\" is ignored\n" +
-                    "|\n" +
-                    "|Action                 (Default Button)    Number:\n" +
-                    "|Name for controller scheme                 -\n" +
-                    "|Pause                  (Select)            0\n" +
-                    "|Attack                 (L1)                1\n" +
-                    "|Movement   Axis X      (Left Stick X)      2\n" +
-                    "|Movement   Axis Y      (Left Stick Y)      3\n" +
-                    "|Direction  Axis X      (Right Stick X)     4\n" +
-                    "|Direction  Axis Y      (Right Stick Y)     5\n" +
-                    "|Select item            (X)                 6\n" +
-                    "|Up                     (Up)                7\n" +
-                    "|Right                  (Right)             8\n" +
-                    "|Down                   (Down)              9\n" +
-                    "|Left                   (Left)              10\n" +
-                    "|\n" +
-                    "| if prefixed with b then a button index\n" +
-                    "| if prefixed with a then an axis is used\n" +
-                    "|--");
+                            "|Made by Itai Yavin & Kasper HdL\n" +
+                            "|2015\n" +
+                            "|\n" +
+                            "| lines with \"|\" is ignored\n" +
+                            "|\n" +
+                            "|Action                 (Default Button)    Number:\n" +
+                            "|Name for controller scheme                 -\n" +
+                            "|Pause                  (Select)            0\n" +
+                            "|Attack                 (R1)                1\n" +
+                            "|Select item            (X)                 2\n" +
+                            "|Up                     (Up)                3\n" +
+                            "|Right                  (Right)             4\n" +
+                            "|Down                   (Down)              5\n" +
+                            "|Left                   (Left)              6\n" +
+                            "|Movement   Axis X      (Left Stick X)      7\n" +
+                            "|Movement   Axis Y      (Left Stick Y)      8\n" +
+                            "|Direction  Axis X      (Right Stick X)     9\n" +
+                            "|Direction  Axis Y      (Right Stick Y)     10\n" +
+                            "|\n" +
+                            "| if prefixed with b then a button index\n" +
+                            "| if prefixed with a then an axis is used\n" +
+                            "| x,y,z,rz means that it will use the specified named axis if any\n"
+            );
 
-            for (int i = 0; i < schemes.length; i++) {
-                settingsOut.write(schemes[i].name + "\n");
+            for (int i = 0; i < schemes.size(); i++) {
+                settingsOut.write("|--\n");
+                settingsOut.write(schemes.get(i).name + "\n");
                 for (int j = 0; j < Settings.NUM_ACTIONS; j++) {
-                    if (schemes[i].buttons[j] != -1)
-                        settingsOut.write("b" + schemes[i].buttons[j] + "\n");
-                    else if (schemes[i].axis[j] != -1)
-                        settingsOut.write("a" + schemes[i].axis[j] + "\n");
+                    if (schemes.get(i).buttons[j] != -1)
+                        settingsOut.write("b" + schemes.get(i).buttons[j] + (schemes.get(i).axis[j] != -1 ? "," : ""));
+                    if (schemes.get(i).axis[j] != -1) {
+                        if (schemes.get(i).axis[j] < -1)
+                            switch (schemes.get(i).axis[j]) {
+                                case -2:
+                                    settingsOut.write("x");
+                                    break;
+                                case -3:
+                                    settingsOut.write("y");
+                                    break;
+                                case -4:
+                                    settingsOut.write("z");
+                                    break;
+                                case -5:
+                                    settingsOut.write("rz");
+                                    break;
+                            }
+                        else
+                            settingsOut.write("a" + schemes.get(i).axis[j]);
+                    }
+
+                    settingsOut.write("\n");
                 }
             }
             settingsOut.close();
@@ -357,11 +405,7 @@ public class MainMenuState implements GameState{
 
     @Override
     public void controllerLeftPressed(int i) {
-        for (int j = 0; j < inputIndices.length; j++) {
-            if (i == inputIndices[j]){
-                changeColor(j, true);
-            }
-        }
+
     }
 
     @Override
@@ -371,11 +415,7 @@ public class MainMenuState implements GameState{
 
     @Override
     public void controllerRightPressed(int i) {
-        for (int j = 0; j < inputIndices.length; j++) {
-            if (i == inputIndices[j]){
-                changeColor(j, false);
-            }
-        }
+
     }
 
     @Override

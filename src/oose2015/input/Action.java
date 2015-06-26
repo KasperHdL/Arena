@@ -9,13 +9,13 @@ package oose2015.input;
 public enum Action {
     Pause,
     Attack,
-    Movement_X,
-    Movement_Y,
-    Direction_X,
-    Direction_Y,
     Select,
     Up,
     Right,
     Down,
-    Left
+    Left,
+    Movement_X,
+    Movement_Y,
+    Direction_X,
+    Direction_Y
 }

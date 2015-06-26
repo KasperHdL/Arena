@@ -156,9 +156,10 @@ public class Player extends Agent {
     	
         nextAttackTime = World.TIME + weapon.attackDelay;
         drawGraphic = 0;
+        arrowShootSound.play();
 
         //System.out.println("Time: " + World.TIME + " attackDelay: " + nextAttackTime);
-        	new Projectile(this, damage,projectileSpeed);
+        new Projectile(this, damage, projectileSpeed);
     }
 
     /**
@@ -232,7 +233,6 @@ public class Player extends Agent {
                     rangedAttack();
                     drawTime = 0;
                     startedBowDraw = false;
-                    arrowShootSound.play();
                 }
 
             }

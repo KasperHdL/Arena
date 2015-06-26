@@ -6,12 +6,17 @@ import org.newdawn.slick.geom.Vector2f;
 
 /**
  * Created by kaholi on 6/23/15.
+ *
+ * Wrapper for the Controller, directly takes the lwjgl.input.controller and make it more usable
  */
 public class ControllerWrapper extends InputWrapper {
 
     public Controller controller;
     int index;
     ControllerScheme scheme;
+
+///////////////
+// Constructor
 
     public ControllerWrapper(int index, ControllerScheme scheme) {
         controller = org.lwjgl.input.Controllers.getController(index);
@@ -24,6 +29,10 @@ public class ControllerWrapper extends InputWrapper {
         System.out.print(controller.getAxisCount() + " axis, ");
         System.out.println(controller.getRumblerCount() + " rumblers");
     }
+
+
+////////////////////
+// Getter & Setters
 
     public ControllerScheme getScheme() {
         return scheme;
@@ -41,33 +50,56 @@ public class ControllerWrapper extends InputWrapper {
         return index;
     }
 
+
+/////////////
+// Actions
+
     @Override
     public boolean getActionAsBoolean(Action action) {
         int index = action.ordinal();
-        if (scheme.buttons[index] == -1)
-            return controller.getAxisValue(scheme.axis[index]) > .5f;
-        else
+        if (scheme.buttons[index] != -1)
             return controller.isButtonPressed(scheme.buttons[index]);
+        else
+            return controller.getAxisValue(scheme.axis[index]) > .5f;
     }
 
     @Override
     public float getActionAsFloat(Action action) {
         int index = action.ordinal();
-        if (scheme.buttons[index] == -1)
-            return controller.getAxisValue(scheme.axis[index]);
+        if (scheme.axis[index] != -1)
+            if (scheme.axis[index] < -1) {
+                //special cases for x,y,z,rz = (-2,-3,-4,-5)
+                switch (scheme.axis[index]) {
+                    case -2:
+                        return controller.getXAxisValue();
+                    case -3:
+                        return controller.getYAxisValue();
+                    case -4:
+                        return controller.getZAxisValue();
+                    case -5:
+                        return controller.getRZAxisValue();
+                    default:
+                        System.out.println("axis index below -5");
+                        return 0f;
+                }
+            } else
+                return controller.getAxisValue(scheme.axis[index]);
         else
             return controller.isButtonPressed(scheme.buttons[index]) ? 1f : 0f;
     }
 
     @Override
-    public Vector2f getDirection() {
-        return new Vector2f(controller.getZAxisValue(), controller.getRZAxisValue()).normalise();
+    public Vector2f getMovement() {
+        return new Vector2f(getActionAsFloat(Action.Movement_X), getActionAsFloat(Action.Movement_Y)).normalise();
     }
 
     @Override
-    public Vector2f getMovement() {
-        return new Vector2f(controller.getXAxisValue(), controller.getYAxisValue()).normalise();
+    public Vector2f getDirection() {
+        return new Vector2f(getActionAsFloat(Action.Direction_X), getActionAsFloat(Action.Direction_Y)).normalise();
     }
+
+/////////////
+// Prints
 
     public void printActions() {
         String s = "";
