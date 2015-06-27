@@ -6,6 +6,7 @@ import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
 import oose2015.gui.PlayerUI;
 import oose2015.input.Action;
+import oose2015.input.InputHandler;
 import oose2015.input.InputWrapper;
 import oose2015.items.Armor;
 import oose2015.items.Weapon;
@@ -27,7 +28,10 @@ public class Player extends Agent {
     public Weapon weapon;
     public Armor armor;
     public Color color;
+
     public PlayerUI playerUI;
+    public int playerIndex;
+
     public int gold;
     public int exp;
     public float drawTime,
@@ -60,12 +64,12 @@ public class Player extends Agent {
      * @param position Position
      * @param color Color
      */
-    public Player(Vector2f position, Color color, InputWrapper inputWrapper) {
+    public Player(Vector2f position, Color color, int index) {
         name = "Player";
 
-        this.inputWrapper = inputWrapper;
-
-        playerUI = World.playerUIs[World.PLAYERS.size()];
+        playerIndex = index;
+        inputWrapper = InputHandler.getWrapper(playerIndex);
+        playerUI = World.playerUIs[playerIndex];
         World.PLAYERS.add(this);
 
         this.color = color;
@@ -79,10 +83,10 @@ public class Player extends Agent {
         maxVelocity 	= 	Settings.PLAYER_MAX_VELOCITY;
         speedForce 		= 	Settings.PLAYER_SPEED_FORCE;
         mass 			= 	Settings.PLAYER_MASS;
-        
-        bowDrawSound 	= Assets.SOUND_BOW_DRAW;
+
+        bowDrawSound = Assets.SOUND_BOW_DRAW;
         arrowShootSound = Assets.SOUND_ARROW_SHOOT;
-        weaponSwing 	= Assets.SOUND_WEAPON_SWING;
+        weaponSwing = Assets.SOUND_WEAPON_SWING;
         
         gold 			= 1;
         exp	 			= 0;
@@ -198,7 +202,7 @@ public class Player extends Agent {
 
         axis = inputWrapper.getMovement();
 
-        axis.scale((armor.getSpeedModifier() * (inputWrapper.getActionAsBoolean(Action.Attack) ? 0.7f : 1f) * speedForce));
+        axis.scale((armor.getSpeedModifier() * (inputWrapper.getAction(Action.Attack) ? 0.7f : 1f) * speedForce));
 
         if(axis.length() > .5f)
             ParticleFactory.createSmokeTrail(position.copy(),new Vector2f(0,size.y/2-20).add(velocity.getTheta()),velocity.copy().scale(-1f));
@@ -216,17 +220,17 @@ public class Player extends Agent {
             move(dt);
 
             if (weapon.melee) {
-                if (inputWrapper.getActionAsBoolean(Action.Attack) && nextAttackTime < World.TIME) {
+                if (inputWrapper.getAction(Action.Attack) && nextAttackTime < World.TIME) {
                     drawAttack = true;
                     attack();
                 } else if (nextAttackTime - weapon.attackDelay / 2 < World.TIME) //mini hack.. should be fixed with animation implementation
                     drawAttack = false;
             } else if (weapon.ranged) {
-                if (!startedBowDraw && inputWrapper.getActionAsBoolean(Action.Attack) && nextAttackTime < World.TIME) {
+                if (!startedBowDraw && inputWrapper.getAction(Action.Attack) && nextAttackTime < World.TIME) {
                     startTime = World.TIME;
                     bowDrawSound.play();
                     startedBowDraw = true;
-                } else if (startedBowDraw && !inputWrapper.getActionAsBoolean(Action.Attack) && nextAttackTime < World.TIME) {
+                } else if (startedBowDraw && !inputWrapper.getAction(Action.Attack) && nextAttackTime < World.TIME) {
                     releaseTime = World.TIME;
                     drawTime = releaseTime - startTime;
                     bowDrawSound.stop();

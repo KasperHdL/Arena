@@ -7,10 +7,10 @@ import oose2015.gui.elements.TextBox;
 import oose2015.input.Action;
 import oose2015.input.ControllerScheme;
 import oose2015.input.ControllerWrapper;
+import oose2015.input.InputHandler;
 import org.lwjgl.input.Controllers;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.io.*;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * <p/>
  */
 
-public class MainMenuState implements GameState{
+public class MainMenuState extends CustomGameState {
 
     public int[] inputIndices = {-1, -1, -1, -1};//-1 not used -2 for keyboard a
     public int[] playerColors = {-1,-1,-1,-1};
@@ -43,12 +43,11 @@ public class MainMenuState implements GameState{
     public TextBox[] controllerBox;
     Action[] actions;
     StateBasedGame stateBasedGame;
-
     int sizeX = Main.SCREEN_WIDTH/4;
-
     File settings;
-
     int calibrateIndex = -1;
+    private int[] joinTime = {0, 0, 0, 0};
+    private int ignoreTime = 100;
 
     @Override
     public int getID() {
@@ -97,29 +96,17 @@ public class MainMenuState implements GameState{
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
         for (int i = 0; i < controllerWrappers.length; i++) {
-            if (controllerWrappers[i] == null) continue;
+            if (controllerWrappers[i] == null || Main.TIME < joinTime[i] + ignoreTime) continue;
 
-            if (controllerWrappers[i].getActionAsBoolean(Action.Pause))
+            if (controllerWrappers[i].getActionDown(Action.Pause))
                 startGame();
-            else if (controllerWrappers[i].getActionAsBoolean(Action.Left))
+            else if (controllerWrappers[i].getActionDown(Action.Left))
                 changeColor(i, true);
-            else if (controllerWrappers[i].getActionAsBoolean(Action.Right))
+            else if (controllerWrappers[i].getActionDown(Action.Right))
                 changeColor(i, false);
-            else if (controllerWrappers[i].getActionAsBoolean(Action.Down))
+            else if (controllerWrappers[i].getActionDown(Action.Down))
                 toggleController(controllerWrappers[i].getControllerIndex());
 
-            String s = "";
-            for (int j = 0; j < controllerWrappers[i].controller.getAxisCount(); j++) {
-                s += " " + controllerWrappers[i].controller.getAxisName(j);
-            }
-            //System.out.println(s);
-
-            if (Settings.DEBUG_CONTROLLER) {
-                s = i + ": ";
-                for (int j = 0; j < Settings.NUM_ACTIONS; j++)
-                    s += actions[j].name() + "(" + controllerWrappers[i].getActionAsBoolean(actions[j]) + "," + controllerWrappers[i].getActionAsFloat(actions[j]) + ") ";
-                System.out.println(s);
-            }
         }
     }
 
@@ -142,11 +129,11 @@ public class MainMenuState implements GameState{
 
             } else if (inputIndices[j] != -1) {
                 GamePlayState g = (GamePlayState)stateBasedGame.getState(1);
-                g.world.createPlayer(new Vector2f(Main.SCREEN_WIDTH / 2, Main.SCREEN_HEIGHT / 2), colors[playerColors[j]], controllerWrappers[j]);
+                g.world.createPlayer(new Vector2f(Main.SCREEN_WIDTH / 2, Main.SCREEN_HEIGHT / 2), colors[playerColors[j]], j);
             }
         }
 
-        createSettingsFile(Settings.CONTROLLER_SCHEMES);
+        createSettingsFile(InputHandler.CONTROLLER_SCHEMES);
 
         stateBasedGame.enterState(1);
     }
@@ -182,11 +169,11 @@ public class MainMenuState implements GameState{
 
                         ControllerScheme scheme = new ControllerScheme();
                         scheme.name = line;
-                        scheme.buttons = new int[Settings.NUM_ACTIONS];
-                        scheme.axis = new int[Settings.NUM_ACTIONS];
+                        scheme.buttons = new int[InputHandler.NUM_ACTIONS];
+                        scheme.axis = new int[InputHandler.NUM_ACTIONS];
 
                         //fill with -1
-                        for (int j = 0; j < Settings.NUM_ACTIONS; j++) {
+                        for (int j = 0; j < InputHandler.NUM_ACTIONS; j++) {
                             scheme.buttons[j] = -1;
                             scheme.axis[j] = -1;
                         }
@@ -203,13 +190,13 @@ public class MainMenuState implements GameState{
                             i++;
                         }
 
-                        Settings.CONTROLLER_SCHEMES.add(scheme);
+                        InputHandler.CONTROLLER_SCHEMES.add(scheme);
 
                     }
                 }
-                System.out.println(Settings.CONTROLLER_SCHEMES.size() + " schemes loaded");
-                for (int i = 0; i < Settings.CONTROLLER_SCHEMES.size(); i++) {
-                    System.out.println("    " + Settings.CONTROLLER_SCHEMES.get(i));
+                System.out.println(InputHandler.CONTROLLER_SCHEMES.size() + " schemes loaded");
+                for (int i = 0; i < InputHandler.CONTROLLER_SCHEMES.size(); i++) {
+                    System.out.println("    " + InputHandler.CONTROLLER_SCHEMES.get(i));
                 }
 
             } catch (IOException e) {
@@ -266,7 +253,7 @@ public class MainMenuState implements GameState{
             for (int i = 0; i < schemes.size(); i++) {
                 settingsOut.write("|--\n");
                 settingsOut.write(schemes.get(i).name + "\n");
-                for (int j = 0; j < Settings.NUM_ACTIONS; j++) {
+                for (int j = 0; j < InputHandler.NUM_ACTIONS; j++) {
                     if (schemes.get(i).buttons[j] != -1)
                         settingsOut.write("b" + schemes.get(i).buttons[j] + (schemes.get(i).axis[j] != -1 ? "," : ""));
                     if (schemes.get(i).axis[j] != -1) {
@@ -363,6 +350,7 @@ public class MainMenuState implements GameState{
                 inputIndices[i] = -1;
                 emptyIndex = -1;
                 playerColors[i] = -1;
+                controllerWrappers[i] = null;
                 controllerBox[i].blinkText("Player " + (i + 1) + " is disconnected", Color.red);
                 controllerBox[i].text = "Press Start on the Controller";
                 break;
@@ -372,14 +360,15 @@ public class MainMenuState implements GameState{
             inputIndices[emptyIndex] = conIndex;
             controllerBox[emptyIndex].stopBlinkText();
             controllerBox[emptyIndex].text = "Player " + (emptyIndex + 1) + " is connected";
+            joinTime[emptyIndex] = Main.TIME;
 
             //check if controller scheme exists for controller
             String name = org.lwjgl.input.Controllers.getController(conIndex).getName();
 
             boolean schemeExists = false;
 
-            for (int i = 0; i < Settings.CONTROLLER_SCHEMES.size(); i++) {
-                if (name.equals(Settings.CONTROLLER_SCHEMES.get(i).name)) {
+            for (int i = 0; i < InputHandler.CONTROLLER_SCHEMES.size(); i++) {
+                if (name.equals(InputHandler.CONTROLLER_SCHEMES.get(i).name)) {
                     schemeExists = true;
                     controllerScheme[emptyIndex] = i;
                 }
@@ -387,10 +376,10 @@ public class MainMenuState implements GameState{
 
             if (!schemeExists) {
                 prepCalibration(conIndex, emptyIndex);
-                controllerScheme[emptyIndex] = Settings.CONTROLLER_SCHEMES.size();
+                controllerScheme[emptyIndex] = InputHandler.CONTROLLER_SCHEMES.size();
             } else {
-                System.out.println(Settings.CONTROLLER_SCHEMES.get(controllerScheme[emptyIndex]).name + " assigned to player " + emptyIndex + " - controller index " + conIndex);
-                controllerWrappers[emptyIndex] = new ControllerWrapper(conIndex, Settings.CONTROLLER_SCHEMES.get(controllerScheme[emptyIndex]));
+                System.out.println(InputHandler.CONTROLLER_SCHEMES.get(controllerScheme[emptyIndex]).name + " assigned to player " + emptyIndex + " - controller index " + conIndex);
+                controllerWrappers[emptyIndex] = new ControllerWrapper(conIndex, InputHandler.CONTROLLER_SCHEMES.get(controllerScheme[emptyIndex]));
             }
 
             changeColor(emptyIndex, false);

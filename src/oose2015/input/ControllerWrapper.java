@@ -1,8 +1,6 @@
 package oose2015.input;
 
-import oose2015.Settings;
 import org.lwjgl.input.Controller;
-import org.newdawn.slick.geom.Vector2f;
 
 /**
  * Created by kaholi on 6/23/15.
@@ -15,8 +13,8 @@ public class ControllerWrapper extends InputWrapper {
     int index;
     ControllerScheme scheme;
 
-///////////////
-// Constructor
+    State[] buttonStates;
+    float[] axisValues;
 
     public ControllerWrapper(int index, ControllerScheme scheme) {
         controller = org.lwjgl.input.Controllers.getController(index);
@@ -24,19 +22,125 @@ public class ControllerWrapper extends InputWrapper {
         this.index = index;
         this.scheme = scheme;
 
+        buttonStates = new State[InputHandler.NUM_ACTIONS];
+        axisValues = new float[InputHandler.NUM_ACTIONS];
+
+        for (int i = 0; i < buttonStates.length; i++)
+            buttonStates[i] = State.None;
+
+        InputHandler.addWrapper(this);
+
+
         System.out.print(scheme.name + ": ");
         System.out.print(controller.getButtonCount() + " buttons, ");
         System.out.print(controller.getAxisCount() + " axis, ");
-        System.out.println(controller.getRumblerCount() + " rumblers");
+        System.out.print(controller.getRumblerCount() + " rumblers\n");
+    }
+
+///////////////
+// Constructor
+
+    @Override
+    public void update() {
+        for (int i = 0; i < InputHandler.NUM_ACTIONS; i++) {
+            if (scheme.buttons[i] != -1) {
+                int index = scheme.buttons[i];
+                boolean isPressed = controller.isButtonPressed(index);
+
+                updateButtonState(i, isPressed);
+
+                //convert boolean to float
+                if (scheme.axis[i] == -1)
+                    axisValues[i] = isPressed ? 1f : -1f;
+            }
+            if (scheme.axis[i] != -1) {
+                int index = scheme.axis[i];
+                float value = getAxisValue(index);
+                axisValues[i] = value;
+
+                //convert float to boolean
+                if (scheme.buttons[i] == -1) {
+                    float base;
+                    if (i >= InputHandler.NUM_ACTIONS - 4)
+                        base = 0f;
+                    else
+                        base = -1f;
+
+                    boolean isPressed = Math.abs(value - base) > .5f;
+
+                    updateButtonState(i, isPressed);
+                }
+            }
+
+        }
     }
 
 
 ////////////////////
-// Getter & Setters
+// Update
+
+    private void updateButtonState(int action, boolean isPressed) {
+
+        State state = State.None;
+        switch (buttonStates[action]) {
+            case None:
+                if (isPressed)
+                    state = State.Down;
+                else
+                    state = State.None;
+                break;
+            case Down:
+                if (isPressed)
+                    state = State.Hold;
+                else
+                    state = State.Up;
+                break;
+            case Hold:
+                if (!isPressed)
+                    state = State.Up;
+                else
+                    state = State.Hold;
+                break;
+            case Up:
+                if (isPressed)
+                    state = State.Down;
+                else
+                    state = State.None;
+                break;
+        }
+
+        buttonStates[action] = state;
+    }
+
+    private float getAxisValue(int index) {
+        float value = 0f;
+        if (index < -1) {
+            //special cases for x,y,z,rz = (-2,-3,-4,-5)
+            switch (index) {
+                case -2:
+                    value = controller.getXAxisValue();
+                    break;
+                case -3:
+                    value = controller.getYAxisValue();
+                    break;
+                case -4:
+                    value = controller.getZAxisValue();
+                    break;
+                case -5:
+                    value = controller.getRZAxisValue();
+                    break;
+            }
+        } else
+            value = controller.getAxisValue(index);
+        return value;
+    }
 
     public ControllerScheme getScheme() {
         return scheme;
     }
+
+////////////////////
+// Getter & Setters
 
     public void setScheme(ControllerScheme scheme) {
         this.scheme = scheme;
@@ -50,93 +154,32 @@ public class ControllerWrapper extends InputWrapper {
         return index;
     }
 
+    @Override
+    public boolean getActionDown(Action action) {
+        int index = action.ordinal();
+        return buttonStates[index] == State.Down;
+    }
+
 
 /////////////
 // Actions
 
     @Override
-    public boolean getActionAsBoolean(Action action) {
+    public boolean getAction(Action action) {
         int index = action.ordinal();
-        if (scheme.buttons[index] != -1)
-            return controller.isButtonPressed(scheme.buttons[index]);
-        else
-            return controller.getAxisValue(scheme.axis[index]) > .5f;
+        return buttonStates[index] == State.Hold;
     }
 
     @Override
-    public float getActionAsFloat(Action action) {
+    public boolean getActionUp(Action action) {
         int index = action.ordinal();
-        if (scheme.axis[index] != -1)
-            if (scheme.axis[index] < -1) {
-                //special cases for x,y,z,rz = (-2,-3,-4,-5)
-                switch (scheme.axis[index]) {
-                    case -2:
-                        return controller.getXAxisValue();
-                    case -3:
-                        return controller.getYAxisValue();
-                    case -4:
-                        return controller.getZAxisValue();
-                    case -5:
-                        return controller.getRZAxisValue();
-                    default:
-                        System.out.println("axis index below -5");
-                        return 0f;
-                }
-            } else
-                return controller.getAxisValue(scheme.axis[index]);
-        else
-            return controller.isButtonPressed(scheme.buttons[index]) ? 1f : 0f;
+        return buttonStates[index] == State.Up;
     }
 
     @Override
-    public Vector2f getMovement() {
-        return new Vector2f(getActionAsFloat(Action.Movement_X), getActionAsFloat(Action.Movement_Y)).normalise();
-    }
-
-    @Override
-    public Vector2f getDirection() {
-        return new Vector2f(getActionAsFloat(Action.Direction_X), getActionAsFloat(Action.Direction_Y)).normalise();
-    }
-
-/////////////
-// Prints
-
-    public void printActions() {
-        String s = "";
-        Action[] actions = Action.values();
-        for (int i = 0; i < Settings.NUM_ACTIONS; i++) {
-            switch (actions[i]) {
-                case Pause:
-                    s += getActionAsBoolean(Action.Pause);
-                    break;
-                case Attack:
-                    s += getActionAsBoolean(Action.Attack);
-                    break;
-                case Movement_X:
-                    s += getActionAsVector(Action.Movement_X, Action.Movement_Y);
-                    i++;
-                    break;
-                case Direction_X:
-                    s += getActionAsVector(Action.Direction_X, Action.Direction_Y);
-                    i++;
-                    break;
-                case Select:
-                    s += getActionAsBoolean(Action.Select);
-                    break;
-                case Up:
-                    s += getActionAsBoolean(Action.Up);
-                    break;
-                case Right:
-                    s += getActionAsBoolean(Action.Right);
-                    break;
-                case Down:
-                    s += getActionAsBoolean(Action.Down);
-                    break;
-                case Left:
-                    s += getActionAsBoolean(Action.Left);
-                    break;
-            }
-        }
+    public float getActionAxis(Action action) {
+        int index = action.ordinal();
+        return axisValues[index];
     }
 
     public void printAll() {
@@ -150,6 +193,26 @@ public class ControllerWrapper extends InputWrapper {
         }
 
         System.out.println(s);
+    }
+
+/////////////
+// Prints
+
+    public void printActionStates() {
+        String s = "";
+        Action[] actions = Action.values();
+        for (int i = 0; i < InputHandler.NUM_ACTIONS; i++) {
+            System.out.print(actions[i].name() + "(" + buttonStates[i] + ") ");
+        }
+        System.out.println();
+
+    }
+
+    enum State {
+        None,
+        Down,
+        Hold,
+        Up
     }
 
 }

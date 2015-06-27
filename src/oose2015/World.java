@@ -10,7 +10,6 @@ import oose2015.entities.tiles.Floor;
 import oose2015.entities.tiles.Tile;
 import oose2015.gui.PlayerUI;
 import oose2015.gui.elements.TextBox;
-import oose2015.input.InputWrapper;
 import oose2015.utilities.CollisionUtility;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -207,8 +206,8 @@ public class World {
     /**
      * Creates player object
      */
-    public void createPlayer(Vector2f v, Color color, InputWrapper wrapper) {
-        new Player(v, color, wrapper);
+    public void createPlayer(Vector2f v, Color color, int index) {
+        new Player(v, color, index);
 
     }
 }

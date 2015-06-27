@@ -1,9 +1,5 @@
 package oose2015;
 
-import oose2015.input.ControllerScheme;
-
-import java.util.ArrayList;
-
 /**
  * Settings class holds variable values for other class variables
  * @author itai.yavin
@@ -14,8 +10,6 @@ public class Settings {
 
 	public static final String PATH = "settings.txt";
 
-	//input
-	public static final int NUM_ACTIONS = 11;
 	public static final boolean DEBUG_CONTROLLER = false;
 	//Player Variables
 		//general
@@ -78,8 +72,7 @@ public class Settings {
 		public static final float 	PROJECTILE_FLY_TIME = 2000;
 		public static final float 	PROJECTILE_FRICTION = .9f,
 									PROJECTILE_INERTIA = .85f;
-	public static ArrayList<ControllerScheme> CONTROLLER_SCHEMES = new ArrayList<ControllerScheme>();
-		//Shake Variables
+	//Shake Variables
 
 
 

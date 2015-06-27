@@ -1,5 +1,6 @@
 package oose2015;
 
+import oose2015.input.InputHandler;
 import oose2015.states.*;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -16,7 +17,6 @@ import java.util.logging.Logger;
  */
 public class Main extends StateBasedGame
 {
-
 	public static final int SCREEN_WIDTH = 1280;
 	public static final int SCREEN_HEIGHT = 720;
 	public static int TIME = 0;
@@ -52,5 +52,6 @@ public class Main extends StateBasedGame
 	@Override
 	protected void preUpdateState(GameContainer container, int delta){
 		TIME += delta;
+		InputHandler.update();
 	}
 }

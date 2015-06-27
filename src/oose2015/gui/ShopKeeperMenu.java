@@ -4,12 +4,11 @@ import oose2015.Main;
 import oose2015.World;
 import oose2015.entities.agents.Player;
 import oose2015.gui.elements.TextBox;
-import oose2015.gui.elements.interactable.InteractableElement;
 import oose2015.gui.elements.interactable.Button;
+import oose2015.gui.elements.interactable.InteractableElement;
 import oose2015.gui.elements.interactable.ItemElement;
 import oose2015.items.Armor;
 import oose2015.items.Weapon;
-import oose2015.states.ShopKeeperState;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -24,25 +23,17 @@ import org.newdawn.slick.geom.Vector2f;
 public class ShopKeeperMenu {
 
     public boolean isReady = false;
-
-    private Vector2f position;
-
     public int playerIndex;
     public Player player;
-
-    private int active = 0;
-
-    private TextBox goldBox;
-
-    private InteractableElement[] interactables;
-    private Element[] elements;
-
-
     Color color ;
     Color overColor;
     Color boughtColor;
     Color boughtOverColor ;
-
+    private Vector2f position;
+    private int active = 0;
+    private TextBox goldBox;
+    private InteractableElement[] interactables;
+    private Element[] elements;
     /**
      * ShopKeeperMenu Constructor.
      * Creates new shop box-menu for individual player.
@@ -105,11 +96,12 @@ public class ShopKeeperMenu {
 
     /**
      * render shop graphics
+     *
      * @param graphics
      */
-    public void render(Graphics graphics){
+    public void render(Graphics graphics) {
         graphics.pushTransform();
-        graphics.translate(position.x,position.y);
+        graphics.translate(position.x, position.y);
         for (int i = 0; i < interactables.length; i++) {
             interactables[i].render(graphics);
         }
@@ -124,18 +116,21 @@ public class ShopKeeperMenu {
      * Handles player input for shop.
      * @param btn
      */
-    public void handleInput(ShopKeeperState.Button btn){
-        switch(btn){
-            case Up:{
+    public void handleInput(input btn) {
+        switch (btn) {
+            case Up: {
                 moveActive(-1);
-            }break;
-            case Down:{
+            }
+            break;
+            case Down: {
                 moveActive(1);
-            }break;
-            case Select:{
+            }
+            break;
+            case Select: {
                 selectActive();
                 goldBox.text = "gold: " + player.gold;
-            }break;
+            }
+            break;
         }
     }
 
@@ -143,13 +138,13 @@ public class ShopKeeperMenu {
      * Moves chosen shop element.
      * @param amount
      */
-    public void moveActive(int amount){
-        if(active + amount >= 0 && active + amount < interactables.length){
+    public void moveActive(int amount) {
+        if (active + amount >= 0 && active + amount < interactables.length) {
 
             interactables[active].movedAway();
             active += amount;
             interactables[active].movedOver();
-        }else{
+        } else {
             interactables[active].blink(Color.red);
         }
     }
@@ -202,6 +197,12 @@ public class ShopKeeperMenu {
             }
         }else
             interactables[active].select();
+    }
+
+    public enum input {
+        Up,
+        Down,
+        Select
     }
 
 

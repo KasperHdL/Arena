@@ -8,15 +8,67 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public abstract class InputWrapper {
 
-    public abstract boolean getActionAsBoolean(Action action);
+    public abstract void update();
 
-    public abstract float getActionAsFloat(Action action);
+    public abstract boolean getActionDown(Action action);
 
-    public abstract Vector2f getMovement();
+    public abstract boolean getAction(Action action);
 
-    public abstract Vector2f getDirection();
+    public abstract boolean getActionUp(Action action);
 
-    public Vector2f getActionAsVector(Action x, Action y) {
-        return new Vector2f(getActionAsFloat(x), getActionAsFloat(y)).normalise();
+    public abstract float getActionAxis(Action action);
+
+    public Vector2f getActionVector(Action x, Action y) {
+        return new Vector2f(getActionAxis(x), getActionAxis(y)).normalise();
+    }
+
+    public Vector2f getMovement() {
+        return getActionVector(Action.Movement_X, Action.Movement_Y);
+    }
+
+    public Vector2f getDirection() {
+        return getActionVector(Action.Direction_X, Action.Direction_Y);
+    }
+
+
+///////////
+//Print
+
+    public void printActions() {
+        String s = "";
+        Action[] actions = Action.values();
+        for (int i = 0; i < InputHandler.NUM_ACTIONS; i++) {
+            switch (actions[i]) {
+                case Pause:
+                    s += getAction(Action.Pause);
+                    break;
+                case Attack:
+                    s += getAction(Action.Attack);
+                    break;
+                case Movement_X:
+                    s += getMovement();
+                    i++;
+                    break;
+                case Direction_X:
+                    s += getDirection();
+                    i++;
+                    break;
+                case Select:
+                    s += getAction(Action.Select);
+                    break;
+                case Up:
+                    s += getAction(Action.Up);
+                    break;
+                case Right:
+                    s += getAction(Action.Right);
+                    break;
+                case Down:
+                    s += getAction(Action.Down);
+                    break;
+                case Left:
+                    s += getAction(Action.Left);
+                    break;
+            }
+        }
     }
 }

@@ -1,15 +1,14 @@
 package oose2015.states;
 
 import oose2015.Main;
-import oose2015.Settings;
 import oose2015.gui.elements.TextBox;
 import oose2015.input.Action;
 import oose2015.input.ControllerScheme;
 import oose2015.input.ControllerWrapper;
+import oose2015.input.InputHandler;
 import org.lwjgl.input.Controller;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -17,7 +16,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * <p/>
  * Index must be set outside before entering this state
  */
-public class CalibrationState implements GameState {
+public class CalibrationState extends CustomGameState {
 
     public int playerIndex;
     public int controllerIndex;
@@ -244,7 +243,7 @@ public class CalibrationState implements GameState {
     }
 
     private void prepExit() {
-        Settings.CONTROLLER_SCHEMES.add(scheme);
+        InputHandler.CONTROLLER_SCHEMES.add(scheme);
         int c = -2;
         for (int i = Action.Movement_X.ordinal(); i < Action.Direction_Y.ordinal() + 1; i++, c--) {
             if (scheme.axis[i] == -1)
@@ -253,7 +252,7 @@ public class CalibrationState implements GameState {
 
         MainMenuState menu = (MainMenuState) stateBasedGame.getState(0);
 
-        System.out.println(Settings.CONTROLLER_SCHEMES.get(menu.controllerScheme[playerIndex]).name + " assigned to player " + playerIndex + " - controller index " + controllerIndex);
+        System.out.println(InputHandler.CONTROLLER_SCHEMES.get(menu.controllerScheme[playerIndex]).name + " assigned to player " + playerIndex + " - controller index " + controllerIndex);
         menu.controllerWrappers[playerIndex] = new ControllerWrapper(controllerIndex, scheme);
         menu.instructionBox.text = "Press Pause(/Start) to start the game";
 
@@ -270,12 +269,12 @@ public class CalibrationState implements GameState {
 
         scheme = new ControllerScheme();
         scheme.name = c.getName();
-        scheme.buttons = new int[Settings.NUM_ACTIONS];
-        scheme.axis = new int[Settings.NUM_ACTIONS];
+        scheme.buttons = new int[InputHandler.NUM_ACTIONS];
+        scheme.axis = new int[InputHandler.NUM_ACTIONS];
         minAxis = new float[c.getAxisCount()];
 
         //fill with -1
-        for (int i = 0; i < Settings.NUM_ACTIONS; i++) {
+        for (int i = 0; i < InputHandler.NUM_ACTIONS; i++) {
             scheme.buttons[i] = -1;
             scheme.axis[i] = -1;
         }
@@ -329,103 +328,9 @@ public class CalibrationState implements GameState {
         }
     }
 
-
-    //////////////////
-    //Not used
-
-    @Override
-    public void keyReleased(int i, char c) {
-
-    }
-
-    @Override
-    public void controllerLeftPressed(int i) {
-
-    }
-
-    @Override
-    public void controllerLeftReleased(int i) {
-
-    }
-
-    @Override
-    public void controllerRightPressed(int i) {
-
-    }
-
-    @Override
-    public void controllerRightReleased(int i) {
-
-    }
-
-    @Override
-    public void controllerUpPressed(int i) {
-
-    }
-
-    @Override
-    public void controllerUpReleased(int i) {
-
-    }
-
-    @Override
-    public void controllerDownPressed(int i) {
-
-    }
-
-    @Override
-    public void controllerDownReleased(int i) {
-
-    }
-
-
-    @Override
-    public void mouseWheelMoved(int i) {
-
-    }
-
-    @Override
-    public void mouseClicked(int i, int i1, int i2, int i3) {
-
-    }
-
-    @Override
-    public void mousePressed(int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void mouseReleased(int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void mouseMoved(int i, int i1, int i2, int i3) {
-
-    }
-
-    @Override
-    public void mouseDragged(int i, int i1, int i2, int i3) {
-
-    }
-
-    @Override
-    public void setInput(Input input) {
-
-    }
-
     @Override
     public boolean isAcceptingInput() {
         return true;
     }
 
-    @Override
-    public void inputEnded() {
-
-    }
-
-    @Override
-    public void inputStarted() {
-
-    }
 }
