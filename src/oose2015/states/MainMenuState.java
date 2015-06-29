@@ -59,7 +59,7 @@ public class MainMenuState extends CustomGameState {
         actions = Action.values();
         controllerBox = new TextBox[4];
 
-        instructionBox = new TextBox("Press Pause(/Start) to start the game, To add Keyboard press space", new Vector2f(Main.SCREEN_WIDTH / 2, 100), TextBox.Align.CENTER);
+        instructionBox = new TextBox("Press Pause(/Start) to start the game, To add Keyboard Player press space ( enter to start)", new Vector2f(Main.SCREEN_WIDTH / 2, 100), TextBox.Align.CENTER);
         for (int i = 0; i < controllerBox.length; i++) {
             controllerBox[i] = new TextBox("Press Any Button to join", new Vector2f(sizeX * i + sizeX / 2, Main.SCREEN_HEIGHT - 20), TextBox.Align.CENTER);
             controllerBox[i].blinkTextLength = 1500;
