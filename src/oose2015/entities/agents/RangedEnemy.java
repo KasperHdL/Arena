@@ -1,13 +1,10 @@
 package oose2015.entities.agents;
 
 import oose2015.Assets;
-import oose2015.Settings;
 import oose2015.World;
 import oose2015.entities.projectiles.Projectile;
+import oose2015.settings.Settings;
 import oose2015.utilities.VectorUtility;
-
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 

@@ -1,12 +1,19 @@
 package oose2015.states;
 
 import oose2015.Main;
-import oose2015.gui.ShopKeeperMenu;
 import oose2015.World;
-import org.newdawn.slick.*;
+import oose2015.gui.ShopKeeperMenu;
+import oose2015.input.Action;
+import oose2015.input.InputHandler;
+import oose2015.input.InputWrapper;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
+
+import java.util.ArrayList;
 
 /**
  * Created by @Kasper on 22/04/2015
@@ -16,7 +23,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * <p/>
  */
 
-public class ShopKeeperState implements GameState {
+public class ShopKeeperState extends CustomGameState {
 
     public int allReadyTime = -1;
     public int readyTimeLength = 1000;
@@ -25,13 +32,7 @@ public class ShopKeeperState implements GameState {
     
     ShopKeeperMenu[] playerMenus;
 
-    //TEMPORARY probably
-    public enum Button{
-        Up,
-        Down,
-        Select
-    }
-
+    ArrayList<InputWrapper> inputWrappers;
 
     @Override
     public int getID() {
@@ -42,17 +43,6 @@ public class ShopKeeperState implements GameState {
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         this.stateBasedGame = stateBasedGame;
 
-    }
-
-    /**
-     * Creates shop menu
-     */
-    public void createMenu(){
-        playerMenus = new ShopKeeperMenu[World.PLAYERS.size()];
-        int sizeX = Main.SCREEN_WIDTH/4;
-        for (int i = 0; i < playerMenus.length; i++) {
-            playerMenus[i] = new ShopKeeperMenu(new Vector2f(i*sizeX,0),sizeX,i);
-        }
     }
 
     /**
@@ -86,6 +76,13 @@ public class ShopKeeperState implements GameState {
         boolean allReady = true;
 
         for (int i = 0; i < playerMenus.length; i++) {
+            if (inputWrappers.get(i).getActionDown(Action.Up))
+                playerMenus[i].handleInput(ShopKeeperMenu.input.Up);
+            if (inputWrappers.get(i).getActionDown(Action.Down))
+                playerMenus[i].handleInput(ShopKeeperMenu.input.Down);
+            if (inputWrappers.get(i).getActionDown(Action.Select))
+                playerMenus[i].handleInput(ShopKeeperMenu.input.Select);
+
             playerMenus[i].update();
             if(!playerMenus[i].isReady)
                 allReady = false;
@@ -104,6 +101,7 @@ public class ShopKeeperState implements GameState {
 
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        inputWrappers = InputHandler.getArrayList();
         createMenu();
     }
 
@@ -112,125 +110,16 @@ public class ShopKeeperState implements GameState {
 
     }
 
-    @Override
-    public void controllerLeftPressed(int i) {
 
-    }
-
-    @Override
-    public void controllerLeftReleased(int i) {
-
-    }
-
-    @Override
-    public void controllerRightPressed(int i) {
-
-    }
-
-    @Override
-    public void controllerRightReleased(int i) {
-
-    }
-
-    @Override
-    public void controllerUpPressed(int i) {
-        for (int j = 0; j < World.PLAYERS.size(); j++) {
-           if(World.PLAYERS.get(j).controllerIndex == i){
-               playerMenus[j].handleInput(Button.Up);
-           }
+    /**
+     * Creates shop menu
+     */
+    public void createMenu() {
+        playerMenus = new ShopKeeperMenu[World.PLAYERS.size()];
+        int sizeX = Main.SCREEN_WIDTH / 4;
+        for (int i = 0; i < playerMenus.length; i++) {
+            playerMenus[i] = new ShopKeeperMenu(new Vector2f(i * sizeX, 0), sizeX, i);
         }
     }
 
-    @Override
-    public void controllerUpReleased(int i) {
-
-    }
-
-    @Override
-    public void controllerDownPressed(int i) {
-        for (int j = 0; j < World.PLAYERS.size(); j++) {
-            if(World.PLAYERS.get(j).controllerIndex == i){
-                playerMenus[j].handleInput(Button.Down);
-            }
-        }
-    }
-
-    @Override
-    public void controllerDownReleased(int i) {
-
-    }
-
-    @Override
-    public void controllerButtonPressed(int i, int btnIndex) {
-        for (int j = 0; j < World.PLAYERS.size(); j++) {
-            if(World.PLAYERS.get(j).controllerIndex == i && (btnIndex == 1 || btnIndex == 3)){
-                playerMenus[j].handleInput(Button.Select);
-            }
-        }
-    }
-
-    @Override
-    public void controllerButtonReleased(int i, int btnIndex) {
-
-    }
-
-    @Override
-    public void keyPressed(int key, char c) {
-
-    }
-
-    @Override
-    public void keyReleased(int i, char c) {
-
-    }
-
-    @Override
-    public void mouseWheelMoved(int i) {
-
-    }
-
-    @Override
-    public void mouseClicked(int i, int i1, int i2, int i3) {
-
-    }
-
-    @Override
-    public void mousePressed(int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void mouseReleased(int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void mouseMoved(int i, int i1, int i2, int i3) {
-
-    }
-
-    @Override
-    public void mouseDragged(int i, int i1, int i2, int i3) {
-
-    }
-
-    @Override
-    public void setInput(Input input) {
-
-    }
-
-    @Override
-    public boolean isAcceptingInput() {
-        return true;
-    }
-
-    @Override
-    public void inputEnded() {
-
-    }
-
-    @Override
-    public void inputStarted() {
-
-    }
 }

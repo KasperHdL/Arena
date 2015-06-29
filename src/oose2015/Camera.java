@@ -159,6 +159,13 @@ public class Camera {
         shakeEnd = World.TIME + shakeLength;
     }
 
+    public Vector2f screenPointToWorldPoint(Vector2f input) {
+        input = input.copy().add(new Vector2f(-Main.SCREEN_WIDTH / 2, -Main.SCREEN_HEIGHT / 2));
+        input.scale(scale);
+        input.add(position);
+        return input;
+    }
+
     /**
      * Returns true if entity is within camera-view
      * @param entity Entity checked

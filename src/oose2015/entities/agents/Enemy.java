@@ -1,17 +1,13 @@
 package oose2015.entities.agents;
 
 import oose2015.EntityHandler;
+import oose2015.World;
 import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
-import oose2015.entities.projectiles.Projectile;
+import oose2015.settings.Settings;
 import oose2015.utilities.VectorUtility;
-import oose2015.Assets;
-import oose2015.Settings;
-import oose2015.World;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
 
@@ -24,22 +20,17 @@ import org.newdawn.slick.geom.Vector2f;
  */
 
 public class Enemy extends Agent {
-    float damage = Settings.ENEMY_DAMAGE;
-    
     public int goldDrop;
     public int expDrop;
-
-    float engageRadius 			= Settings.ENEMY_ENGAGE_RADIUS;
-    float disengageRadius 		= Settings.ENEMY_DISENGAGE_RADIUS;
-
     public boolean 	isChasing 	= false,
     				isShot 		= false,
     				isAttacking = false;
-    
-    Vector2f chargePoint;
-	
     public Agent target;
     public Player shooter;
+    float damage = Settings.ENEMY_DAMAGE;
+    float engageRadius = Settings.ENEMY_ENGAGE_RADIUS;
+    float disengageRadius = Settings.ENEMY_DISENGAGE_RADIUS;
+    Vector2f chargePoint;
     
     /**
      * Constructor for Enemy

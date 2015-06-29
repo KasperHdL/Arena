@@ -1,19 +1,17 @@
 package oose2015.entities.agents;
 
-import oose2015.Settings;
 import oose2015.World;
 import oose2015.entities.Entity;
-import oose2015.entities.agents.Player;
+import oose2015.settings.Settings;
 import oose2015.utilities.VectorUtility;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 public class MeeleeEnemy extends Enemy{
-	
-    float attackRadius 			= Settings.ENEMY_MELEE_RADIUS;
 
+    public boolean isCharging = false;
+    float attackRadius 			= Settings.ENEMY_MELEE_RADIUS;
     float nextAttackTime;
     float attackDelay 			= Settings.ENEMY_ATTACK_DELAY;
     float nextChargeTime 		= 0;
@@ -23,8 +21,6 @@ public class MeeleeEnemy extends Enemy{
     float chargeTime 			= Settings.CHARGE_TIME;
     float chargeEndTime 		= 0;
     int chargeScalar 			= Settings.CHARGE_SCALAR;
-
-    public boolean isCharging 	= false;
     
 	public MeeleeEnemy(Vector2f position, int level) {
 		super(position, level);

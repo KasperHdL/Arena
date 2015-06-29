@@ -2,7 +2,6 @@ package oose2015.entities.projectiles;
 
 import oose2015.EntityHandler;
 import oose2015.ParticleFactory;
-import oose2015.Settings;
 import oose2015.World;
 import oose2015.artifacts.Artifact;
 import oose2015.entities.Entity;
@@ -11,10 +10,10 @@ import oose2015.entities.Wall;
 import oose2015.entities.agents.Agent;
 import oose2015.entities.agents.Enemy;
 import oose2015.entities.agents.Player;
-
+import oose2015.settings.Settings;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.Color;
 
 /**
  * Created by @Itai on 26/03/2015
