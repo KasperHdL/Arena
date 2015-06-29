@@ -1,10 +1,10 @@
 package oose2015.entities.agents;
 
 import oose2015.EntityHandler;
-import oose2015.Settings;
 import oose2015.World;
 import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
+import oose2015.settings.Settings;
 import oose2015.utilities.VectorUtility;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;

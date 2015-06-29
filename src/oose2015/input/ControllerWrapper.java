@@ -47,7 +47,7 @@ public class ControllerWrapper extends InputWrapper {
                 int index = scheme.buttons[i];
                 boolean isPressed = controller.isButtonPressed(index);
 
-                updateButtonState(i, isPressed);
+                buttonStates[i] = updateState(buttonStates[i], isPressed);
 
                 //convert boolean to float
                 if (scheme.axis[i] == -1)
@@ -60,15 +60,22 @@ public class ControllerWrapper extends InputWrapper {
 
                 //convert float to boolean
                 if (scheme.buttons[i] == -1) {
-                    float base;
-                    if (i >= InputHandler.NUM_ACTIONS - 4)
-                        base = 0f;
+
+                    float min = scheme.axisMin[i];
+                    float base = scheme.axisBase[i];
+                    float max = scheme.axisMax[i];
+
+                    boolean isPressed;
+
+                    if (min == base)
+                        isPressed = value - min > (max - min) / 2;
+                    else if (max == base)
+                        isPressed = max - value > (max - min) / 2;
                     else
-                        base = -1f;
+                        isPressed = Math.abs(value - base) > (max - min) / 4;
 
-                    boolean isPressed = Math.abs(value - base) > .5f;
 
-                    updateButtonState(i, isPressed);
+                    buttonStates[i] = updateState(buttonStates[i], isPressed);
                 }
             }
 
@@ -79,10 +86,8 @@ public class ControllerWrapper extends InputWrapper {
 ////////////////////
 // Update
 
-    private void updateButtonState(int action, boolean isPressed) {
-
-        State state = State.None;
-        switch (buttonStates[action]) {
+    private State updateState(State state, boolean isPressed) {
+        switch (state) {
             case None:
                 if (isPressed)
                     state = State.Down;
@@ -109,7 +114,7 @@ public class ControllerWrapper extends InputWrapper {
                 break;
         }
 
-        buttonStates[action] = state;
+        return state;
     }
 
     private float getAxisValue(int index) {

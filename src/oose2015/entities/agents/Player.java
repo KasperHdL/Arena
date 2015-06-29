@@ -1,15 +1,18 @@
 package oose2015.entities.agents;
 
-import oose2015.*;
+import oose2015.Assets;
+import oose2015.EntityHandler;
+import oose2015.ParticleFactory;
+import oose2015.World;
 import oose2015.entities.Entity;
 import oose2015.entities.drops.Gold;
 import oose2015.entities.projectiles.Projectile;
 import oose2015.gui.PlayerUI;
 import oose2015.input.Action;
-import oose2015.input.InputHandler;
 import oose2015.input.InputWrapper;
 import oose2015.items.Armor;
 import oose2015.items.Weapon;
+import oose2015.settings.Settings;
 import oose2015.utilities.VectorUtility;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -64,11 +67,11 @@ public class Player extends Agent {
      * @param position Position
      * @param color Color
      */
-    public Player(Vector2f position, Color color, int index) {
+    public Player(Vector2f position, Color color, int index, InputWrapper wrapper) {
         name = "Player";
 
         playerIndex = index;
-        inputWrapper = InputHandler.getWrapper(playerIndex);
+        inputWrapper = wrapper;
         playerUI = World.playerUIs[playerIndex];
         World.PLAYERS.add(this);
 
@@ -195,7 +198,7 @@ public class Player extends Agent {
     @Override
     protected void move(float dt){
 
-        Vector2f axis = inputWrapper.getDirection();
+        Vector2f axis = inputWrapper.getDirection(position);
 
         if (axis.length() != 0)
             rotation = (float) axis.getTheta();

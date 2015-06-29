@@ -1,4 +1,4 @@
-package oose2015;
+package oose2015.settings;
 
 /**
  * Settings class holds variable values for other class variables

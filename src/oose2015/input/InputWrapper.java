@@ -30,6 +30,9 @@ public abstract class InputWrapper {
         return getActionVector(Action.Direction_X, Action.Direction_Y);
     }
 
+    public Vector2f getDirection(Vector2f playerPosition) {
+        return getDirection();
+    }
 
 ///////////
 //Print

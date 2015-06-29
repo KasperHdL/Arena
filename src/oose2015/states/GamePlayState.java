@@ -43,7 +43,7 @@ public class GamePlayState extends CustomGameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
         world.update(dt);
 
-        if (InputHandler.getKeyDown(Input.KEY_D)) {
+        if (InputHandler.getKeyDown(Input.KEY_M)) {
             //toggle debug mode
             World.DEBUG_MODE = !World.DEBUG_MODE;
         }

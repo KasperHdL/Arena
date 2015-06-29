@@ -6,6 +6,10 @@ public class ControllerScheme {
     public int[] axis;
     //-1 = non, -2 = x, -3 = y, -4 = z, -5 = rz
 
+    public float[] axisMin;
+    public float[] axisBase;
+    public float[] axisMax;
+
     public String toString() {
         String s = name + ": ";
         Action[] actions = Action.values();
@@ -33,6 +37,7 @@ public class ControllerScheme {
                 } else
                     s += "a" + axis[i];
 
+                s += "[" + axisMin[i] + "," + axisBase[i] + "," + axisMax[i] + "]";
             }
 
             s += ") ";

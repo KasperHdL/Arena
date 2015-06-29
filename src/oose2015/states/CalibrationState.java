@@ -20,11 +20,14 @@ public class CalibrationState extends CustomGameState {
 
     public int playerIndex;
     public int controllerIndex;
+
     StateBasedGame stateBasedGame;
     ControllerScheme scheme;
     Controller c;
+
     int index = 0;
     int buttonOffset = 4;
+
     String[] messages = {
             "Press EVERY button, trigger and stick before the timer runs out",
             "PRESS EVERYTHING...",
@@ -33,10 +36,14 @@ public class CalibrationState extends CustomGameState {
             "Press and Hold the button to pause with",
             "Press and Hold the button to attack with",
             "Press and Hold the button to interact with",
-            "Press and Hold the button to up with",
-            "Press and Hold the button to right with",
-            "Press and Hold the button to down with",
-            "Press and Hold the button to left with",
+            "Press and Hold the button to up POV with",
+            "Press and Hold the button to right POV with",
+            "Press and Hold the button to down POV with",
+            "Press and Hold the button to left POV with",
+            "Move the Stick to move left and right with (Only move it in ONE AXIS)",
+            "Move the Stick to move up and down with (Only move it in ONE AXIS)",
+            "Move the Stick to aim left and right with (Only move it in ONE AXIS)",
+            "Move the Stick to aim up and down with (Only move it in ONE AXIS)",
             "Calibration Finished! Press Pause to Exit"
     };
     String[] subMessages = {
@@ -51,25 +58,39 @@ public class CalibrationState extends CustomGameState {
             "(For PS3 controllers recommended button is Right)",
             "(For PS3 controllers recommended button is Down)",
             "(For PS3 controllers recommended button is Left)",
+            "(For PS3 controllers recommended button is Left Stick X)",
+            "(For PS3 controllers recommended button is Left Stick Y)",
+            "(For PS3 controllers recommended button is Right Stick X)",
+            "(For PS3 controllers recommended button is Right Stick Y)",
             "if you want to recalibrate press Enter on the Keyboard"
     };
     TextBox title;
     TextBox exitBox;
     TextBox messageBox;
     TextBox subMessageBox;
+
     int timerStop;
     int timerLength;
     int length_pressAllButtons = 10000;
     int length_wait = 1000;
+
     boolean[] baseBtns;
+
+    float[] minAxis;
     float[] baseAxis;
+    float[] maxAxis;
+
     float cumHeight = Main.SCREEN_HEIGHT * 0.2f;
     float colOffset = 2f;
+
     float[] cumBtns;
     float[] cumAxis;
-    float[] minAxis;
+
     float registerHardLimit = 100f;
     float registerColorLimit = 90f;
+
+    MainMenuState menu;
+
     private boolean debugChanges = false;
 
     @Override
@@ -125,6 +146,9 @@ public class CalibrationState extends CustomGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int dt) throws SlickException {
+
+        updateAxisExtremes();
+
         if ((index == 1 || index == 3) && index < messages.length - 1 && Main.TIME > timerStop && timerStop != 0) {
 
             if (index == 3)
@@ -139,7 +163,8 @@ public class CalibrationState extends CustomGameState {
                 next();
             }
 
-        }
+        } else if (index == messages.length - 1 && menu.controllerWrappers[playerIndex].getActionDown(Action.Pause))
+            stateBasedGame.enterState(0);
     }
 
     /////////////
@@ -199,6 +224,17 @@ public class CalibrationState extends CustomGameState {
         }
     }
 
+    private void updateAxisExtremes() {
+        for (int i = 0; i < c.getAxisCount(); i++) {
+            float value = c.getAxisValue(i);
+
+            if (minAxis[i] > value)
+                minAxis[i] = value;
+            if (maxAxis[i] < value)
+                maxAxis[i] = value;
+        }
+    }
+
     private boolean checkIfChangesHitLimit() {
         int total = cumBtns.length + cumAxis.length;
         boolean hardLimitHit = false;
@@ -220,8 +256,12 @@ public class CalibrationState extends CustomGameState {
             if (value > registerColorLimit) {
                 if (isBtn)
                     scheme.buttons[index - buttonOffset] = i;
-                else
+                else {
                     scheme.axis[index - buttonOffset] = a;
+                    scheme.axisMin[index - buttonOffset] = minAxis[a];
+                    scheme.axisBase[index - buttonOffset] = baseAxis[a];
+                    scheme.axisMax[index - buttonOffset] = maxAxis[a];
+                }
             }
         }
     }
@@ -243,21 +283,23 @@ public class CalibrationState extends CustomGameState {
     }
 
     private void prepExit() {
-        InputHandler.CONTROLLER_SCHEMES.add(scheme);
-        int c = -2;
-        for (int i = Action.Movement_X.ordinal(); i < Action.Direction_Y.ordinal() + 1; i++, c--) {
-            if (scheme.axis[i] == -1)
-                scheme.axis[i] = c;
+        for (int i = 0; i < InputHandler.CONTROLLER_SCHEMES.size(); i++) {
+            if (scheme.name.equals(InputHandler.CONTROLLER_SCHEMES.get(i).name))
+                InputHandler.CONTROLLER_SCHEMES.remove(i);
         }
+        InputHandler.CONTROLLER_SCHEMES.add(scheme);
 
-        MainMenuState menu = (MainMenuState) stateBasedGame.getState(0);
+        int s = -2;
+
+        for (int i = Action.Movement_X.ordinal(); i < Action.Direction_Y.ordinal() + 1; i++, s--) {
+            if (scheme.axis[i] == -1) {
+                scheme.axis[i] = s;
+            }
+        }
 
         System.out.println(InputHandler.CONTROLLER_SCHEMES.get(menu.controllerScheme[playerIndex]).name + " assigned to player " + playerIndex + " - controller index " + controllerIndex);
         menu.controllerWrappers[playerIndex] = new ControllerWrapper(controllerIndex, scheme);
         menu.instructionBox.text = "Press Pause(/Start) to start the game";
-
-        System.out.println("exiting calibration");
-        stateBasedGame.enterState(0);
     }
 
 /////////////
@@ -271,7 +313,16 @@ public class CalibrationState extends CustomGameState {
         scheme.name = c.getName();
         scheme.buttons = new int[InputHandler.NUM_ACTIONS];
         scheme.axis = new int[InputHandler.NUM_ACTIONS];
+
+        scheme.axisMin = new float[InputHandler.NUM_ACTIONS];
+        scheme.axisBase = new float[InputHandler.NUM_ACTIONS];
+        scheme.axisMax = new float[InputHandler.NUM_ACTIONS];
+
+        baseBtns = new boolean[c.getButtonCount()];
+
         minAxis = new float[c.getAxisCount()];
+        baseAxis = new float[c.getAxisCount()];
+        maxAxis = new float[c.getAxisCount()];
 
         //fill with -1
         for (int i = 0; i < InputHandler.NUM_ACTIONS; i++) {
@@ -279,6 +330,7 @@ public class CalibrationState extends CustomGameState {
             scheme.axis[i] = -1;
         }
 
+        menu = (MainMenuState) stateBasedGame.getState(0);
 
         index = 0;
 
@@ -287,13 +339,10 @@ public class CalibrationState extends CustomGameState {
         subMessageBox.text = subMessages[index];
 
 
-        baseBtns = new boolean[c.getButtonCount()];
-        baseAxis = new float[c.getAxisCount()];
     }
 
     @Override
     public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        controllerIndex = -1;
         scheme = null;
         c = null;
     }
@@ -325,7 +374,8 @@ public class CalibrationState extends CustomGameState {
             next();
             timerLength = length_wait;
             timerStop = Main.TIME + timerLength;
-        }
+        } else if (index == messages.length - 1 && i == Input.KEY_ENTER)
+            stateBasedGame.enterState(4);
     }
 
     @Override
