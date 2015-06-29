@@ -14,6 +14,8 @@ public class Assets {
     public static Sound SOUND_ARROW_SHOOT;
     public static Sound SOUND_WEAPON_SWING;
     public static Sound SOUND_KILL;
+    
+    public static Sound SOUND_FIRST_BOSS_ROAR;
 	
 	public Assets(){
         //load sound clips
@@ -24,6 +26,9 @@ public class Assets {
 	    	SOUND_ARROW_SHOOT 	= new Sound(sound_dir + "ArrowShootSound.wav");
 	    	SOUND_WEAPON_SWING	= new Sound(sound_dir + "WeaponSwing.wav");
 	    	SOUND_KILL			= new Sound(sound_dir + "KillSound.wav");
+	    	
+	    	//Boss Sounds
+	    	SOUND_FIRST_BOSS_ROAR = new Sound(sound_dir + "FirstBossRoar.wav");
 		} catch (SlickException e) {
 			System.out.println("Error with file path");
 		}

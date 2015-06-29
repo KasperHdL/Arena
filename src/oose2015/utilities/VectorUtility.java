@@ -24,4 +24,9 @@ public class VectorUtility {
         Vector2f delta = other.position.copy().sub(entity.position);
         return delta.length() - entity.size.x/2 - other.size.x/2;
     }
+    
+    public static float getDistanceToPoint(Entity entity, Vector2f point){
+        Vector2f delta = point.copy().sub(entity.position);
+        return delta.length() - entity.size.x/2;
+    }
 }

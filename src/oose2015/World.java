@@ -2,6 +2,7 @@ package oose2015;
 
 import oose2015.entities.DungeonExit;
 import oose2015.entities.agents.Enemy;
+import oose2015.entities.agents.FirstBoss;
 import oose2015.entities.agents.MeeleeEnemy;
 import oose2015.entities.agents.Player;
 import oose2015.entities.agents.RangedEnemy;
@@ -176,12 +177,13 @@ public class World {
      */
     public void spawnWave(){
         waveCount++;
-        for (int i = 0; i < waveCount * 2; i++) {
+        /*for (int i = 0; i < waveCount * 2; i++) {
         	if(RANDOM.nextBoolean())
         		new MeeleeEnemy(new Vector2f(RANDOM.nextFloat()*360).scale(RANDOM.nextFloat()*(Tile.TILE_SIZE) + 10*Tile.TILE_SIZE),RANDOM.nextInt(3)+RANDOM.nextInt(waveCount)+2);
         	else
         		new RangedEnemy(new Vector2f(RANDOM.nextFloat()*360).scale(RANDOM.nextFloat()*(Tile.TILE_SIZE) + 10*Tile.TILE_SIZE),RANDOM.nextInt(3)+RANDOM.nextInt(waveCount)+2);        		
-        }
+        }*/
+        new FirstBoss(new Vector2f(RANDOM.nextFloat()*360).scale(RANDOM.nextFloat()*(Tile.TILE_SIZE) + 10*Tile.TILE_SIZE), 5);
     }
 
     /**
