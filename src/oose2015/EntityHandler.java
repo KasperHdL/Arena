@@ -8,6 +8,7 @@ import oose2015.utilities.CollisionUtility;
 import org.newdawn.slick.Graphics;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by @Kasper on 26/03/2015
@@ -21,10 +22,10 @@ import java.util.ArrayList;
 
 public class EntityHandler {
 
-    public static ArrayList<Entity> entities;//contains every entity player, enemy and all others
-    public static ArrayList<Tile> tiles;
-    public static ArrayList<Particle> particles;
-    public static ArrayList<Artifact> artifacts;
+    public static List<Entity> entities;//contains every entity player, enemy and all others
+    public static List<Tile> tiles;
+    public static List<Particle> particles;
+    public static List<Artifact> artifacts;
 
 
     private Camera camera;
@@ -86,16 +87,16 @@ public class EntityHandler {
         					-camera.position.y + (camera.halfViewSize.y * (1/camera.scale)));
         for(Tile tile : tiles){
             if(camera.tileWithinView(tile))
-                tile.render(graphics);
+                tile.render();
         }
         for(Artifact artifact: artifacts){
             if(camera.artifactWithinView(artifact))
-                artifact.render(graphics);
+                artifact.render();
         }
 
         for(Particle particle : particles){
             if(World.camera.particleWithinView(particle))
-                particle.render(graphics);
+                particle.render();
         }
 
         for(Entity entity : entities){

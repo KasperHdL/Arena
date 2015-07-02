@@ -70,6 +70,8 @@ public class Player extends Agent {
     public Player(Vector2f position, Color color, int index, InputWrapper wrapper) {
         name = "Player";
 
+        image = Assets.SPRITE_SHEET.getSprite("agent.png");
+
         playerIndex = index;
         inputWrapper = wrapper;
         playerUI = World.playerUIs[playerIndex];
@@ -270,11 +272,10 @@ public class Player extends Agent {
         else
             graphics.setColor(new Color(color.r,color.g,color.b,.15f));
 
-        graphics.fillOval(-size.x / 2, -size.x / 2, size.x, size.y);
 
         graphics.setColor(Color.white);
         if(isAlive) {
-            graphics.drawLine(0, 0, size.x / 2, 0);
+            image.draw(-size.x / 2, -size.y / 2, size.x, size.y, color);
             if (startedBowDraw) {
                 graphics.setColor(Color.red);
                 float t = (World.TIME - startTime)/1500;

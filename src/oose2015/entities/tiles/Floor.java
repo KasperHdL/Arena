@@ -1,8 +1,8 @@
 package oose2015.entities.tiles;
 
+import oose2015.Assets;
 import oose2015.World;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -26,21 +26,15 @@ public class Floor extends Tile {
         this.position = position;
         size = new Vector2f(Tile.TILE_SIZE,Tile.TILE_SIZE);
 
-        this.color = color.darker(World.RANDOM.nextFloat()* 0.4f);
+        this.color = color.darker(World.RANDOM.nextFloat() * 0.4f);
+        image = Assets.SPRITE_SHEET.getSprite("dot.png");
     }
 
     /**
      * Renders floor tile graphics.
      */
     @Override
-    public void render(Graphics graphics) {
-
-        graphics.pushTransform();
-        graphics.translate(position.x, position.y);
-
-        graphics.setColor(color);
-        graphics.fillRect(-size.x / 2, -size.y / 2, size.x, size.y);
-
-        graphics.popTransform();
+    public void render() {
+        image.draw(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, color);
     }
 }

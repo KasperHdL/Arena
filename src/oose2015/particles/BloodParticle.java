@@ -1,6 +1,5 @@
 package oose2015.particles;
 
-import oose2015.artifacts.Artifact;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -25,7 +24,7 @@ public class BloodParticle extends Particle {
 	 * @param color
 	 */
 	public BloodParticle(Vector2f position,int size,float rotation,Vector2f velocity,float angularVelocity,int time, Color color) {
-        super(position, size, rotation, velocity, angularVelocity, time, true, color);
+        super(position, size, rotation, velocity, angularVelocity, time, false, color);
     }
 
 	/**
