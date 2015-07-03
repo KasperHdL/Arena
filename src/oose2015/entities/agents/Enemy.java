@@ -1,5 +1,6 @@
 package oose2015.entities.agents;
 
+import oose2015.Assets;
 import oose2015.EntityHandler;
 import oose2015.World;
 import oose2015.entities.Entity;
@@ -38,6 +39,8 @@ public class Enemy extends Agent {
      */
     public Enemy(Vector2f position, int level/*, boolean isMelee*/){
         World.ENEMIES.add(this);
+
+        image = Assets.SPRITE_SHEET.getSprite("agent.png");
 
         curHealth 		= Settings.ENEMY_HEALTH * level * 2;
         maxHealth 		= curHealth;
@@ -144,18 +147,11 @@ public class Enemy extends Agent {
         graphics.rotate(0, 0, rotation);
 
         if(isAlive){
-            graphics.setColor(Color.red);
 
-            graphics.fillOval(-size.x / 2, -size.y / 2, size.x, size.y);
-            graphics.setColor(Color.black);
-            graphics.drawLine(0,0,size.x/2,0);
+            image.draw(-size.x / 2, -size.y / 2, size.x, size.y, Color.red);
 
 
             float halfRadius;
-            float dist = Float.MAX_VALUE;
-
-            if(target != null)
-                dist = VectorUtility.getDistanceToEntity(this, target);
 
             if(World.DEBUG_MODE){
 

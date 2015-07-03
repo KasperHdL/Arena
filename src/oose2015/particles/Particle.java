@@ -1,9 +1,11 @@
 package oose2015.particles;
 
+import oose2015.Assets;
 import oose2015.EntityHandler;
 import oose2015.World;
+import oose2015.artifacts.Artifact;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -26,14 +28,11 @@ public class Particle {
     public float renderSize;
 
     public Color color;
-
+    public Image image;
     private int endTime;
     private int length;
-
     //fading
     private boolean fadeOut = false;
-
-
 
     /**
      * Overloaded Particle constructor
@@ -76,6 +75,7 @@ public class Particle {
         endTime = World.TIME + length;
 
         renderSize = this.size.length();
+        image = Assets.SPRITE_SHEET.getSprite("dot.png");
     }
 
 
@@ -84,8 +84,12 @@ public class Particle {
      * @param dt - delta time
      */
     public void update(float dt){
-        if(endTime < World.TIME)
+        if (endTime < World.TIME) {
+            if (!fadeOut)
+                new Artifact(position, size, rotation, color);
             destroy();
+            return;
+        }
 
         if(fadeOut){
             color.a = (float)(endTime - World.TIME)/length;
@@ -106,17 +110,10 @@ public class Particle {
 
     /**
      * Render particle graphics.
-     * @param graphics Graphics reference
      */
-    public void render(Graphics graphics){
-        graphics.pushTransform();
-        graphics.translate(position.x, position.y);
-        graphics.rotate(0, 0, rotation);
-
-        graphics.setColor(color);
-        graphics.fillRect(-size.x/2,-size.y/2,size.x,size.y);
-
-        graphics.popTransform();
+    public void render() {
+        image.setRotation(rotation);
+        image.draw(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, color);
     }
 
 

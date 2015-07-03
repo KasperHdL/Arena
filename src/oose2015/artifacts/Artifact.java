@@ -1,8 +1,9 @@
 package oose2015.artifacts;
 
+import oose2015.Assets;
 import oose2015.EntityHandler;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -21,6 +22,7 @@ public class Artifact {
     public float renderSize;
 
     public Color color;
+    public Image image;
 
     public Artifact(Vector2f position, Vector2f size, float rotation, Color color){
         EntityHandler.artifacts.add(this);
@@ -30,21 +32,16 @@ public class Artifact {
 
         this.color = color;
 
+        image = Assets.SPRITE_SHEET.getSprite("dot.png");
+
         renderSize = size.length();
     }
 
     /**
      * Renders artifact
-     * @param graphics
      */
-    public void render(Graphics graphics){
-        graphics.pushTransform();
-        graphics.translate(position.x, position.y);
-        graphics.rotate(0, 0, rotation);
-
-        graphics.setColor(color);
-        graphics.fillRect(-size.x/2,-size.y/2,size.x,size.y);
-
-        graphics.popTransform();
+    public void render() {
+        image.setRotation(rotation);
+        image.draw(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, color);
     }
 }

@@ -1,7 +1,7 @@
 package oose2015.entities.tiles;
 
 import oose2015.EntityHandler;
-import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -19,11 +19,13 @@ public class Tile {
     public Vector2f size;
     public Vector2f position;
 
+    public Image image;
+
     public Tile(){
         EntityHandler.tiles.add(this);
     }
 
-    public void render(Graphics graphics){
+    public void render() {
 
     }
 

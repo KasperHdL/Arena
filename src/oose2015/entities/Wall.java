@@ -1,6 +1,6 @@
 package oose2015.entities;
 
-import oose2015.entities.Entity;
+import oose2015.Assets;
 import oose2015.entities.tiles.Tile;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -27,23 +27,13 @@ public class Wall extends Entity {
 
         color = Color.gray;
         lineColor = Color.black;
+
+        image = Assets.SPRITE_SHEET.getSprite("dot.png");
     }
 
     @Override
     public void render(Graphics graphics){
-        graphics.pushTransform();
-        graphics.translate(position.x, position.y);
-
-        graphics.setColor(color);
-        graphics.fillRect(-size.x / 2, -size.y / 2, size.x, size.y);
-
-        graphics.setColor(lineColor);
-
-        graphics.drawRect(-size.x / 2, -size.y / 2, size.x, size.y);
-        graphics.drawLine(-size.x / 2, -size.y / 2, size.x / 2, size.y / 2);
-        graphics.drawLine(size.x/2,-size.y/2,-size.x/2,size.y/2);
-
-        graphics.popTransform();
+        image.draw(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, Color.magenta);
     }
 
 	@Override

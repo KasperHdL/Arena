@@ -2,8 +2,8 @@ package oose2015.entities;
 
 import oose2015.EntityHandler;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.opengl.Texture;
 
 /**
  * Created by @Kasper on 26/03/2015
@@ -22,7 +22,7 @@ public abstract class Entity {
 
     public float rotation;
     public Vector2f scale = new Vector2f(1f,1f);
-    public Texture texture;
+    public Image image;
 
     //if can be pushed then it will be affected by other entities
     public boolean isMovable = true;
