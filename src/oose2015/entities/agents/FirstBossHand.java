@@ -1,6 +1,6 @@
 package oose2015.entities.agents;
 
-import oose2015.Settings;
+import oose2015.settings.Settings;
 import oose2015.entities.Entity;
 import oose2015.entities.agents.FirstBoss.MoveState;
 import oose2015.utilities.VectorUtility;
