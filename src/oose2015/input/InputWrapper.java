@@ -18,17 +18,11 @@ public abstract class InputWrapper {
 
     public abstract float getActionAxis(Action action);
 
-    public Vector2f getActionVector(Action x, Action y) {
-        return new Vector2f(getActionAxis(x), getActionAxis(y)).normalise();
-    }
+    public abstract Vector2f getActionVector(Action x, Action y);
 
-    public Vector2f getMovement() {
-        return getActionVector(Action.Movement_X, Action.Movement_Y);
-    }
+    public abstract Vector2f getMovement();
 
-    public Vector2f getDirection() {
-        return getActionVector(Action.Direction_X, Action.Direction_Y);
-    }
+    public abstract Vector2f getDirection();
 
     public Vector2f getDirection(Vector2f playerPosition) {
         return getDirection();

@@ -1,6 +1,7 @@
 package oose2015.input;
 
 import org.lwjgl.input.Controller;
+import org.newdawn.slick.geom.Vector2f;
 
 /**
  * Created by kaholi on 6/23/15.
@@ -186,6 +187,20 @@ public class ControllerWrapper extends InputWrapper {
         int index = action.ordinal();
         return axisValues[index];
     }
+
+    public Vector2f getActionVector(Action x, Action y) {
+        return new Vector2f(getActionAxis(x), getActionAxis(y));
+    }
+
+    public Vector2f getMovement() {
+        return getActionVector(Action.Movement_X, Action.Movement_Y);
+    }
+
+    public Vector2f getDirection() {
+        return getActionVector(Action.Direction_X, Action.Direction_Y);
+    }
+
+
 
     public void printAll() {
         String s = "";

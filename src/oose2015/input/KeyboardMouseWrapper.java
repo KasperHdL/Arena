@@ -98,6 +98,17 @@ public class KeyboardMouseWrapper extends InputWrapper {
     }
 
     @Override
+    public Vector2f getActionVector(Action x, Action y) {
+        return new Vector2f(getActionAxis(x), getActionAxis(y)).normalise();
+    }
+
+    @Override
+    public Vector2f getDirection() {
+        return getDirection(new Vector2f());
+    }
+
+
+    @Override
     public Vector2f getDirection(Vector2f playerPosition) {
         if (World.camera == null) return null;
 
