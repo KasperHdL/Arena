@@ -26,6 +26,9 @@ public class Enemy extends Agent {
     public boolean 	isChasing 	= false,
     				isShot 		= false,
     				isAttacking = false;
+    
+    protected boolean moveRot = true; //Temporary solution to make movement without rotation possible
+    
     public Agent target;
     public Player shooter;
     float damage = Settings.ENEMY_DAMAGE;
@@ -132,7 +135,8 @@ public class Enemy extends Agent {
         input.normalise();
         input.scale(speedForce);
 
-        rotation = (float)acceleration.getTheta();
+        if(moveRot)
+        	rotation = (float)acceleration.getTheta();
 
         super.move(dt, input);
     }
