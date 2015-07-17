@@ -204,7 +204,7 @@ public class FirstBoss extends BossEnemy{
 	}
 
 	protected void roar(){
-    	//roar.play();
+    	roar.play();
     	World.camera.shakeScreen(new Vector2f(World.RANDOM.nextFloat()*30,World.RANDOM.nextFloat()*30),2000,4f);
     }
 
